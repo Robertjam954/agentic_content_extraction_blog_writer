@@ -156,28 +156,38 @@ Your job is to take this structured data and create a compelling, conceptual blo
 INPUT OBJECT START:
 
 ID
-{{ $('Notion Trigger').item.json.id }}
+(ADD YOUR DATA HERE)
 
 Key Insights
-{{ $('Notion Trigger').item.json['Key Insights'] }}
+
+(ADD YOUR DATA HERE)
+
 SEO Keywords
-{{ $('Notion Trigger').item.json['SEO Keywords'] }}
+(ADD YOUR DATA HERE)
+
 Source Video
-{{ $('Notion Trigger').item.json['Source Video'] }}
+(ADD YOUR DATA HERE)}
+
 Target Markdown Filename
-{{ $('Notion Trigger').item.json['Target Markdown Filename'] }}
+(ADD YOUR DATA HERE)
+
 Content Type
-{{ $('Notion Trigger').item.json['Content Type'] }}
+(ADD YOUR DATA HERE)
+
 Created Date
-{{ $('Notion Trigger').item.json['Created Date'] }}
+(ADD YOUR DATA HERE)
+
 Summary Transcript
-{{ $('Notion Trigger').item.json['Summary Transcript'] }}
+(ADD YOUR DATA HERE)
+
 Hook/Introduction
-{{ $('Notion Trigger').item.json['Hook/Introduction'] }}
+(ADD YOUR DATA HERE)
+
 Status
-{{ $('Notion Trigger').item.json.Status }}
+(ADD YOUR DATA HERE)
+
 Content Topic
-{{ $('Notion Trigger').item.json['Content Topic'] }}
+(ADD YOUR DATA HERE)
 INPUT OBJECT FINISH.
 
 WRITTEN BLOG START:
