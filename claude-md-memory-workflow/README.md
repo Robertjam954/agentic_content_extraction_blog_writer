@@ -2,4 +2,4 @@ This example is used by myself for my blog site. You'll have to rework it in a w
 You can also rework this concept to edit a Copilot instructions file or whatever suits your needs.
 
 Video reference:
-https://youtu.be/oZn6Am0ReaY
+https://youtu.be/ohjMGnEaBxk
