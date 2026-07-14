@@ -1,0 +1,558 @@
+Title: The AI Agent That Doesn't Break Production Code
+Source: https://youtu.be/CMYhZMtPI_E
+Video ID: CMYhZMtPI_E
+----
+
+Everybody wants your AI to generate
+faultless productionready code. But the
+reality is that code breaks weeks later
+and nobody knows anymore why the AI
+agent made certain decisions to create
+features in a specific way. In this
+video, I'm going to solve that problem
+for you by showing you how you can
+create a self-documenting AI agent that
+won't just create features, but also
+explains the decisions it made around
+how to actually develop the features
+themselves so that later on you can fix
+any issues that will arise in
+production. To prove that this works,
+I'm going to be adding a new feature to
+my production grade application. In this
+video, we're not going to be working
+with some dummy to-do list project. No,
+we're going to be working on a real code
+repository. So, let's get into it. We're
+going to be adding a caching feature to
+this AI engineering tutor app, which is
+an application that you can use to learn
+AI engineering faster. You might have a
+question like the following. What is the
+best first step to get started when I
+want to learn AI engineering? Now it
+takes some time to generate the answer
+because first the system has to find
+relevant YouTube videos to use for the
+answer and then of course it also has to
+invoke an AI model to generate the
+answer itself. Sometimes it's fine that
+this answer takes a long time to
+generate. But when users have very
+similar questions like how to get
+started, what the best programming
+languages are for AI engineering
+questions like that, you really want to
+just cache those answers, right? Because
+the questions are all pretty similar to
+each other and that way the users do not
+have to wait for the AI model to
+respond. because I've been talking for
+20 seconds now and only now the answer
+is fully done and generated. And you can
+see that there are some examples for
+technologies that you can use like fast
+API and a couple of YouTube video
+sources. Where do we actually get
+started with this caching feature? Well,
+I've actually already prepared a PRD, a
+product requirement document for this
+video. If we check out my GitHub, you
+can actually see that I've got this
+issue here, semantic FAQ caching, and I
+actually have described how I roughly
+want this to work. Basically what I want
+to do is I want to match similar
+questions and if a question is a match
+with an answer that has been cached then
+I want to actually return that in you
+know 100 milliseconds instead of two to
+3 seconds or even longer if you count
+all the processing time from the
+language model. So how am I going to
+achieve that? Well there is actually a
+little bit of a technical implementation
+in this pd as well. If we scroll down
+here, you can see that eventually it's
+actually going to note that we want to
+do the basic semantic caching with
+Reddis. And Reddis actually allows for
+vector search as well nowadays, which is
+how I can actually make sure that the
+questions are relevant to each other.
+And to achieve that, what I'm actually
+going to be doing is also letting the AI
+model know that they can actually check
+out this web page for more information
+about how vector search is actually
+implemented in Reddus. And this is a
+little bit of context engineering,
+right? You want to make sure that you
+don't just instruct the AML on what to
+do, but that it has the right
+documentation to also read and
+understand how to do the implementation
+at a technical level. So, with that
+being said, I'm going to open Cloud Code
+and get it to implement this feature.
+While it does that, I'm going to show
+you how I'm going to make the agent
+self-document its progress. So, we're
+going to go ahead and check out Visual
+Studio Code. And now what I'm going to
+do is I'm simply going to type fetch
+issue one and implement it carefully.
+The reason I can just refer to issue one
+is because I've connected claw to my
+GitHub MCP server. So it's actually able
+to read information from a repository
+including all of the issues. So you can
+indeed see that it's now trying to get
+the issue details. I'm just going to go
+ahead and proceed with that. And now you
+will actually see that it retrieves all
+the issue details. And you will see that
+it now starts to create a to-do list
+already. And all of that is going to be
+based on the issue description which is
+basically our product requirement
+document. So indeed you now see that it
+first starts to analyze existing
+codebase setup reddus etc. But the
+actual implementation of this feature is
+not really what you came here for right
+it's just a means to show that this
+agent is going to self-document how it
+approach the implementation. So how do I
+actually make this agent self-document?
+Well, for that I actually set up a
+claude command. Now, if you don't use
+cloud code, there's no need to worry. In
+the end, this is just a collection of
+prompts that work together. So, you can
+even use this in other AI agents like
+GitHub copilot, for example. What we're
+going to be doing in this autod document
+agent command is that it's going to run
+git diff main to understand what the AI
+agent has actually implemented compared
+to the current production branch. This
+is a great way to actually make sure
+that all of the context is provided to
+the AI agent instead of manually asking
+it to just review the changes. By
+running a terminal command like this,
+you will ensure that the full context is
+pushed into the AI model. From there,
+what it needs to do is read the complete
+diff output and then create a to-do list
+of functions that it might want to
+investigate further. And next to that,
+it needs to actually decide whether it
+should create an architecture decision
+record. And this is where the auto
+documentation piece comes into. It's not
+about writing comments in the files. You
+can just do that by instructing the AI
+model. It's about creating a separate
+documentation markdown file that
+contains more information about why
+specific decisions were made. In this
+case, for example, why reddis was
+configured in a particular way to
+support the requirements from the issue.
+We can actually have a look at the
+template that's going to be used for
+this ADR document. So, if I check out
+the ADR template markdown file here, you
+can see that I've got a pretty simple
+template and all of this will be
+referenced in a link in the description
+below and you can customize it to your
+needs, right? Maybe your team already
+has an ADR template that suits your
+needs more. In my case, you know,
+there's just a decision that's made,
+technical approach, key components, etc.
+Now, in my case, I actually really like
+creating this ADR in the same pull
+request in which I implement the feature
+itself. Some people might want to write
+the architectural decision record before
+they even get started on the code, but
+generally I find that decisions made in
+an ADR do slightly change once you
+actually get to implementing the code
+itself. So I prefer that the AI code
+agent will write the ADR after the code
+has been implemented but before it's
+actually been approved and pushed into
+production. And that is the key, right?
+If you have the ADR together with the
+code, then three weeks later, if
+something might have broken due to the
+AI code, someone can actually easily
+understand why decisions were made and
+fix up any problems. And while it's
+working on this feature, I just wanted
+to let you know that these kinds of real
+AI coding practices that generally work
+in the real world and aren't just hype
+are things that I teach in my AI
+engineering community, together with all
+of the access to applications like the
+AI tutor that allow you to learn AI
+engineering concepts much faster. So if
+you want to check that out, you should
+definitely go to the description after
+this video. But for now, let's wait
+until Claude is done and then see how
+far along we are with the Reddus
+implementation.
+So we can actually see that Claude is
+starting to wrap up now. And if we check
+out all of the changed files, you can
+see that it's added quite a lot. So it's
+actually updated some readme
+documentation already. Now that's not
+the same as writing an ADR, but you do
+see that Claude is documenting some
+basics here already, like adding Reddis
+as a potential storage mechanism. Then
+of course we also have a couple of
+changes to our environment variables
+where now the reddis configuration is
+actually added in our example
+environments file. So I'm going to go
+ahead and add that to my real
+environment file in just a bit. Next to
+that we also have changes in different
+Python files. And I think a very
+important part to check out is going to
+be the chat service here because that's
+actually where we're going to call the
+reddis cache. So for example, it gets
+initialized in here and then if we keep
+scrolling down, we can actually see that
+a new step has been added. So we have
+got a couple of steps to handle a user
+request. We enhance the query, we
+generate embedding for the query. But
+then this new step three is actually
+that we first check the semantic cache
+for similar questions. This step was
+different before because before we just
+immediately retrieved the relevant
+YouTube videos using vector search. So
+now we first actually check the semantic
+cache to see if a similar question has
+been answered. So you can see in here
+that it will actually yield a couple of
+things from the cached answer. It will
+yield the answer itself and then of
+course the metadata as well because we
+do actually ideally want to display the
+sources in the frontend UI. Now one
+particular thing here that I'm seeing is
+that the sources themselves are actually
+not being returned at the moment. So
+that is something I would definitely
+want to implement in a second iteration.
+For now, let's focus on making sure that
+the answer itself is returned very
+quickly and then you can actually see
+that it will return and exit early if
+there is a cache hit. Now, of course,
+there is more code to explore, but the
+point of this video is more to show the
+auto documentation process. So, what I'm
+going to do is I'm going to start
+locally and then check out whether or
+not this new feature even works. And
+afterwards, we're going to automatically
+generate all of the ADR documentation
+that we need to make sure that this code
+will actually work and stay functional
+in production. So in the readme I can
+see that if I scroll down I actually
+have to start up reddis locally with
+docker compose. Probably want to do that
+automatically later on but for now I'm
+okay with doing that manually. And then
+you will actually see that it will need
+to download and pull the reddis
+container. And while that's being done
+I'm going to be editing my environment
+variables to add these values. I'll be
+right back because I don't want you to
+see my secrets. So I've started reddis
+and I've edited my environment variables
+file. Now, what I'm going to do is I'm
+going to make sure that the back end is
+actually fully restarted just to make
+sure that everything will work as
+intended. Oh, and of course, I actually
+have not installed the new Reddus
+dependency. So, I'm going to go ahead
+and do that as well. If I check out ls,
+you can see that in this file, I have a
+requirements file. So, I can simply do
+pip install-r
+requirements.txt. And this way, the new
+Reddus package will be installed because
+we of course need that to communicate
+with a Reddus instance, right? So, now
+I'm going to go ahead and run the server
+file again. Now, initially actually
+Reddis didn't want to start. You can
+actually see that it failed to connect
+here locally. And that's because this
+concurrent ride mode parameter doesn't
+even really seem to be a valid
+parameter. And I know this because if I
+check docker desktop, you can see that
+this is not a valid option. So, it seems
+like the AI model has just hallucinated
+that. And this is proof that everyone
+showing you that these AI agents can
+code up a real application in 5 seconds.
+They're probably lying to you. It's much
+more complex than that. And you do need
+to actually check what the AI model is
+doing. So because I know what I'm doing,
+I can actually fix this issue. I can go
+ahead and remove this. And then what I'm
+going to do now is I'm actually just
+going to restart the back end, but only
+after I restarted the container. And now
+what I can do is I can go back and just
+restart the Reddus container. And then
+let's check if it's properly running.
+And now you can actually see that it's
+properly running. So that's fine. And
+now you can see that the cache has been
+initialized. But we still have to see
+whether this actually works. It seems
+I've created the vector search index. So
+let's go ahead and go back to our
+application and ask a question. And then
+I'm going to go ahead and ask the same
+question again. Now I'm going to open up
+my network tab here on the right just so
+you can see if the network request
+actually becomes faster because of the
+caching. So I'm going to go ahead and
+first submit this regular request. Of
+course, we don't have anything in the
+cache yet. So this is definitely going
+to take a while to complete. And you can
+indeed see that this took over 17
+seconds to fully resolve. Now let's go
+ahead and actually refresh this page.
+and ask the exact same question again.
+Bang. Whoa. It's actually already done.
+I don't have to show you the network
+request for you to understand that that
+was much faster. Right now, again, if we
+scroll down, the sources are actually
+missing here. That's something I want to
+implement for a second version, but the
+actual caching mechanism seems to work
+pretty well. I do want to test one more
+case though because I literally ask the
+exact same question. I do want it to
+actually still trigger the cache
+mechanism when the question is very
+similar, but maybe worded slightly
+differently. For example, if I fully
+refresh the page now, I can slightly
+change the language here and say
+something like, what is the most
+important first step to get started when
+I want to learn AI engineering? And now
+you see that it still matches. Now, just
+to test one more case, let's ask a
+completely different question and ensure
+that it's not going to return the cached
+answer, but actually starts thinking
+again. So, for example, I can ask, what
+is the most important principle when AI
+coding? And now you will actually see
+that it's starting to think about this
+answer for a longer time and it actually
+starts to stream in the answer because
+it's not been cached yet. So now we've
+kind of tested the caching mechanism end
+to end. But of course you're here for
+the autodocumenting agent. So now that
+we've properly implemented an initial
+version of a feature, let's see how
+clock code will create an ADR based on
+the command that I shared earlier in the
+video. All right, we're back in Visual
+Studio Code. And what I'm going to do
+now is simply press slash and then
+actually use this autod document agent
+command which I've defined once again in
+this markdown file. So all I have to do
+is press enter. And now it understands
+that it first needs to run a git command
+to understand all the different changes
+that it's made. And you can indeed see
+that there are over 400 lines of git
+differences between this branch and the
+latest code that's actually running in
+production. And now it has a good idea
+of the wall reddis implementation. You
+can indeed see here that it's actually
+going to read some extra files to get an
+even better idea of what's going on.
+It's even going to read one of the test
+scripts to understand what some common
+use cases for this caching mechanism
+might be. And then at the very end, it's
+going to analyze if it's a significant
+architectural change that even requires
+an ADR because small changes like some
+front-end changes don't really need an
+ADR, right? that can introduce bugs, but
+it's not going to completely break your
+system most of the time when you have
+small little front-end bugs. But in this
+case, we're adding a caching layer, a
+really intrusive backend operation that
+could completely break my application.
+So in this case, the AI model should
+indicate that an ADR is necessary and
+then continue from there.
+I'll sit back and relax for a second and
+I'll wait until the clot has made a
+decision on whether it should write an
+ADR.
+So now you can see that indeed this is a
+significant architectural change and now
+it's actually added one extra to-do.
+It's going to create the architecture
+decision record for semantic caching and
+it's going to create a new ADR docs
+folder because I haven't created that in
+this repo yet. Totally fine with that.
+Let's go ahead and proceed. And it will
+now actually go ahead and read the
+architecture decision record template
+and start creating the record. And you
+can now see that it's created in ADR.
+I'm going to allow it to create the
+decision record. And now you will be
+able to see in the docs folder that we
+have the semantic caching markdown file.
+Now let's see if it actually matches the
+ADR template in terms of structure. We
+indeed start with the status. We have
+context decision and we've got the
+technical approach key components
+consequences positive to negative. We
+also have a couple of alternatives. So
+in this case it actually comes up with a
+couple of alternatives that make sense
+in the context of the repo. You could do
+simple stringbased caching. The
+difficulty is, as I said before, you're
+not going to match questions that are
+asked in a slightly different way. You
+could also actually do some caching in
+Cosmos DB, which is the database that I
+use for other operations in the
+application. But as it says in the cons,
+you know, it's got a higher latency than
+Reddus. It's more expensive for frequent
+caching reads. And you know, Conor DB is
+not really meant to be a cache. That is
+really the job of a system like Reddus.
+So here too you understand better what
+the alternatives could have been for the
+implementation and why reddis was still
+chosen by the AI model in the end. Now
+of course in my case the PRD already
+pushed the AI model a little bit into
+the reddis side of things but in case
+your PRD doesn't contain any technical
+details this is especially handy because
+you get a bit of a better idea of the
+alternatives and why the model might
+have made a specific decision on
+actually using something like Reddus in
+the end. Now, if you scroll all the way
+to the top, you will see that the status
+is just accepted right now. And that is
+because as an engineer, I'm going to be
+pushing this AVR and creating a pull
+request out of all of the code here.
+Now, of course, based on your repository
+and your workflow, you can actually set
+this status to propose or anything else
+that works for you. It's all
+customizable because it's just a simple
+prompt that you can change. In my case,
+I'm actually quite happy with this. So,
+I'm going to go ahead and ask Claude to
+commit all of my files. The great thing
+is again because I've got that GitHub
+MCP integration, I can ask it to create
+commits and then even create a pull
+request out of everything. So that's
+what I'm going to do to just wrap up
+this wall concept and system nicely. So
+what I'm going to do is I'm going to say
+please commit all changes and create a
+PR. You can now see that it's starting
+to use git commands to add all of the
+files that have been changed for this
+radus implementation. And then it's
+going to go ahead and push that in just
+a little while.
+Now we're actually going to push those
+changes to my branch. And now we're even
+going to be creating a pull request,
+which is very cool that I can do this
+automatically with my AI agent because
+of that GitHub MCP server. Right.
+Interestingly enough, it actually
+decided to use the GitHub CLI because
+I've also got that installed. But just
+to make sure it actually pushes to the
+right repo, I am going to ask it to use
+the MCP server instead. Please use the
+MCP server instead.
+It's interesting. You can see here that
+these AI agents have different ways to
+reach the same destination, right? So in
+my case, I just want to use that MCP
+server. And now you can indeed see that
+it's going to use that GitHub open new
+pull request tool call. So let's go
+ahead and actually just create the pull
+request. And then I'm going to go ahead
+to my browser and show you that the pull
+request was created pretty much right
+now. I'm going to go and scroll up, go
+to pull requests, and you will see that
+we actually have this new feature, add
+semantic FAQ caching with Reddist stack,
+and we've got those three different
+commits with all of the changed files.
+And because we have this very nice
+architecture decision record, if an
+engineer reads this code four weeks in
+because there's a small bug with this AI
+code, then that's not a problem at all.
+It can easily pick up and fix whatever
+is needed. I'm confident that you now
+see that you need to do way more than
+just vibe code your way to production
+when you're using AI to generate code.
+If you want to become a real AI native
+engineer, you should subscribe to the
+channel and check out my AI native
+engineering community in the link in the
+description below. I hope to see you

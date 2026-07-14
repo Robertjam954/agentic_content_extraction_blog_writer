@@ -1,0 +1,265 @@
+Title: The Truth Behind Real AI Automations
+Source: https://youtu.be/fbevy5gWDes
+Video ID: fbevy5gWDes
+----
+
+Gurus are promising that you can automate 
+everything with AI, generate hundreds of blogs,
+get thousands of leads for your business, or even 
+make millions by automating video creation. But
+be honest with me, do you really believe it's 
+that simple? Most of these AI workflows lie
+to you by making you think that the value is in 
+the n8n automation or the AI agent orchestrating
+everything. But the real value of these workflows 
+actually lies in the input data. Without good
+input data, these workflows just generate garbage 
+that nobody will read and nobody will actually
+convert to whatever you're trying to sell or 
+whatever you're trying to produce. Without good
+input data, you're going to get nowhere. And that 
+is a secret that these gurus don't teach you. So,
+in this video, I'm going to show you what my 
+workflow looks like for generating highquality
+blogs for my YouTube videos and how bad the output 
+is if I take those YouTube videos away and just
+generate random blogs without any good input 
+data. And by watching this video, you can learn
+how you can automate something that's actually 
+valuable instead of spamming people with garbage
+that nobody will read or respond to. So, let's 
+get into it. So, this is my edit automation,
+and it's actually fairly simple. Whenever a new 
+page is added to my YouTube videos database,
+if that page is not processed yet, I actually 
+call this AI model to create a blog post based
+on the YouTube transcript and other attributes 
+that we'll get into later. And then it actually
+creates a file in my GitHub repository because 
+my blog is hosted on a code platform and then
+that automatically then gets pushed into the live 
+website of course. Then I just update the database
+page to say that the blog has been processed and 
+that's really it. So let's look at an example
+result that is coming from this workflow on 
+my website. I've got many blog articles that
+are based on my YouTube videos like this one. 
+I have a very successful video on my AI coding
+framework that people have used to code with 
+AI successfully and this is kind of a blog post
+version of that where it describes the framework 
+in quite some detail. So the framework basically
+consists of splitting up tasks for the AI model, 
+making it think before it actually starts coding
+and then implementing your features incrementally 
+instead of asking it to do everything at once. And
+everything that you see in this blog article 
+is actually coming from that YouTube video.
+And that is a big differentiator. I'm really 
+publishing these blog posts on my personal name.
+So why would I want a random AI model to write a 
+lowquality blog post? I want the blog post to be
+based on my YouTube video. And so if you read this 
+blog post and then watch the full YouTube video,
+it actually has synergy because the content is 
+actually about that YouTube video. And that's
+why this automation works so well because people 
+might find my blog and don't know about my YouTube
+channel yet and then they will flow right into 
+the YouTube video. Well, they will realize, okay,
+this is actually high quality content. And this is 
+a great automation because I respect both myself
+because I save time for having to write these 
+blog posts, but I also respect you, the viewer or
+reader, because these blog posts are actual high 
+quality. They provide good insights and you can
+just go and watch the full YouTube video to learn 
+more. And to prove that this actually works, let's
+go ahead and add a new row to this notion database 
+which is based on my latest YouTube video. To do
+this, I'm actually going to open cloud desktop 
+because I have an AI operating system that's
+basically connected to my YouTube channel through 
+MCP server. So what I can do here is simply say
+retrieve my latest YouTube video and ingest it 
+for blog creation. And then I'm going to select a
+very powerful model and run it like so. And Claude 
+is actually able to retrieve transcripts from my
+YouTube channel, push information to the notion 
+database, and so it's actually going to fill in
+that notion page for me. You can see here that at 
+the time of recording this video, my last video
+was about using three AI code agents at once. And 
+you can indeed see that it's now going to retrieve
+the entire transcript for that video. And from 
+there, it's going to summarize the transcript,
+provide more metadata, and then eventually 
+create that page in a notion database. So,
+here we go. It's downloading the transcript. And 
+now you can indeed see that the response is a big
+wall of text. If I keep scrolling here, you can 
+see it's a huge transcript because this video was
+like 20 minutes long. And this already shows you 
+this is high quality data. So the blog output is
+going to be pretty good quality as well. And now 
+you can indeed see that it's already created a
+first entry. It actually creates multiple entries 
+because it wants to create multiple blog posts
+with slightly different angles. But we can already 
+go back into notion and see if it indeed actually
+added that page. Oh, and you can indeed see we've 
+got two new rows here. one about a AI coding
+reality check. So this is actually quite accurate 
+because in a video I actually use multiple AI
+agents at once but I still needed to be the human 
+orchestrator to make everything work and actually
+make progress in my coding project. And then the 
+second topic is actually about creating master
+prompts for orchestrating all of these AI coding 
+agents. And all of that indeed comes from the
+actual video content which is great. And you can 
+see here that for example these two have different
+hooks and they have different key insights. Again, 
+coming from my own real expertise. This is novel
+data and not some random input that you get when 
+you connect an AI agent to a web search. This is
+expert information that will actually lead to a 
+high quality blog. So now, if we go to n8n, we
+should see that it's starting to trigger on some 
+of these rows. In n8n, I'm going to go ahead and
+just check if this has been run. So, we're going 
+to go to the executions here. And you can indeed
+see that now one of these is actually running. So, 
+this one's running for 18 seconds. 19 20. Here we
+go. And then you should see that in a minute or 
+so, this one is actually finished. It will take
+a little bit of time, of course, to generate the 
+block article, but here we go. In just 28 seconds,
+you can see that it's gone through the entire 
+flow. So, what has it actually done? Well,
+it's gone through the AI agent with a given system 
+prompt. This is quite a large prompt that I'll
+actually share in a comment because, you know, 
+I actually think again that the prompt itself is
+not super valuable because it only works if you 
+have good input data. And at the very end of the
+prompt, you can see that I'm basically adding 
+all of that information that is retrieved from
+the YouTube video. And then you get this big 
+output which is basically our blog post. Now,
+I'm going to show you the blog post in a bit more 
+of a readable format in a little bit because when
+we go to the canvas, you can see that it actually 
+creates a file in GitHub. So we can actually
+preview the blog in my GitHub repository before it 
+actually goes live on the website. So I'm going to
+browse to my GitHub repository now. And you can 
+see that the autob block has had recent pushes 2
+seconds ago. So I can actually go and compare 
+the changes to see the created blog post. And
+let's go ahead and open this one here. Now this 
+is a markdown format because that's just how
+my website works. But I can just click on view 
+file and I can see the actual text content. So,
+you can indeed see that this blog post actually 
+starts out by saying that making AI agents work
+together requires 48 iterations of a single 
+prompt. And this is true. In my video, I showed
+you that it took me a long time to make multiple 
+AI agents work together for coding purposes. This
+already indicates to you without you having to 
+read this whole blog that this is an actual blog
+that's based on my expertise and my content. So, 
+it's highly valuable. And everything that you see
+in this blog from indeed the strategic file 
+ownership and role distribution to how these
+agents should communicate is something that's 
+coming from my own knowledge and my experience.
+So if people have any questions about this blog 
+article, they know that I'm the expert that can
+actually answer their questions. Now, let's see 
+how bad the output of this automation actually is
+if I don't provide this YouTube video content 
+at all and I just ask it to generate a random
+blog about coding with multiple AI agents. Now, 
+what we're going to do is we're going to add a
+manual page to my notion database. And I'm not 
+going to fill in as many details because this
+is usually what happens when people create these 
+automations. They work on the automation itself,
+but then they don't work in the input data. 
+And maybe they even let the AI model generate
+the input data for them. So what you're going to 
+get is something like this. If we talk about the
+same topic, you might have something like using 
+multiple AI agents at the same time. And then
+we have the content type blog post with the hook 
+being something like using multiple AI agents for
+vibe coding is a brilliant idea. And then we'll 
+give this a little markdown file name AI agent
+multiplication markdown. And we will just set 
+the status to processing. Now, you can see here
+that multiple columns are missing. For example, 
+we're missing the key insights, the SEO keywords,
+and the summary of the transcript because hey, 
+I'm not passing my YouTube video this time. You
+might be thinking, can I not fill in these columns 
+with an AI model that has access to web search,
+for example? Maybe. But guess what? Guess how 
+many people are actually doing the same thing
+as you? Guess how many blogs like that with 
+completely average insights are being published
+on a daily basis. If you rely on an AI for the 
+automation itself as well as the input data,
+you're going to get something that's completely 
+average. Because you have to know this about AI,
+AI models are statistical models. So 
+if you don't provide right input data,
+then the output from these models is just going 
+to be completely average. And it's not actually
+going to be anything unique that gets people to 
+be interested in the content that you produce. So
+let's just go ahead and prove that because you can 
+see here that the status is published and we can
+just check in n8n to see what the resulting block 
+is. So in n8n you can indeed see that we have a
+successful run here at the end. And I'm just 
+going to go ahead and jump straight into GitHub
+because then we can actually see what the blog 
+post looks like. So inside of GitHub I'm going
+to go back into that branch and then I'm going 
+to do a full refresh and we should see that new
+block pop up. So indeed 1 minute ago you can see 
+that a new block has been created and we're just
+going to go ahead and view that file. So now you 
+can see it actually immediately starts with like
+a super generic AI generated sentence. The concept 
+of using multiple AI agents simultaneously isn't
+just clever m dash it's transformative. This is 
+so typical. This is like a standard LinkedIn post
+that no one cares about. Be honest. If you see a 
+sentence like this, don't you already know this is
+AI written? This content is uninteresting and I'm 
+not going to read further. What's more, just look
+at how this paragraph ends. When these agents work 
+in parallel, they create a dynamic problem-solving
+ecosystem that can handle sophisticated 
+tasks far beyond what any single agent could
+accomplish alone. Really, I don't even believe 
+in that because sometimes it makes sense to use
+multiple AI agents in parallel. But for specific 
+use cases, you might just need to work with one
+AI agent to make sure that you code something 
+properly. So this already is a blog post that I
+would be super unhappy with because this does not 
+represent my expert opinion at all. This is just
+a super generic blog post that the AI system made 
+up because I did not provide the right input data.
+So the lesson of this video is that whether 
+you are creating an automation for blog posts,
+for LinkedIn reachouts or video creation, anything 
+like that, you have to remember that the input
+data is way more important than the automation 
+or the AI agent itself. And if you follow what I
+laid out in this video, then you will be a real 
+automator and not a spammer. See you next time.

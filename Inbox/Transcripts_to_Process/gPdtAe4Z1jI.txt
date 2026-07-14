@@ -1,0 +1,264 @@
+Title: Why You NEED to Learn AI Engineering (& How to Get Started)
+Source: https://youtu.be/gPdtAe4Z1jI
+Video ID: gPdtAe4Z1jI
+----
+
+Everyone's talking about AI replacing
+jobs, including myself. But here's the
+irony. AI engineering is one of the
+fastest growing, highest paying fields
+in tech. Now, I know many of you
+watching this are either cloud learners
+or IT professionals, and not necessarily
+looking to make AI your whole career or
+personality. So, let me be clear on one
+thing. Learning AI engineering doesn't
+mean you need to suddenly switch
+professions to becoming an AI engineer.
+Instead, you can think of it as a
+powerful skill [music] you can add to
+your toolkit that will pretty much make
+you invincible. Becoming an AI engineer
+at a company like AWS or Google often
+takes years. But what most people don't
+realize is that you can actually learn
+the basics of AI engineering [music]
+within just a few months. You can also
+start creating real value with it so
+that if your job ever does get impacted,
+you can use this skill for freelancing,
+working at startups, or even building
+your own AI powered SAS tool. There's
+also an increasingly popular role in the
+cloud [music] space known as the cloud
+AI engineer, which we'll talk about
+later in the video. But first, let me
+walk you through what AI engineering
+actually is, a beginner's road map you
+can follow, as well as some resources to
+get you started. Let's get into it. All
+right, so what exactly is AI
+engineering? Well, AI engineering is
+basically the process of turning ideas
+into real products with AI. This could
+be anything from developing AI models to
+building actual AI systems. AI engineers
+know a bit of everything. Machine
+learning, cloud, and software
+engineering. Instead of just playing
+around with prompts or demos, they can
+actually build end-to-end AI
+applications. For example, one AI
+engineer could be developing a
+recommendation engine that offers a
+personalized video experience, just like
+how Netflix or YouTube suggest your next
+show to binge watch. Another AI engineer
+might be integrating a large language
+model into their company's internal
+tools, helping employees generate
+reports or automate support tasks. You
+can think of a data scientist as someone
+who creates the prototype and an AI
+engineer as the one who makes it
+production ready. Every major AI feature
+you see online exists because an AI
+engineer made it happen. And for those
+of you with cloud experience, this is
+great news. There's an emerging role
+known as the cloud AI engineer, which
+combines AI engineering with cloud
+infrastructure. You'd be building and
+developing AI systems on cloud
+platforms, handling things like
+security, scalability, and
+infrastructure optimization. Even being
+a cloud professional who specializes in
+AI can open strong career opportunities.
+So speaking of career opportunities, you
+might be wondering, Lucy, why should I
+learn AI engineering and how exactly can
+it benefit me? Now, as I mentioned
+earlier, AI and machine learning roles
+are among the fastest growing in tech
+with salaries above traditional cloud
+and IT roles. In fact, according to a
+study by PWC, workers with AI skills
+receive a 56% wage premium. But beyond
+the salary, learning AI engineering
+gives you leverage. It gives you the
+ability to do more with the skills you
+already have. You can automate your
+work, speed up projects, and build tools
+that other people might need instead of
+just waiting for tools like chatbt or
+co-pilot to evolve. You'll also just
+feel a lot more confident with staying
+up to date with how AI is actually
+evolving rather than being afraid of AI
+replacing jobs. Last year, everyone was
+raving about prompt engineering and
+calling it the next big thing. But in
+2025 and beyond, being able to write
+good prompts is just going to be
+expected and not really a special skill.
+That's why companies have shifted their
+focus from prompt engineering to AI
+engineering because it goes beyond just
+using AI tools at a surface level. When
+I first started exploring AI, by the
+way, I thought it was something that
+only data scientists or software
+engineers could understand. But once I
+built my own AI powered tools, I
+realized that you don't really need to
+know everything. Every model, every
+algorithm, and so on. In fact, AI can
+actually help you learn AI. Tools like
+Chad GBT helps me a lot when I was
+troubleshooting my projects. So, yeah,
+don't let the technical side of things
+stop you. You just need to be curious
+enough to experiment. All right, if all
+that made you interested in building
+your skills in AI engineering, let me
+share with you a realistic road map you
+can follow to get started as a beginner.
+But before that, let me share with you a
+course I'd recommend if you're serious
+about breaking into AI engineering. Data
+Camp has an associate AI engineer for
+developers track, which is one of the
+most practical hands-on pathways out
+there. You'll work directly with tools
+like open AI API, hugging face, pine
+cone, and lang. You'll also learn how to
+build chat bots, sematic search, and
+recommendation engines. These are all
+what employees are actually looking for
+right now. The track covers prompt
+engineering, LLM ops, and embeddings as
+well. You'll develop rock-solid software
+engineering principles through real
+world projects so that you're not just
+watching videos, but actually building
+your portfolio. I've been using Data
+Camp for years now to upskill myself and
+to recommend to tech learners new to the
+industry. Ooh, and if you want something
+that stands out on your resume, Dedicam
+now offers an AI engineer for developers
+associate certification. It's industry
+recognized and gives you a credential
+that you can share on LinkedIn or with
+your employers. And so, if you're
+looking to start building real world
+production ready AI applications, check
+out the link in the description below to
+get started for free. Okay, so here's
+the beginner's road map I'd follow to
+learn AI engineering. Step number one is
+to learn Python and basic machine
+learning. If you're already in cloud or
+IT, you probably know one programming
+language, but now it's time to double
+down on Python. Learn how to use
+libraries like NumPy and Pandas. This
+will help you understand how data flows
+through a model. At this step, I'd also
+recommend looking into the AWS AI
+practitioner certification. I have a
+link about it in the description below.
+Step number two is to get comfortable
+with APIs and AI frameworks. Learn how
+to connect and use APIs like OpenAI and
+Hugging Face. Practice integrating them
+into small projects. For example, by
+building a chatbot or an AI powered
+tool. Step number three, learn LLM ops
+and deployment. If you already have
+cloud knowledge, this is where it comes
+in handy. Use services like AWS Lambda,
+Google Cloud Run or Azure ML to deploy
+your models. Also, learn about
+containerization with Docker and version
+control with Git. Once all that learning
+is done, step number four is to build
+projects. Create two to three small real
+world projects that combine both cloud
+and AI. I'm currently working on a cloud
+AI engineer projects course, so make
+sure you subscribe to my channel to stay
+updated for when that launches. But
+honestly, the best project you can start
+is building something that makes your
+own life easier. One idea could be
+building an automated email responder
+using Genai. And finally, step number
+five is to show your work because no
+matter how good your projects or skills
+are, no one will know about them if you
+don't put it out there. Document your
+journey on LinkedIn, push to GitHub, and
+build a portfolio of experience. Now,
+the time you need to complete these five
+steps really depends on how much time
+you can dedicate each week. If you're
+putting in around 10 to 15 hours a week,
+you can realistically go from a complete
+beginner to building your first AI
+application in about 3 to 4 months. But
+here's the better news. You don't have
+to wait months to see results or feel
+productive. In just after 2 to 3 weeks
+of learning Python basics and working
+with APIs, you can already start to
+build simple but useful AI tools like an
+automated summarizer or a basic chatbot.
+The key here is consistency over
+intensity. 30 minutes a day will get you
+further than cramming 5 hours on a
+weekend. Because with AI engineering,
+you need time to absorb these concepts,
+experiment, break things, and debug.
+Now, before we end this video, let me
+share with you the three biggest
+mistakes I see learners make when
+getting started with AI engineering.
+Mistake number one is something most of
+us have experienced, and that is
+tutorial hell. It's when you spend
+months watching courses and video
+tutorials, but never actually build
+anything. AI engineering can't be
+learned by just reading a book or
+watching a video. You'll need to open
+your terminal and sign up for tools. As
+a general rule of thumb, for every 1
+hour of learning, try to spend at least
+1 and 1/2 hours building. The second
+mistake is chasing every new AI tool and
+trend. Every week there's a new AI
+model, a new framework, or a new tool
+that everyone's talking about. And while
+it's tempting to try all of them, don't
+let that defer you from building your
+foundations because that way you'll end
+up building a surface level knowledge of
+everything and a deep knowledge of
+nothing. Instead, pick one stack and get
+really good at it. For example, master
+open AAI's API and combine it with
+Langchain. And mistake number three is
+copy and pasting code without
+understanding it. Because look, we all
+use tools like tragic and copilot to
+help us write code. But in order to
+really learn, we'll need to know why the
+code works. The goal isn't to memorize
+everything, but to understand the logic.
+All right, this brings us to the end of
+this video. Let me know in the comments
+below if you're excited to build your AI
+skills, and I'll see you in the next
+one. Bye for now.
