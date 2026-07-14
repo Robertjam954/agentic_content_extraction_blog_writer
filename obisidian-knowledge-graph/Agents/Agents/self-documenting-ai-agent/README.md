@@ -26,3 +26,5 @@ Run `git diff main` to analyze all changes made in this branch.
 - Configuration tweaks without architectural impact
 
 The ADR should help reviewers understand the architectural decisions without needing to dig through all the code changes.
+Video reference:
+https://youtu.be/CMYhZMtPI_E

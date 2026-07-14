@@ -1,0 +1,305 @@
+Title: AI Agents That Never Forget Code Changes
+Source: https://youtu.be/ohjMGnEaBxk
+Video ID: ohjMGnEaBxk
+----
+
+Everybody wants their AI agents to understand 
+their code bases fully. But as you work on your
+code and it gets more complex and you make many 
+changes, most code agents will completely lose
+their way. In this video, I'm going to solve that 
+problem for you by showing you how you can create
+a workflow that will keep your AI code agents 
+always up to date with the latest version of
+your codebase, which ensures that they actually 
+know what they're doing and will continue to make
+you more productive. So, keep watching this 
+video and you'll learn how to do this like a
+real senior engineer. To prove that this works, 
+I'm going to be implementing this workflow from
+scratch in one of my own repositories. 
+This is the repository that I use for my
+own personal blog. And in this repository, 
+I've created a claude markdown file. Now,
+Claude always looks at this when we're programming 
+together, but the thing is these markdown files
+contain potentially outdated information about the 
+repository. For example, if we check out where it
+actually knows how to store the blogs, you'll 
+see here that the blog posts seem to be located
+in source content blog. Now, let's check out if 
+that's actually true. Source content blog. Yes,
+it is. The problem is this can change over 
+time. Let's say that I or a different engineer
+changes this folder name for whatever reason into 
+something like AI engineer blog. At this point,
+the folder reference will actually be completely 
+different than what is in the Claude markdown
+file. And if you don't ask Claude to check up on 
+whether the markdown file here is still relevant
+or not, this is going to be super confusing. Go 
+ahead and ask Claude right now, where are blogs
+saved in this repo. And this is a super simple 
+example. This is not a complex repository at all.
+You will see that it will say that blog posts are 
+saved in the source content blog directory. And it
+thinks that because that is the information that's 
+in this outdated claude markdown file even though
+I just renamed this folder and Claude is not aware 
+of that. And this is already such a simple change.
+I only changed the name of a folder. Can you 
+imagine how bad your AI agent will get once
+this markdown file completely drifts from the 
+reality of your codebase? But today we're going
+to fix that by creating a GitHub action workflow 
+that we can actually run on a recurrence or even
+manually to update the claw markdown file. And 
+the way that this is going to work is that claude
+itself will actually check up on the repository 
+and see if its own markdown file is outdated in
+any way. So how am I going to approach this? Well, 
+all the relevant documentation and examples that
+I'll be sharing today will be in a comment 
+or the description down below. But for now,
+you can just sit back and watch me implement this 
+workflow from scratch. But I'm of course going to
+be using an AI tool to do that quicker. So I have 
+two documentation pieces that I'll be providing to
+Claude to help me build this workflow. We actually 
+have a Claude code action setup guide here. And
+the important part here is that for this workflow, 
+I want to actually use my Claude Pro account and
+not an API key. So I don't have to pay extra for 
+this workflow. And then I'm also going to paste
+in some information on the enthropic documentation 
+around creating GitHub actions that are powered by
+Claude code. So what I'm going to do is I'm going 
+to go ahead and copy this entire page. And I can
+do that by clicking copy page here instead of just 
+selecting the entire web page. this way I don't
+include a bunch of junk. Then in Visual Studio 
+Code, I'm just going to go ahead and start a new
+Claude session. And I'm just going to go ahead 
+and paste that documentation. And while that is
+running, I'm going to also actually copy over 
+the setup guide. So I'm just going to go ahead
+and open the raw file by clicking on RAW. Then I'm 
+just going to go ahead and copy all of that. I'm
+going to put that into Visual Studio Code as 
+well. And then I'm going to describe what I'm
+actually trying to achieve here. I want to create 
+a GitHub actions workflow that on weekly schedule
+and manual triggers will use claude code with my 
+pro subscription to review the codebase and rework
+the claw. ND file so that it is fully accurate. 
+The workflow must be carefully constructed and
+the prompt used for claude to investigate 
+the codebase must be detailed. Therefore,
+don't rush the implementation, but do it 
+by first creating an extensive to-do list.
+This is one of the powerful features of Claude 
+Code. You can ask it to create a to-do list and
+then it will just actually work out what your 
+request is step by step instead of trying to do
+everything at once. So, let's actually give this 
+a little bit more space so we can see what's going
+on. And you can see indeed that we have quite a 
+lot of to-dos. So, it's first going to check the
+current Claude markdown to actually understand 
+what the codebase is like right now and how it
+could formulate the prompt in our new workflow. 
+Super nice. Now, while Claude is thinking, I just
+wanted to let you know that this kind of AI coding 
+workflow is just a tip of the iceberg of what I
+teach in my AI native engineering community. So, 
+if you want to learn how to use AI to accelerate
+yourself, you should check us out in the link in 
+the description below. Okay, great. It seems I've
+created the workflow. And at the bottom here, you 
+can see that it wants to test the configuration,
+but I'm going to skip that for now because we're 
+going to test it manually. Let's actually have a
+look at the workflow that it created. In my case, 
+and do this in GitHub, but you can probably create
+workflows in some other CI/CD tools as well. Gilip 
+is just eases for this example. You can see here
+that we have this update cla MD YAML file and then 
+it does a couple of things. So every Monday this
+is triggered but I can also trigger it manually 
+and then I actually just has one job. It checks
+out the repository, gets the latest code, it 
+installs some NodeJS tools, probably because
+it needs that for claude code because that's a 
+NodeJSbased tool. And then it reads the prompt
+file to understand what it should be doing. And it 
+actually did create this prompt file here, claude
+markdown review prompt. Let's actually have a look 
+at that. This is quite a large prompt as well. And
+the analysis consists of a couple different steps. 
+checking the project overview, analyzing the text
+stack, maybe we added some new dependencies or a 
+new database, right? Verification of all of the
+commands because maybe we changed the way that 
+the product is built, checking out the directory
+structure, which is great. That would actually 
+solve that uh blog change that we covered just
+a couple of minutes ago. And then of course some 
+other steps included here as well. And in my case,
+this is already based on my existing project 
+which is created with Astro. in your situation,
+you know, obviously this file will look pretty 
+different because Claude will first understand
+your codebase to create this kind of review 
+prompt. So, this looks good for me. And then if
+we actually check out the workflow in more detail, 
+you'll see that it will create a new branch, which
+is important because it's going to actually change 
+that markdown file and it will need to push that
+code to my GitHub repository. Right? And now, if 
+we scroll down a little bit, you can see here that
+indeed we have the pro subscription token that 
+it will use to call claude code. And then it will
+actually paste in the review prompt context with 
+a couple of additional instructions here. Makes
+sense to me. And then there's a timeout. There's 
+a maximum amount of turns so it doesn't go off
+the rails and use up all of my pro limits, right? 
+That's good as well. And then what it does in the
+end is of course we assume here that Claude code 
+creates a modified version of the clock markdown
+file. And then at the very end you can see here 
+that that change is being added with a commit.
+And then that is being pushed and a pull request 
+will be created. so that I as the code maintainer
+can just double check it and then accept it 
+into the codebase and then together with the
+new Claude file every developer that's working on 
+my project will be able to actually use AI coding
+effectively again because the Claude file will 
+be completely up to date with the latest changes
+so in theory that sounds quite nice and let's just 
+go ahead and try out this workflow I do think this
+is going to be failing at the beginning because 
+we have not added the secret yet but let's just
+go ahead and see if the syntax is even correct 
+in the first place now I am going to actually
+revert one change here because I don't really care 
+about renaming this block file at the moment. We
+will actually be renaming this folder at the 
+end to check if the Claude mark files update
+successfully. But for now, it's totally fine if 
+we just leave it as is. And then I'm just going to
+go ahead and commit all of these workflow related 
+files and say Claude MD update workflow. Then I'm
+going to go ahead and commit that. And let's go 
+ahead and check out what now happens in GitHub.
+So in GitHub, you can now see that under actions, 
+we have this update cla documentation workflow and
+I'm going to go ahead and run this manually. Now 
+I do expect that it's going to throw an error as
+I said before because we do not actually have the 
+ooth token set up yet, but at least we know that
+the syntax will be correct. So let's go ahead and 
+see how far it gets and then check out where it
+errors out. Yep, that makes total sense. We did 
+not actually add this token yet. So let's go
+ahead and ask Claude how we're actually supposed 
+to be creating that token. So what I need to do
+is I need to run claude setup token to get my OOFF 
+token. So I'm just going to go ahead and go back
+into Visual Studio Code and generate that token 
+in Visual Studio Code. The moment that I paste
+this and I press enter, it's actually going to 
+open up a new window and I have to authorize the
+application. And at this point I will actually 
+see the secret in Visual Studio Code. But of
+course I don't want to share it with you. So 
+I'll copy it and then I'll be back with you. So,
+just to make sure you understand what I just did 
+in the background, I went to settings. Then I went
+to the action section under my secrets and then I 
+added that Olaf token under this name. Of course,
+I couldn't show you that because I don't want you 
+to use my Claude account. But now, what we can do
+is we can go back into the action and trigger 
+it again. And this time, it should work because
+we added the token. After trying it out again, I 
+still get an error related to adding this ID token
+write permission. So, I'm just going to go ahead 
+and edit this workflow manually. And you can see
+in here that this is a great example where AI 
+code is helping me along the way because it's
+creating this workflow file for me, but it's not 
+perfect and I'm going to have to fix some things
+myself. So that's no problem. I'm just going to go 
+ahead and add the permission in here. So now the
+workflow is running and we're actually getting 
+somewhere. As you can see here, it's going to
+conduct a comprehensive analysis of the codebase. 
+And as we scroll down, you will see that it
+creates a bunch of to-dos like reading the current 
+file, analyzing the project, and then seeing if
+there's any discrepancies, and then rewrite in the 
+Claude markdown file as it finishes up. Now, this
+is going to take a little while to complete, but 
+actually I didn't really change anything that it
+should check for, right? As you might remember, I 
+reverted the change of renaming the block folder.
+So, let's actually go ahead and introduce a small 
+change that we expected to pick up when we run
+this workflow. So in Visual Studio Code as a test, 
+let's see what we want to change here. I think
+that it could be a challenge to rename this folder 
+because as you saw in the very beginning, this is
+already what made Claude code trip up. So let's 
+go ahead and rename it to AI engineer block. I'm
+going to commit this. And now I expect that the 
+model is actually going to pick up on this change
+and rewrite the reference in the Claude markdown 
+file. So here we go. I'm going to say folder name
+change test because I want to revert it later 
+on of course and then I'm going to push that
+commit and then we're actually going to rerun the 
+workflow on that latest change and see if it picks
+up on it. So now you can see that it's starting 
+to actually update that Claude markdown document
+here because you can see here at blog post it 
+says it's actually located in source content AI
+engineer blog not source content blog. So, what 
+we're going to do now is wait until it's done and
+then check out the pull request that it creates. 
+So, now it's created a new pull request in a
+special branch that points to test workflow. And 
+you can see that indeed it was the GitHub actions
+bot that created this commit. Now, let's scroll 
+down and find the bit that it changed where it
+now points to the correct blog folder. Under the 
+content management header, you can now see that
+blog posts are no longer located in source content 
+blog, but actually located in source content AI
+engineer blog. Very nice. So you can see here that 
+it made that change based on the commit that we
+created as a test before. Of course, it's changed 
+much more than that, but you will see that as you
+iterate on this, it will become more stable over 
+time and only include the actual relevant changes
+that your engineering team made. And you can run 
+this every day, every week, maybe just manually
+when you think it's necessary, depending on how 
+often you make changes to your codebase. So now
+I am in that special little branch and I'm going 
+to go ahead and ask the same question I did at
+the beginning of the video. Where are our blogs 
+saved? And now you will see that without actually
+checking out the code repository, it will actually 
+immediately respond with saying that they're saved
+in source content AI engineer blog, which is 
+absolutely correct. So this is really powerful.
+You can see here how we created this little proof 
+of concept in 15 minutes, but if you iterate on
+this for a couple of hours, this strategy is ready 
+even for code bases at an enterprise level. If you
+want to learn more real AI coding strategies 
+like this, then you should definitely check
+out my AI native engineer community in the link 
+in the description below. And I hope to see you

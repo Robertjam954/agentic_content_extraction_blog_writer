@@ -1,0 +1,14 @@
+---
+source_url: https://learn.zerotocloud.co/p/learning-path-cloud-ai-ml-engineer
+title: "Learning Path: Cloud AI / ML Engineer"
+price: "$299"
+scraped: 2026-07-13
+type: course_overview
+source: zerotocloud
+---
+
+# Learning Path: Cloud AI / ML Engineer
+
+## Overview
+
+Learning Path: Cloud AI/ML Engineer Launch your career as a Cloud AI/ML Engineer with this comprehensive learning path. Master real AWS projects and get certified with our learning courses. Enroll Now for $299 Bundle Contents Study Notes: AWS Certified Cloud Practitioner Lucy Wang % COMPLETE $39 5 Intermediate AWS Cloud Projects: Complete Step-by-step Guide Lucy Wang % COMPLETE $69 AWS Interview Mastery: Get Hired in the Cloud Lucy Wang % COMPLETE $129 Study Notes: AWS Certified AI Practitioner Lucy Wang % COMPLETE $39 5 Beginner AWS Cloud Projects: Complete Step-by-step Guide Lucy Wang % COMPLETE $69 AWS Cloud Practitioner Practice Tests AWS Certified Cloud Practitioner Practice exams to test your knowledge and exam readiness Lucy Wang % COMPLETE $29 AWS AI Practitioner Practice Tests Lucy Wang % COMPLETE $29 Ready To Start Learning? Enroll Now © Tech With Lucy 2026 Terms of Use Privacy Policy
