@@ -27,6 +27,7 @@ urlFragment: agentic-content-extraction-blog-writer
   - [Pricing considerations](#pricing-considerations)
   - [Run instructions](#run-instructions)
   - [Verifying the run](#verifying-the-run)
+- [Automated self-documentation](#automated-self-documentation)
 - [Supporting documentation](#supporting-documentation)
   - [Resource links](#resource-links)
   - [Licensing](#licensing)
@@ -236,6 +237,14 @@ A successful run means files appear in the matching `Inbox/` subfolder:
 
 Each script prints a per-item OK/SKIP/FAIL line. Do not hand-edit anything
 under `Inbox/`; it is raw input for the (target) processing agents.
+
+## Automated self-documentation
+
+This repository keeps its own documentation current on a fixed loop:
+
+- End of every working session: CLAUDE.md, this README, `requirements.txt`, and any affected prep docs are updated to match reality.
+- Every Monday at 09:00 UTC: the GitHub Actions workflow [`update-claude-md.yml`](.github/workflows/update-claude-md.yml) runs Claude Code with the prompt in [`claude-md-review-prompt.md`](.github/workflows/claude-md-review-prompt.md). It verifies CLAUDE.md and this README against the code, checks `requirements.txt` against actual imports, regenerates the prioritized [TODO.md](TODO.md), and opens a pull request with any corrections. It can also be triggered manually from the Actions tab.
+- The workflow requires the `CLAUDE_CODE_OAUTH_TOKEN` repository secret (generate with `claude setup-token`).
 
 ## Supporting documentation
 
