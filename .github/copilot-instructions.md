@@ -14,6 +14,11 @@ Always ground your work in these documents:
   knowledge graph, the four agents), data flow, and the module map.
 - [Contributing guidelines](../CONTRIBUTING.md): the module workflow (watch video ->
   plan -> implement -> validate), setup, testing, and authoring conventions.
+- [Claude Code operating manual](../CLAUDE.md): repository layout, the ingestion
+  scripts, the Inbox pipeline, GitHub automations, gotchas, and the
+  self-documentation protocol.
+- [Agent roster](../AGENTS.md): purpose, inputs, outputs, and brief locations for
+  the agents specified under `obisidian-knowledge-graph/Agents/Agents/`.
 
 ## Working rules
 
