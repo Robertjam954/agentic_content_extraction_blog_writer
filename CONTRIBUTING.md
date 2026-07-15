@@ -26,6 +26,9 @@ mixing.
 ## Setup
 
 - Clone the repository.
+- Install the ingestion scripts' third-party dependencies:
+  `pip install -r requirements.txt` (currently only `youtube-transcript-api`,
+  used by `scripts/fetch_transcripts.py`).
 - Install the tooling a module actually needs, when you reach it - the stack is
   decided per module, so do not pre-install everything. Common dependencies from the
   reference assets: an AI agent runtime (Claude Code or the Claude Agent SDK),

@@ -179,8 +179,8 @@ Target (specified, not yet produced in this repo):
 - Python 3. The scripts are stdlib-first CLIs that resolve the repo root from
   their own path, so they run from anywhere.
 - `youtube-transcript-api` (v1.x) for `fetch_transcripts.py` - the only
-  third-party dependency; there is no requirements.txt yet, so install it
-  manually: `pip install youtube-transcript-api`.
+  third-party dependency, pinned in `requirements.txt` at the repo root:
+  `pip install -r requirements.txt`.
 - `curl` on PATH - `fetch_transcripts.py` and `scrape_courses.py` shell out to
   curl as a TLS-interception workaround.
 - For `extract_skills.py` only: a populated local `.claude/skills/` cache
@@ -189,7 +189,8 @@ Target (specified, not yet produced in this repo):
 
 ### Tools and libraries used
 
-- Python 3 standard library plus `youtube-transcript-api`.
+- Python 3 standard library plus `youtube-transcript-api` (pinned in
+  `requirements.txt`).
 - Markdown/YAML for all specs, notes, and frontmatter.
 - GitHub Actions running `anthropics/claude-code-action` for the weekly
   documentation workflow.

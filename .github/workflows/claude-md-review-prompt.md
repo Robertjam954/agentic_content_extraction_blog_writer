@@ -46,7 +46,10 @@ against reference specs (see PRODUCT.md and ARCHITECTURE.md). Key locations:
 2. **Tech stack and versions** - verify frameworks and versions against dependency
    manifests (pyproject.toml, requirements*.txt, package.json, lockfiles, config
    files). Remove technologies listed but not actually used; add ones used but
-   undocumented.
+   undocumented. Also verify `requirements.txt` at the repo root against the
+   actual third-party imports in `scripts/*.py` (textual comparison only - never
+   run pip or any install command); update it if a script gains or loses a
+   third-party dependency.
 3. **Commands** - verify every documented command exists and is correct (scripts,
    Makefiles, package.json scripts, CLI entrypoints). Add missing commonly-used
    commands.

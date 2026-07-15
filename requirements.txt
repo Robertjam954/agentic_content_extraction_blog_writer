@@ -1,0 +1,2 @@
+# Third-party dependencies for scripts/ (only fetch_transcripts.py needs one; the other scripts are stdlib + curl).
+youtube-transcript-api>=1.0,<2

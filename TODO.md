@@ -9,7 +9,6 @@ current state of the codebase.
 - [ ] README.md is a stale 2-line stub from the upstream prompts collection; rewrite it to describe this build (link PRODUCT.md, ARCHITECTURE.md, CLAUDE.md).
 - [ ] claude.yml sits at the repo root, so the @claude responder never runs; move it to .github/workflows/claude.yml (requires the ANTHROPIC_API_KEY repository secret).
 - [ ] Add the CLAUDE_CODE_OAUTH_TOKEN repository secret and trigger .github/workflows/update-claude-md.yml via workflow_dispatch to confirm the Monday pass works end to end.
-- [ ] scripts/fetch_transcripts.py imports youtube-transcript-api but the repo has no requirements.txt; add one (single pin) and reference it in CONTRIBUTING.md setup.
 
 ## P2 - In-flight and target work
 
@@ -33,3 +32,4 @@ current state of the codebase.
 ## Done since last week
 
 - Initial TODO.md; no previous week to reconcile.
+- Added requirements.txt (youtube-transcript-api pin), referenced it in CONTRIBUTING.md setup and README.md pre-requisites, and wired it into the weekly verification workflow.

@@ -40,6 +40,7 @@ casually.
 agentic_content_extraction_blog_writer/
 ├── README.md                        # Solution-accelerator-style README (front-matter, features, architecture, run)
 ├── PRODUCT.md ARCHITECTURE.md CONTRIBUTING.md CLAUDE.md AGENTS.md TODO.md
+├── requirements.txt                 # Third-party deps for scripts/ (youtube-transcript-api only)
 ├── context-engineering-workflow.md  # Module 1 reference: VS Code context engineering guide
 ├── custom-automations.md            # Reference doc: claude-code-action automation examples
 ├── claude.yml                       # @claude responder workflow file (at root; see section 5)
@@ -91,7 +92,8 @@ Each exits 1 if any item failed, 0 otherwise.
 - **Run:** `python3 scripts/fetch_transcripts.py URL_OR_ID [...]` or
   `python3 scripts/fetch_transcripts.py --file urls.txt`
 - **Requires:** `youtube-transcript-api` (v1.x) - the only third-party dependency
-  in the repo; there is no requirements.txt yet.
+  in the repo, pinned in `requirements.txt` at the root
+  (`pip install -r requirements.txt`).
 
 ### scripts/scrape_courses.py
 
@@ -189,9 +191,9 @@ it is raw input for the agents.
   on a fresh clone it will report FAIL for every skill until skills are installed.
 - **`scrape_courses.py` and `fetch_transcripts.py` shell out to curl** as a TLS
   workaround; behavior may differ on machines without curl.
-- **No requirements.txt / no tests** - the only third-party dependency is
-  `youtube-transcript-api`; install it manually before running
-  `fetch_transcripts.py`.
+- **No tests** - the scripts have no test suite. The only third-party dependency
+  is `youtube-transcript-api`, pinned in `requirements.txt`; run
+  `pip install -r requirements.txt` before `fetch_transcripts.py`.
 - **The vault itself is not in this repo.** Only `Inbox/` exists; `Resources/`,
   `Projects/`, `Areas/`, `Archives/` are described by the specs but not yet
   created (target).
@@ -203,8 +205,9 @@ This repository is self-documenting. Two mechanisms keep the docs honest:
 1. **End of every session:** before finishing any working session that changed
    code, commands, dependencies, structure, or conventions, update CLAUDE.md (and
    the affected prep docs: README.md, PRODUCT.md, ARCHITECTURE.md, CONTRIBUTING.md,
-   AGENTS.md) so they match reality. Reality wins over stale documentation. This
-   applies to human and agent sessions alike.
+   AGENTS.md) and `requirements.txt` (keep the dependency manifest in sync with the
+   actual third-party imports in `scripts/`) so they match reality. Reality wins
+   over stale documentation. This applies to human and agent sessions alike.
 2. **Every Monday:** the `.github/workflows/update-claude-md.yml` workflow runs an
    automated verification pass (09:00 UTC). It re-analyzes the codebase, corrects
    any drift in CLAUDE.md and README.md that session updates missed, regenerates
