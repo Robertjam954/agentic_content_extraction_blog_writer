@@ -67,6 +67,21 @@ against reference specs (see PRODUCT.md and ARCHITECTURE.md). Key locations:
 - Be thorough but concise - every line should provide value.
 - If the file is already accurate, make NO edits to it.
 
+### README.md verification
+
+Verify README.md the same way as CLAUDE.md and fix any drift:
+
+- Front-matter accuracy (name, description, `languages`, `page_type`,
+  `urlFragment`).
+- Key features: each listed script/agent exists, does what is claimed, and
+  produces the stated output paths; implemented vs (target) labels are correct.
+- The ASCII architecture diagram and Outputs section match the real components,
+  data flow, and artifact paths.
+- Run commands are real and correct; pre-requisites and dependency notes match
+  the code.
+- Maintain the current structure; if the file is already accurate, make NO
+  edits to it.
+
 ## Part 2: TODO.md generation
 
 Regenerate `TODO.md` at the repository root. Overwrite the previous week's file
