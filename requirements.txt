@@ -1,0 +1,21 @@
+# DO NOT EDIT BY HAND. This is the installable lockfile.
+#
+# It is regenerated weekly by .github/workflows/weekly-maintenance.yml, which runs
+# `pip-compile --upgrade requirements.in` and opens a PR with the refreshed pins.
+# To change dependencies, edit requirements.in and let the workflow (or a local
+# `pip-compile` run) rebuild this file.
+#
+# Until the first weekly run pins exact versions, this mirrors requirements.in and is
+# still installable with `pip install -r requirements.txt`.
+
+# --- Ingestion scripts (Module 2): scripts/fetch_transcripts.py ---
+youtube-transcript-api>=1.0
+
+# --- RAG index over notes and docs (rag/) ---
+chromadb
+
+# --- Content writing agent (writer/) ---
+anthropic
+
+# --- Notion review output (notion_review/) ---
+notion-client

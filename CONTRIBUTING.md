@@ -33,9 +33,32 @@ mixing.
   playbooks.
 - Note import reuses `/Users/robertjames/loc/repos/obsidian-importer` (an Obsidian
   plugin; Node.js + pnpm) as a reference or dependency for the ingestion stage.
-- The documentation-automation workflow runs in GitHub Actions on Node.js 20 and uses
+- The documentation-automation workflow (Module 4, not yet installed - see Weekly
+  maintenance below) runs in GitHub Actions on Node.js 20 and uses
   `anthropics/claude-code-action`. It expects a `CLAUDE_CODE_OAUTH_TOKEN` (or
   `ANTHROPIC_API_KEY`) repository secret.
+- Python dependencies live in `requirements.in` (the hand-edited source) and
+  `requirements.txt` (the pinned, installable lockfile). Add or remove packages in
+  `requirements.in`, then run `pip-compile` to rebuild `requirements.txt`; install with
+  `pip install -r requirements.txt`.
+
+## Weekly maintenance
+
+One scheduled GitHub Action is installed today. It runs every Monday at 09:00 UTC and
+opens a pull request rather than committing to `main`:
+
+- **Dependencies:** `.github/workflows/weekly-maintenance.yml` runs
+  `pip-compile --upgrade` to refresh the pins in `requirements.txt`. It can also be
+  triggered manually via `workflow_dispatch`.
+
+A second workflow, `update-claude-md.yml` (refreshes `CLAUDE.md` from the current
+codebase on the same cadence), exists only as the Module 4 reference in
+`claude-md-memory-workflow/` and is **not yet installed**. Installing it means copying
+it and its prompt file (`claude-md-review-prompt.md`) into `.github/workflows/`,
+adding the `CLAUDE_CODE_OAUTH_TOKEN` (or `ANTHROPIC_API_KEY`) secret, and creating an
+initial `CLAUDE.md` for it to maintain - none of which has been done yet.
+
+Review each maintenance PR before merging.
 
 ## How to run and test
 
@@ -43,8 +66,10 @@ Validation is per stage; there is no single global test suite yet. As each stage
 built, add the checks that fit its implementation, and always validate behavior end
 to end on a small sample:
 
-- **Ingestion:** run against one or two real video URLs and a sample note export;
-  confirm transcripts land in `Inbox/` and imported notes are valid Markdown.
+- **Ingestion (built):** run the scripts in `scripts/` against one or two real inputs
+  (for example `python3 scripts/fetch_transcripts.py <video URL>`); confirm outputs
+  land in the right `Inbox/` subfolder as valid Markdown or headered text, and that
+  re-running skips what is already there.
 - **Transcript processing agent:** run on a sample transcript and confirm the output
   follows the fixed scaffold with quoted receipts and resolvable block IDs.
 - **Vault connectivity agent:** run on a sample vault and confirm it follows its

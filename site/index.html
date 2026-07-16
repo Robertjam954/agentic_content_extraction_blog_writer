@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agentic Content Pipeline - knowledge graph to blog posts</title>
+<meta name="description" content="A multi-agent pipeline that turns YouTube transcripts and notes into a connected Obsidian knowledge graph, then drafts concept-first blog posts. Local-first RAG, built in Python with Claude." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0E1220; --ink-2:#141A2B; --panel:#171E31; --line:#232C48;
+    --fg:#E9EBF4; --muted:#8B93B2; --dim:#5C647F;
+    --accent:#F2C14E; --accent-ink:#3A2E10;
+    --violet:#9B8CFF; --violet-dim:#4B4680;
+    --r:14px; --maxw:1080px;
+    --f-display:"Space Grotesk",system-ui,sans-serif;
+    --f-body:"Inter",system-ui,sans-serif;
+    --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--ink); color:var(--fg);
+    font-family:var(--f-body); font-size:17px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:44px 44px; background-position:center top;
+  }
+  body::before{ /* fade the grid so it reads as a whisper */
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:radial-gradient(120% 90% at 50% -10%,transparent 30%,var(--ink) 82%);
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px; position:relative; z-index:1}
+  a{color:inherit}
+  h1,h2,h3{font-family:var(--f-display); font-weight:600; letter-spacing:-.02em; line-height:1.08; margin:0}
+  .mono{font-family:var(--f-mono)}
+  .eyebrow{font-family:var(--f-mono); font-size:12.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent)}
+
+  /* ---- top bar ---- */
+  .topbar{display:flex; align-items:center; justify-content:space-between; padding:20px 0; position:relative; z-index:2}
+  .brand{display:flex; align-items:center; gap:10px; font-family:var(--f-mono); font-size:14px; letter-spacing:.02em}
+  .brand .diamond{width:12px; height:12px; background:var(--violet); transform:rotate(45deg); box-shadow:0 0 14px var(--violet-dim)}
+  .toplink{font-family:var(--f-mono); font-size:13px; color:var(--muted); text-decoration:none; padding:8px 14px; border:1px solid var(--line); border-radius:999px; transition:.2s}
+  .toplink:hover{color:var(--fg); border-color:var(--violet-dim)}
+
+  /* ---- hero ---- */
+  .hero{padding:56px 0 24px}
+  .hero h1{font-size:clamp(34px,6.2vw,64px); max-width:16ch}
+  .hero h1 .lk{color:var(--violet)}
+  .lede{margin:22px 0 0; max-width:56ch; color:#C7CCDE; font-size:clamp(17px,2.3vw,20px)}
+  .cta-row{display:flex; flex-wrap:wrap; gap:12px; margin-top:30px}
+  .btn{font-family:var(--f-mono); font-size:14px; text-decoration:none; padding:13px 20px; border-radius:10px; display:inline-flex; align-items:center; gap:9px; transition:.2s; border:1px solid transparent}
+  .btn-primary{background:var(--accent); color:#20180a; font-weight:600}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 30px -12px var(--accent)}
+  .btn-ghost{border-color:var(--line); color:var(--fg)}
+  .btn-ghost:hover{border-color:var(--violet-dim); background:#ffffff08}
+
+  /* ---- pipeline graph (signature) ---- */
+  .graph{margin:52px 0 8px; padding:26px 8px 14px; border:1px solid var(--line); border-radius:var(--r); background:linear-gradient(180deg,#12182908,#0c101c66); overflow:hidden}
+  .graph svg{display:block; width:100%; height:auto}
+  .edge{stroke:var(--line); stroke-width:2}
+  .edge-flow{stroke:var(--accent); stroke-width:2; stroke-dasharray:5 11; opacity:.9; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-32}}
+  .node{fill:var(--ink-2); stroke:var(--violet); stroke-width:1.5}
+  .node-dot{fill:var(--violet)}
+  .pulse{fill:var(--accent); filter:drop-shadow(0 0 6px var(--accent))}
+  .g-label{font-family:var(--f-mono); font-size:15px; fill:var(--fg)}
+  .g-sub{font-family:var(--f-mono); font-size:11.5px; fill:var(--muted); letter-spacing:.04em}
+  .g-move{animation:travel 5.2s linear infinite}
+  @keyframes travel{from{transform:translateX(0)}to{transform:translateX(816px)}}
+
+  /* ---- sections ---- */
+  section{padding:64px 0; position:relative; z-index:1}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:34px; flex-wrap:wrap}
+  .sec-head h2{font-size:clamp(24px,3.6vw,34px)}
+  .sec-head .eyebrow{margin-bottom:0}
+
+  /* pipeline steps */
+  .steps{display:grid; gap:2px; border:1px solid var(--line); border-radius:var(--r); overflow:hidden; background:var(--line)}
+  .step{display:grid; grid-template-columns:64px 1fr; gap:22px; padding:26px 24px; background:var(--ink); align-items:start}
+  .step .num{font-family:var(--f-mono); font-size:14px; color:var(--accent); padding-top:4px}
+  .step h3{font-size:19px; margin-bottom:6px}
+  .step p{margin:0; color:var(--muted); font-size:15.5px; max-width:64ch}
+  .step .tag{font-family:var(--f-mono); font-size:12px; color:var(--violet); margin-top:9px; display:inline-block}
+
+  /* two-panel retrieval */
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .card{border:1px solid var(--line); border-radius:var(--r); padding:26px; background:linear-gradient(180deg,#161d3033,transparent)}
+  .card h3{font-size:18px; margin-bottom:8px}
+  .card .kicker{font-family:var(--f-mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:14px}
+  .card p{margin:0; color:var(--muted); font-size:15px}
+  .card code{font-family:var(--f-mono); font-size:13px; color:var(--fg); background:#ffffff0d; padding:2px 6px; border-radius:5px}
+
+  /* stack */
+  .stack{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px}
+  .stack .group h3{font-family:var(--f-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:500; margin-bottom:12px}
+  .chips{display:flex; flex-wrap:wrap; gap:8px}
+  .chip{font-family:var(--f-mono); font-size:13px; padding:7px 12px; border:1px solid var(--line); border-radius:8px; color:#D4D8E8}
+
+  /* status */
+  .status{display:grid; gap:2px; border:1px solid var(--line); border-radius:var(--r); overflow:hidden; background:var(--line)}
+  .row{display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center; padding:16px 22px; background:var(--ink)}
+  .row .what{font-size:15.5px}
+  .row .what small{display:block; color:var(--muted); font-family:var(--f-mono); font-size:12px; margin-top:2px}
+  .pill{font-family:var(--f-mono); font-size:11.5px; letter-spacing:.05em; text-transform:uppercase; padding:5px 11px; border-radius:999px; white-space:nowrap}
+  .pill.built{color:#8FE3B0; background:#8fe3b016; border:1px solid #8fe3b033}
+  .pill.partial{color:var(--accent); background:#f2c14e14; border:1px solid #f2c14e33}
+  .pill.spec{color:var(--muted); background:#8b93b214; border:1px solid var(--line)}
+
+  /* demo */
+  .demo{border:1px dashed var(--violet-dim); border-radius:var(--r); padding:44px 28px; text-align:center; background:#9b8cff08}
+  .demo .frame{font-family:var(--f-mono); color:var(--muted); font-size:14px}
+  .demo p{color:var(--muted); margin:12px auto 0; max-width:52ch; font-size:14.5px}
+
+  footer{border-top:1px solid var(--line); padding:38px 0 56px; position:relative; z-index:1}
+  .foot{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:center}
+  .foot .mono{font-size:13px; color:var(--muted)}
+  .foot a{color:var(--violet); text-decoration:none}
+
+  /* reveal */
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1; transform:none}
+
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:4px}
+
+  @media (max-width:720px){
+    body{font-size:16px}
+    .step{grid-template-columns:44px 1fr; gap:14px; padding:22px 18px}
+    .grid2{grid-template-columns:1fr}
+    .hero{padding:36px 0 12px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .edge-flow{animation:none; stroke-dasharray:0}
+    .g-move{animation:none}
+    .reveal{opacity:1; transform:none; transition:none}
+    .btn-primary:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand"><span class="diamond" aria-hidden="true"></span> content-pipeline</div>
+    <a class="toplink" href="https://github.com/Robertjam954/agentic_content_extraction_blog_writer">View source ↗</a>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow reveal">Multi-agent · Local-first RAG · Python + Claude</p>
+    <h1 class="reveal">Watched videos and scattered notes become a <span class="lk">[[connected]]</span> knowledge graph - and finished blog posts.</h1>
+    <p class="lede reveal">A pipeline of specialized agents extracts the durable ideas from transcripts and notes once, links them into an Obsidian graph, and reuses that graph to draft concept-first posts. Retrieval runs on your own machine; nothing is re-keyed by hand.</p>
+    <div class="cta-row reveal">
+      <a class="btn btn-primary" href="https://github.com/Robertjam954/agentic_content_extraction_blog_writer">Read the code</a>
+      <a class="btn btn-ghost" href="#pipeline">See how it works ↓</a>
+    </div>
+
+    <div class="graph reveal" role="img" aria-label="Pipeline: Ingest, Extract, Connect, Retrieve, Write - data flows left to right through five agent stages.">
+      <svg viewBox="0 0 900 168" preserveAspectRatio="xMidYMid meet">
+        <line class="edge" x1="70" y1="70" x2="830" y2="70"/>
+        <line class="edge-flow" x1="70" y1="70" x2="830" y2="70"/>
+        <!-- nodes -->
+        <g>
+          <circle class="node" cx="70"  cy="70" r="13"/><circle class="node-dot" cx="70"  cy="70" r="5"/>
+          <circle class="node" cx="260" cy="70" r="13"/><circle class="node-dot" cx="260" cy="70" r="5"/>
+          <circle class="node" cx="450" cy="70" r="13"/><circle class="node-dot" cx="450" cy="70" r="5"/>
+          <circle class="node" cx="640" cy="70" r="13"/><circle class="node-dot" cx="640" cy="70" r="5"/>
+          <circle class="node" cx="830" cy="70" r="13"/><circle class="node-dot" cx="830" cy="70" r="5"/>
+        </g>
+        <circle class="pulse g-move" cx="70" cy="70" r="4.5"/>
+        <!-- labels -->
+        <g text-anchor="middle">
+          <text class="g-label" x="70"  y="112">Ingest</text><text class="g-sub" x="70"  y="130">transcripts</text>
+          <text class="g-label" x="260" y="112">Extract</text><text class="g-sub" x="260" y="130">notes</text>
+          <text class="g-label" x="450" y="112">Connect</text><text class="g-sub" x="450" y="130">graph</text>
+          <text class="g-label" x="640" y="112">Retrieve</text><text class="g-sub" x="640" y="130">chunks</text>
+          <text class="g-label" x="830" y="112">Write</text><text class="g-sub" x="830" y="130">post</text>
+        </g>
+      </svg>
+    </div>
+  </header>
+
+  <section id="pipeline">
+    <div class="sec-head reveal"><span class="eyebrow">The pipeline</span><h2>Five stages, each its own agent</h2></div>
+    <div class="steps">
+      <div class="step reveal"><div class="num">01</div><div>
+        <h3>Ingest the sources</h3>
+        <p>Python scripts pull YouTube transcripts by URL or ID, scrape course pages, and convert local knowledge into Markdown - each landing in an inbox, skipping anything already there.</p>
+        <span class="tag">youtube-transcript-api · stdlib scrapers</span>
+      </div></div>
+      <div class="step reveal"><div class="num">02</div><div>
+        <h3>Extract structured notes</h3>
+        <p>A transcript-processing agent turns each raw transcript into a reusable note: the core thesis, key insights with quoted receipts, workflow recipes, and block IDs that link back to the exact moment.</p>
+        <span class="tag">agent brief · fixed note scaffold</span>
+      </div></div>
+      <div class="step reveal"><div class="num">03</div><div>
+        <h3>Connect the knowledge graph</h3>
+        <p>A vault-connectivity agent audits the whole vault for weak links, creates missing concept and hub nodes, merges duplicates, and enforces two-way wikilinks - so ideas surface where they are needed.</p>
+        <span class="tag">Obsidian · wikilinks · block refs</span>
+      </div></div>
+      <div class="step reveal"><div class="num">04</div><div>
+        <h3>Retrieve by meaning</h3>
+        <p>Two retrieval tiers over the same notes: a lightweight ChromaDB index the writer calls in code, and a local hybrid-search server (keyword + vectors + reranking) that Claude Code queries directly.</p>
+        <span class="tag">ChromaDB · fastembed · BM25 + reranker</span>
+      </div></div>
+      <div class="step reveal"><div class="num">05</div><div>
+        <h3>Write the post</h3>
+        <p>The writing agent assembles a content object from what it retrieved and drafts a concept-first, ~700-word post - no code, valid frontmatter, and a call-to-action back to the source video.</p>
+        <span class="tag">Claude · strict output rules</span>
+      </div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head reveal"><span class="eyebrow">Retrieval</span><h2>Two tiers, one vault</h2></div>
+    <div class="grid2">
+      <div class="card reveal">
+        <div class="kicker">Programmatic</div>
+        <h3>rag/ - the writer's index</h3>
+        <p>A persistent ChromaDB collection with local, offline embeddings. <code>python -m rag index</code> embeds every note and doc; the writing agent calls <code>rag.search()</code> to ground each draft. No API key, nothing leaves the machine.</p>
+      </div>
+      <div class="card reveal">
+        <div class="kicker">Interactive</div>
+        <h3>knowledge-rag - hybrid search in the editor</h3>
+        <p>A local MCP server pairs BM25 keyword search with vector embeddings and cross-encoder reranking. Claude Code queries the same vault natively with <code>search_knowledge()</code> - reranked, and fully local.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head reveal"><span class="eyebrow">Stack</span><h2>Built to be inspectable</h2></div>
+    <div class="stack">
+      <div class="group reveal"><h3>Agents</h3><div class="chips"><span class="chip">Claude (Sonnet)</span><span class="chip">Structured briefs</span></div></div>
+      <div class="group reveal"><h3>Retrieval</h3><div class="chips"><span class="chip">ChromaDB</span><span class="chip">fastembed / ONNX</span><span class="chip">BM25 + reranker</span></div></div>
+      <div class="group reveal"><h3>Knowledge</h3><div class="chips"><span class="chip">Obsidian</span><span class="chip">Wikilinks + block IDs</span></div></div>
+      <div class="group reveal"><h3>Ingestion</h3><div class="chips"><span class="chip">Python 3</span><span class="chip">youtube-transcript-api</span></div></div>
+      <div class="group reveal"><h3>Ops</h3><div class="chips"><span class="chip">GitHub Actions</span><span class="chip">MCP</span><span class="chip">pip-tools</span></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head reveal"><span class="eyebrow">Honest status</span><h2>What runs today</h2></div>
+    <div class="status">
+      <div class="row reveal"><div class="what">Ingestion scripts<small>transcripts · skills · course pages</small></div><span class="pill built">Built</span></div>
+      <div class="row reveal"><div class="what">RAG index + search<small>rag/ · ChromaDB · verified on 449 chunks</small></div><span class="pill built">Built</span></div>
+      <div class="row reveal"><div class="what">Summary / writing agent<small>writer/ · retrieval verified, live draft needs a key</small></div><span class="pill partial">Partial</span></div>
+      <div class="row reveal"><div class="what">Obsidian hybrid RAG for Claude<small>knowledge-rag · installed + indexed (95 files); MCP registration left</small></div><span class="pill built">Built</span></div>
+      <div class="row reveal"><div class="what">Notion review output<small>notion_review/ · payload verified offline</small></div><span class="pill partial">Partial</span></div>
+      <div class="row reveal"><div class="what">Processing + connectivity agents<small>briefs are the spec</small></div><span class="pill spec">Spec</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head reveal"><span class="eyebrow">Demo</span><h2>See it end to end</h2></div>
+    <div class="demo reveal">
+      <div class="frame">[ screencast slot ]</div>
+      <p>A short walkthrough - a topic in, retrieval and a drafted post out - is dropping here soon.</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <span class="mono">Agentic Content Pipeline - an AI engineering project</span>
+    <span class="mono">Built with Python, ChromaDB &amp; Claude · <a href="https://github.com/Robertjam954/agentic_content_extraction_blog_writer">source ↗</a></span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = document.querySelectorAll('.reveal');
+    if (reduce || !('IntersectionObserver' in window)) { els.forEach(function(e){e.classList.add('in');}); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    },{threshold:.12, rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(e){ io.observe(e); });
+  })();
+</script>
+</body>
+</html>
