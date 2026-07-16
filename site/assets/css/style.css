@@ -1,0 +1,132 @@
+:root {
+  --bg: #fdfcf9;
+  --text: #22252a;
+  --muted: #6b7280;
+  --accent: #0e7c66;
+  --border: #e5e2da;
+  --code-bg: #f2f0ea;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16181d;
+    --text: #e6e4de;
+    --muted: #9aa0aa;
+    --accent: #4cc2a7;
+    --border: #2b2f36;
+    --code-bg: #22252c;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.65;
+  font-size: 1.05rem;
+}
+
+.site-header,
+.content,
+.site-footer {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-header nav a {
+  margin-left: 1rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 0.9rem;
+}
+
+.site-header nav a:hover { color: var(--accent); }
+
+a { color: var(--accent); }
+
+.content { padding-top: 2rem; padding-bottom: 3rem; min-height: 60vh; }
+
+h1, h2, h3 { line-height: 1.25; }
+
+.post-list { list-style: none; padding: 0; }
+
+.post-list li { margin-bottom: 1.5rem; }
+
+.post-list time {
+  color: var(--muted);
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 0.85rem;
+  margin-right: 0.75rem;
+}
+
+.post-excerpt { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.95rem; }
+
+.post-meta { color: var(--muted); font-size: 0.9rem; }
+
+.tag {
+  display: inline-block;
+  background: var(--code-bg);
+  border-radius: 3px;
+  padding: 0 0.4rem;
+  margin-right: 0.3rem;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 0.8rem;
+}
+
+.post-source {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+pre, code {
+  font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--code-bg);
+  border-radius: 4px;
+}
+
+code { padding: 0.1em 0.3em; }
+
+pre { padding: 1rem; overflow-x: auto; }
+
+pre code { padding: 0; background: none; }
+
+blockquote {
+  margin: 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
