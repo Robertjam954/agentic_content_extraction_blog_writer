@@ -54,9 +54,10 @@ opens a pull request rather than committing to `main`:
 A second workflow, `update-claude-md.yml` (refreshes `CLAUDE.md` from the current
 codebase on the same cadence), exists only as the Module 4 reference in
 `claude-md-memory-workflow/` and is **not yet installed**. Installing it means copying
-it and its prompt file (`claude-md-review-prompt.md`) into `.github/workflows/`,
-adding the `CLAUDE_CODE_OAUTH_TOKEN` (or `ANTHROPIC_API_KEY`) secret, and creating an
-initial `CLAUDE.md` for it to maintain - none of which has been done yet.
+it and its prompt file (`claude-md-review-prompt.md`) into `.github/workflows/` and
+adding the `CLAUDE_CODE_OAUTH_TOKEN` (or `ANTHROPIC_API_KEY`) secret. The initial
+`CLAUDE.md` it would maintain now exists at the repo root; the workflow install has
+not been done yet.
 
 Review each maintenance PR before merging.
 
