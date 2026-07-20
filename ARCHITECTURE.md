@@ -165,8 +165,8 @@ watch before implementing, and each module records its own concrete tooling deci
 | --- | --- | --- | --- |
 | 1. Context engineering | `context-engineering-workflow.md` | This doc set, the instructions file, and the plan-then-implement workflow | Built |
 | 2. Knowledge graph extraction | `obisidian-knowledge-graph/`, `scripts/` | Ingestion + transcript processing + vault connectivity agents | Partially built - ingestion scripts done, agents spec-only |
-| 3. Blog generation | `notion-db-to-technical-blog/` | Content writing agent and the content-object contract | Spec only |
-| 4. Documentation automation | `claude-md-memory-workflow/` | Self-documenting agent + scheduled CLAUDE.md workflow | Spec only (workflow not installed) |
+| 3. Blog generation | `notion-db-to-technical-blog/`, `writer/`, `rag/`, `notion_review/` | Content writing agent and the content-object contract | Partially built - retrieval, content-object assembly, Claude drafting, and Notion review card run (live calls need API keys) |
+| 4. Documentation automation | `claude-md-memory-workflow/` | Self-documenting agent + scheduled CLAUDE.md workflow | Partially built - initial `CLAUDE.md` exists; the scheduled workflow is not installed |
 
 ## Key technologies and decisions
 

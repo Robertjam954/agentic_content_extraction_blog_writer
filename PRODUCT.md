@@ -17,9 +17,11 @@ as a runnable system. The build proceeds across four modules, each paired with a
 walkthrough video that outlines how to complete it.
 
 The sections below describe the target system. Not all of it exists yet: Module 1 is
-built, Module 2's ingestion scripts are built (the processing agents are not), and
-Modules 3-4 are specs. See the module status table in `README.md` for the current
-state of each piece.
+built; Module 2's ingestion scripts are built (the processing agents are not);
+Module 3's retrieval, drafting, and Notion-review code runs (live calls need API
+keys); and Module 4 has an initial `CLAUDE.md` but its scheduled workflow is not
+installed. See the module status table in `README.md` for the current state of each
+piece.
 
 ## The problem it solves
 

@@ -76,8 +76,9 @@ to end on a small sample:
 - **Vault connectivity agent:** run on a sample vault and confirm it follows its
   standard workflow, that generated wikilinks resolve, and that no `Projects/` core
   node was modified.
-- **Content writing agent:** paste the prompt plus a representative content object and
-  confirm the output passes its own checklist (frontmatter validity, ~700 words, both
+- **Content writing agent (`writer/`):** run `python3 -m writer "topic" --dry-run` to
+  confirm retrieval and the assembled content object, then (with an API key) confirm a
+  live draft passes the brief's checklist (frontmatter validity, ~700 words, both
   required links, no code blocks, no cliches).
 - **Self-documenting agent / workflow:** trigger it via `workflow_dispatch` and review
   the pull request it opens rather than committing generated docs directly to `main`.
