@@ -11,7 +11,8 @@ Always ground your work in these documents:
 - [Product vision and goals](../PRODUCT.md): what the system does, who it is for, and
   its boundaries. Align changes with these goals.
 - [Architecture and design](../ARCHITECTURE.md): components (ingestion, the Obsidian
-  knowledge graph, the four agents), data flow, and the module map.
+  knowledge graph, the four agents, the text-to-SQL analytics path), data flow, the
+  module map, and each module's build status.
 - [Contributing guidelines](../CONTRIBUTING.md): the module workflow (watch video ->
   plan -> implement -> validate), setup, testing, and authoring conventions.
 - [Claude Code operating manual](../CLAUDE.md): repository layout, the ingestion

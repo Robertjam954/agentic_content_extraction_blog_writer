@@ -1,3 +1,21 @@
 # macOS
 .DS_Store
 .claude/
+
+# RAG persistent vector store
+.rag/
+
+# knowledge-rag (Obsidian RAG) index, model cache, and data (config.yaml is tracked)
+obsidian-rag/data/
+obsidian-rag/chroma/
+obsidian-rag/models_cache/
+obsidian-rag/*.sqlite3
+obsidian-rag/logs/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Local env files (keep .env.example)
+.env

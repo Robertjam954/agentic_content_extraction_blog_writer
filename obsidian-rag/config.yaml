@@ -1,0 +1,34 @@
+# Knowledge RAG config for this project's Obsidian vault.
+#
+# Engine: knowledge-rag (local hybrid RAG: BM25 + ONNX fastembed vectors + cross-encoder
+# reranking, exposed as MCP tools). Template copy lives at:
+#   /Users/robertjames/loc/repos/github_clones/local_rag/local_claude_knowledge_rag_search
+#
+# This file is the engine's BASE_DIR config: point the server at it with
+#   KNOWLEDGE_RAG_DIR=<this folder>
+# The index (chroma), model cache (~250MB), and data land next to this file and are
+# gitignored. See README.md in this folder for the full setup flow.
+
+paths:
+  # The vault to index. Defaults to this content-pipeline repo (its Inbox notes, docs,
+  # and agent briefs are the knowledge base). Change this one line to point at a real
+  # Obsidian vault, e.g. /Users/robertjames/Documents/MyVault.
+  documents_dir: "/Users/robertjames/loc/repos/personal_projects/agentic_content_extraction_blog_writer"
+  # data_dir, chroma_dir, and models_cache_dir default under this file's folder.
+
+documents:
+  # Obsidian notes and docs only.
+  supported_formats:
+    - .md
+    - .txt
+
+  # Skip code, build output, the index itself, and tool folders (matched at any depth).
+  exclude_patterns:
+    - ".git"
+    - ".github"
+    - ".claude"
+    - "node_modules"
+    - "__pycache__"
+    - ".venv"
+    - ".rag"
+    - "obsidian-rag"

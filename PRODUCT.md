@@ -2,10 +2,12 @@
 
 ## What this is
 
-A multiagent content pipeline that turns a curated list of YouTube videos and
-personal notes into a connected Obsidian knowledge graph, then drafts concept-first
-blog posts from that graph. A self-documenting agent keeps the project's own
-documentation current as the system evolves.
+A multiagent content pipeline. Agents gather docs from various sources (websites,
+notes, blogs, papers, video transcripts) into a connected Obsidian knowledge graph
+that doubles as the RAG store, then a writing/summary agent produces a structured
+summary that is uploaded to Notion for human review before publishing. A
+self-documenting agent keeps the project's own documentation current as the system
+evolves.
 
 This is a portfolio AI engineering build, not a collection of prompts. The reference
 prompts and agent briefs in the module subfolders
@@ -13,6 +15,11 @@ prompts and agent briefs in the module subfolders
 `claude-md-memory-workflow/`) are the working spec; this repository implements them
 as a runnable system. The build proceeds across four modules, each paired with a
 walkthrough video that outlines how to complete it.
+
+The sections below describe the target system. Not all of it exists yet: Module 1 is
+built, Module 2's ingestion scripts are built (the processing agents are not), and
+Modules 3-4 are specs. See the module status table in `README.md` for the current
+state of each piece.
 
 ## The problem it solves
 
@@ -68,17 +75,19 @@ The system is built module by module, watching the reference video for each befo
 implementing it. The tooling for each module is chosen when that module is built (no
 stack is locked up front), so each module's plan records the concrete choices made.
 
-1. **Context engineering.** Establish the `PRODUCT.md` / `ARCHITECTURE.md` /
+1. **Context engineering (built).** Establish the `PRODUCT.md` / `ARCHITECTURE.md` /
    `CONTRIBUTING.md` plus instructions-file convention that grounds every agent in
    project context, and the plan-then-implement workflow used for the rest of the
    build.
-2. **Knowledge graph extraction.** Implement the ingestion path (transcripts and
-   note imports) and the transcript processing and vault connectivity agents that
-   build and maintain the Obsidian graph.
-3. **Blog generation.** Implement the content writing agent that turns a structured
-   content object from the graph into a finished post.
-4. **Documentation automation.** Implement the self-documenting agent and the
-   scheduled workflow that keeps `CLAUDE.md` and decision records current.
+2. **Knowledge graph extraction (partially built).** Implement the ingestion path
+   (transcripts and note imports) and the transcript processing and vault
+   connectivity agents that build and maintain the Obsidian graph. The ingestion
+   scripts (`scripts/`) exist and the raw material is in `Inbox/`; the agents are
+   still spec-only.
+3. **Blog generation (planned).** Implement the content writing agent that turns a
+   structured content object from the graph into a finished post.
+4. **Documentation automation (planned).** Implement the self-documenting agent and
+   the scheduled workflow that keeps `CLAUDE.md` and decision records current.
 
 ## Intended users and use cases
 

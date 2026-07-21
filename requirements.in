@@ -1,0 +1,30 @@
+# Python dependencies for the agentic content pipeline (SOURCE FILE).
+#
+# This is the hand-edited list. The pinned, installable lockfile is requirements.txt,
+# which is regenerated weekly by the maintenance workflow
+# (.github/workflows/weekly-maintenance.yml) via `pip-compile --upgrade`. Add or
+# remove a package HERE, not in requirements.txt.
+#
+# The stack is decided per module (see CONTRIBUTING.md). To install everything from
+# the lockfile:
+#
+#     python -m venv .venv && source .venv/bin/activate
+#     pip install -r requirements.txt
+
+# --- Ingestion scripts (Module 2): scripts/fetch_transcripts.py ---
+# The scrapers (scrape_courses.py, extract_skills.py) use only the standard library.
+youtube-transcript-api>=1.0
+
+# --- RAG index over notes and docs (rag/) ---
+# Persistent vector store + local (offline) MiniLM embeddings via Chroma's default
+# embedding function. No API key needed; swap the embedder in rag/store.py to use a
+# hosted one.
+chromadb
+
+# --- Content writing agent (writer/) ---
+# Claude for the RAG-grounded blog draft. Needs ANTHROPIC_API_KEY at run time.
+anthropic
+
+# --- Notion review output (notion_review/) ---
+# Push the structured summary to Notion for human review. Needs NOTION_TOKEN.
+notion-client
