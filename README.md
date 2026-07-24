@@ -40,8 +40,33 @@ module at a time. Current state:
     Graph API (by query or `DOI:`/`ARXIV:`/`CorpusId:`/S2 id) into
     `Inbox/Papers_to_Process/` as Obsidian-native notes (frontmatter, `#paper` tag,
     author/field wikilinks, TL;DR + abstract). Set `S2_API_KEY` for higher rate limits.
+  - `scripts/scrape_articles.py` - source-agnostic blog/article/docs extractor. Four
+    discovery modes (RSS/Atom feed, XML sitemap with `--match`, HTML listing page, or
+    explicit URLs) plus named presets (`anthropic-engineering`, `anthropic-news`,
+    `openai-research`, `openai-news`, `ms-learn-secure-research`, `hbc-intro-to-r`).
+    Fetches each post, converts the main content to Markdown, and writes an Obsidian
+    note to `Inbox/Web_to_Process/`. Blocked hosts fall back to the feed summary.
+  - `scripts/fetch_youtube_channel.py` - resolves a YouTube handle/URL/ID to its
+    channel ID, reads the channel's public uploads RSS feed, and fetches recent
+    transcripts via `fetch_transcripts.py`. `--list` prints video IDs (no deps).
+  - `scripts/fetch_gdoc.py` - extracts a public or "published to web" Google Doc to a
+    Markdown note in `Inbox/Web_to_Process/` (no auth; private docs are reported
+    inaccessible rather than saving a sign-in page).
 
-  All four are idempotent: inputs already in the inbox are skipped.
+  All are idempotent: inputs already in the inbox are skipped. Stdlib + curl only,
+  except `fetch_transcripts.py` (needs `youtube-transcript-api`).
+- **Content extraction agent (`extractor_agent/`):** wraps the extractors as agent
+  tools so extraction runs from a natural-language prompt. Default framework is
+  **LangChain** (LangChain + LangGraph); **Microsoft Agent Framework** is an option
+  (`--framework maf`). `python -m extractor_agent --dry-run` lists the tools/sources
+  offline; a live run
+  (`python -m extractor_agent "extract the 5 latest anthropic engineering posts"`) is
+  local-first: it uses a local **LM Studio** server by default
+  (`http://localhost:1234/v1`), with **OpenAI** (`OPENAI_API_KEY`) and **Azure
+  OpenAI** (`AZURE_OPENAI_ENDPOINT`) as options. The deterministic scripts never need
+  a model.
+- **Reusable Agent Skill (`skills/content-extraction/`):** a `SKILL.md` documenting
+  the extractor toolset for coding agents, following the agentskills.io convention.
 - **RAG index over notes and docs (`rag/`):** a persistent ChromaDB vector index with
   local (offline) embeddings. `python -m rag index` embeds the Inbox material, agent
   briefs, and project docs (66 files today); `python -m rag search "..."` returns the
@@ -71,7 +96,9 @@ module at a time. Current state:
 - **Portfolio showcase (`site/`):** a static project page deployed to GitHub Pages by
   `.github/workflows/pages.yml`.
 - **Automation (`.github/workflows/`):** `claude.yml` (an `@claude` responder),
-  `weekly-maintenance.yml` (weekly `pip-compile` refresh -> PR), and `pages.yml`.
+  `weekly-maintenance.yml` (weekly `pip-compile` refresh -> PR), `pages.yml`, and
+  `extract-content.yml` (weekly / on-demand run of the deterministic extractors that
+  opens a PR with any new inbox notes; no model key needed).
 
 ## Stack
 
@@ -107,6 +134,27 @@ python3 scripts/extract_skills.py
 # Fetch papers from Semantic Scholar (by query or ID) into the vault
 python3 scripts/fetch_semantic_scholar.py --query "retrieval augmented generation" --limit 10
 python3 scripts/fetch_semantic_scholar.py ARXIV:2005.11401 DOI:10.18653/v1/2020.acl-main.1
+
+# Extract blog posts / articles / docs (stdlib + curl only)
+python3 scripts/scrape_articles.py --source anthropic-engineering --limit 15
+python3 scripts/scrape_articles.py --source openai-research --limit 25
+python3 scripts/scrape_articles.py --source ms-learn-secure-research
+python3 scripts/scrape_articles.py --source hbc-intro-to-r
+python3 scripts/scrape_articles.py --sitemap https://site/sitemap.xml --match /blog/
+
+# Resolve a YouTube channel to recent uploads, then fetch transcripts
+python3 scripts/fetch_youtube_channel.py @zenvanriel --list
+python3 scripts/fetch_youtube_channel.py https://www.youtube.com/GitHub --limit 5
+
+# Extract a public / published Google Doc
+python3 scripts/fetch_gdoc.py https://docs.google.com/document/d/DOC_ID/edit
+
+# Drive extraction in natural language (LangChain by default; --framework maf for MAF)
+python3 -m extractor_agent --dry-run                 # offline: list tools + sources
+pip install langchain langgraph langchain-openai
+# local-first: start LM Studio, load a model, then (defaults to http://localhost:1234/v1)
+python3 -m extractor_agent "extract the 5 latest anthropic engineering posts"
+# or opt into a cloud backend: export OPENAI_API_KEY=...  (or AZURE_OPENAI_ENDPOINT=...)
 
 # Build the RAG index over notes and docs, then search it
 pip install chromadb

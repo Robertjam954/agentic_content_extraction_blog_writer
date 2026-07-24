@@ -11,6 +11,15 @@
 # --- Ingestion scripts (Module 2): scripts/fetch_transcripts.py ---
 youtube-transcript-api>=1.0
 
+# --- Content extraction agent (extractor_agent/) ---
+# Only for the natural-language agent; the deterministic scripts need none of these.
+# Default framework is LangChain; Microsoft Agent Framework is an option (--framework maf).
+langchain>=1.0
+langgraph
+langchain-openai
+agent-framework-core
+agent-framework-openai
+
 # --- RAG index over notes and docs (rag/) ---
 chromadb
 

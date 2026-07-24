@@ -1,0 +1,105 @@
+name: Extract Content to Inbox
+
+on:
+  # Weekly on Sundays at 08:00 UTC.
+  schedule:
+    - cron: '0 8 * * 0'
+
+  # Manual run: pick a single source (or "all") and a per-source post limit.
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Source preset to extract (or "all")'
+        type: choice
+        default: all
+        options:
+          - all
+          - anthropic-engineering
+          - anthropic-news
+          - openai-research
+          - openai-news
+          - ms-learn-secure-research
+          - hbc-intro-to-r
+      limit:
+        description: 'Max posts per source (0 = all discovered)'
+        type: string
+        default: '15'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Extract content into Inbox/
+        env:
+          SOURCE: ${{ github.event.inputs.source || 'all' }}
+          LIMIT: ${{ github.event.inputs.limit || '15' }}
+        run: |
+          set -euo pipefail
+          if [ "$SOURCE" = "all" ]; then
+            SOURCES="anthropic-engineering anthropic-news openai-research openai-news ms-learn-secure-research hbc-intro-to-r"
+          else
+            SOURCES="$SOURCE"
+          fi
+          for s in $SOURCES; do
+            echo "::group::$s"
+            # Deterministic, idempotent: already-scraped posts are skipped.
+            python3 scripts/scrape_articles.py --source "$s" --limit "$LIMIT" || true
+            echo "::endgroup::"
+          done
+
+      - name: Check for new notes
+        id: check
+        run: |
+          if git diff --quiet -- Inbox/; then
+            echo "No new inbox notes this run."
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            git status --short -- Inbox/
+          fi
+
+      - name: Create pull request
+        if: steps.check.outputs.has_changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH="content/extract-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH"
+          git add Inbox/
+          git commit -m "content: extract new posts into Inbox/ (automated)"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "content: new inbox notes from scheduled extraction" \
+            --body "Automated content extraction (\`scripts/scrape_articles.py\`) added the inbox notes in this diff.
+
+          Review the notes, then merge to hand them to the processing agents. Re-runs
+          are idempotent (existing notes are skipped)." \
+            --base main \
+            --head "$BRANCH" \
+            --label "automated"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Content Extraction" >> "$GITHUB_STEP_SUMMARY"
+          if [[ "${{ steps.check.outputs.has_changes }}" == "true" ]]; then
+            echo "A PR with new inbox notes was opened." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No new inbox notes were extracted this run." >> "$GITHUB_STEP_SUMMARY"
+          fi

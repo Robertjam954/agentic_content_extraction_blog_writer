@@ -12,8 +12,25 @@
 #     pip install -r requirements.txt
 
 # --- Ingestion scripts (Module 2): scripts/fetch_transcripts.py ---
-# The scrapers (scrape_courses.py, extract_skills.py) use only the standard library.
+# The web extractors (scrape_courses.py, scrape_articles.py, fetch_gdoc.py,
+# fetch_semantic_scholar.py) and the YouTube channel resolver
+# (fetch_youtube_channel.py) use only the standard library plus curl.
+# fetch_transcripts.py (invoked by fetch_youtube_channel.py) needs this:
 youtube-transcript-api>=1.0
+
+# --- Content extraction agent (extractor_agent/) ---
+# Natural-language orchestration over the extractors. Only needed for the live agent
+# (`python -m extractor_agent "..."`); the deterministic scripts and `--dry-run` need
+# none of these. Local-first: the default backend is a local LM Studio server, so no
+# API key is required; set OPENAI_API_KEY or AZURE_OPENAI_ENDPOINT to use a cloud one.
+#
+# Default framework is LangChain (--framework langchain):
+langchain>=1.0
+langgraph
+langchain-openai
+# Optional alternative framework, Microsoft Agent Framework (--framework maf):
+agent-framework-core
+agent-framework-openai
 
 # --- RAG index over notes and docs (rag/) ---
 # Persistent vector store + local (offline) MiniLM embeddings via Chroma's default
