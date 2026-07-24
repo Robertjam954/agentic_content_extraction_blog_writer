@@ -123,12 +123,15 @@ Each exits 1 if any item failed, 0 otherwise.
 
 - **What:** one source-agnostic article extractor. Discovers posts via RSS/Atom
   `--feed`, path-filtered XML `--sitemap ... --match` (handles sitemap-index
-  nesting), listing-page `--listing ... --match`, or explicit URLs/`--file`, then
-  writes readable Markdown (from `<article>`/`<main>`) to
+  nesting), listing-page `--listing ... --match`, `llms.txt`-index
+  `--llms-txt ... --match` (collects a site's Markdown "twin" pages), or explicit
+  URLs/`--file`, then writes readable Markdown (from `<article>`/`<main>`) to
   `Inbox/Web_to_Process/<source>--<slug>.md`. Blocked pages (e.g. openai.com 403)
-  fall back to feed summary, stamped `full_text: false`.
+  fall back to feed summary, stamped `full_text: false`; a stub Markdown twin
+  falls back to the rendered HTML page.
 - **Presets** (`--source`): `anthropic-engineering`, `anthropic-news`,
-  `openai-research`, `openai-news`, `ms-learn-secure-research`, `hbc-intro-to-r`.
+  `openai-research`, `openai-news`, `ms-learn-secure-research`, `hbc-intro-to-r`,
+  `openai-api-reference` (developers.openai.com API reference via its `llms.txt`).
   `--list` discovers without fetching; also `--limit`, `--type`, `--outdir`.
 
 ### scripts/fetch_youtube_channel.py (channels -> transcripts)

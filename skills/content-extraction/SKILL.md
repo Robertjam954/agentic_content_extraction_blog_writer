@@ -30,13 +30,16 @@ vault-connectivity agents, and are picked up by the `rag/` index.
 
 ### scrape_articles.py - blogs, news, docs, courses
 
-One source-agnostic article extractor with four discovery modes and named presets.
+One source-agnostic article extractor with five discovery modes and named presets.
 
 - **Presets** (`--source`): `anthropic-engineering`, `anthropic-news`,
-  `openai-research`, `openai-news`, `ms-learn-secure-research`, `hbc-intro-to-r`.
+  `openai-research`, `openai-news`, `ms-learn-secure-research`, `hbc-intro-to-r`,
+  `openai-api-reference`.
 - **Discovery modes:** `--feed URL` (RSS/Atom), `--sitemap URL --match PATTERN`
   (path-filtered `<loc>`; handles sitemap-index nesting), `--listing URL --match
-  PATTERN` (filtered `<a href>`), or explicit URLs / `--file`.
+  PATTERN` (filtered `<a href>`), `--llms-txt URL --match PATTERN` (collects a
+  site's Markdown twin pages listed in an `llms.txt` index; a stub twin falls back
+  to the rendered HTML page), or explicit URLs / `--file`.
 - **Output:** `Inbox/Web_to_Process/<source>--<slug>.md`, with the main content
   (`<article>`/`<main>`) converted to readable Markdown (headings, lists, links,
   code, blockquotes).
@@ -46,7 +49,9 @@ One source-agnostic article extractor with four discovery modes and named preset
 ```
 python3 scripts/scrape_articles.py --source anthropic-engineering --limit 15
 python3 scripts/scrape_articles.py --source openai-research --limit 25
+python3 scripts/scrape_articles.py --source openai-api-reference
 python3 scripts/scrape_articles.py --sitemap https://site/sitemap.xml --match /blog/
+python3 scripts/scrape_articles.py --llms-txt https://site/llms.txt --match /docs/
 python3 scripts/scrape_articles.py https://site/a-post https://site/another-post
 ```
 

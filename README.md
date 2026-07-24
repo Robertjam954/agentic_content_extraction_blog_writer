@@ -40,12 +40,14 @@ module at a time. Current state:
     Graph API (by query or `DOI:`/`ARXIV:`/`CorpusId:`/S2 id) into
     `Inbox/Papers_to_Process/` as Obsidian-native notes (frontmatter, `#paper` tag,
     author/field wikilinks, TL;DR + abstract). Set `S2_API_KEY` for higher rate limits.
-  - `scripts/scrape_articles.py` - source-agnostic blog/article/docs extractor. Four
-    discovery modes (RSS/Atom feed, XML sitemap with `--match`, HTML listing page, or
-    explicit URLs) plus named presets (`anthropic-engineering`, `anthropic-news`,
-    `openai-research`, `openai-news`, `ms-learn-secure-research`, `hbc-intro-to-r`).
-    Fetches each post, converts the main content to Markdown, and writes an Obsidian
-    note to `Inbox/Web_to_Process/`. Blocked hosts fall back to the feed summary.
+  - `scripts/scrape_articles.py` - source-agnostic blog/article/docs extractor. Five
+    discovery modes (RSS/Atom feed, XML sitemap with `--match`, HTML listing page,
+    `llms.txt` index of Markdown twins with `--match`, or explicit URLs) plus named
+    presets (`anthropic-engineering`, `anthropic-news`, `openai-research`,
+    `openai-news`, `ms-learn-secure-research`, `hbc-intro-to-r`,
+    `openai-api-reference`). Fetches each post, converts the main content to Markdown,
+    and writes an Obsidian note to `Inbox/Web_to_Process/`. Blocked hosts fall back to
+    the feed summary; stub Markdown twins fall back to the rendered HTML page.
   - `scripts/fetch_youtube_channel.py` - resolves a YouTube handle/URL/ID to its
     channel ID, reads the channel's public uploads RSS feed, and fetches recent
     transcripts via `fetch_transcripts.py`. `--list` prints video IDs (no deps).
@@ -146,7 +148,9 @@ python3 scripts/scrape_articles.py --source anthropic-engineering --limit 15
 python3 scripts/scrape_articles.py --source openai-research --limit 25
 python3 scripts/scrape_articles.py --source ms-learn-secure-research
 python3 scripts/scrape_articles.py --source hbc-intro-to-r
+python3 scripts/scrape_articles.py --source openai-api-reference   # developers.openai.com API reference
 python3 scripts/scrape_articles.py --sitemap https://site/sitemap.xml --match /blog/
+python3 scripts/scrape_articles.py --llms-txt https://site/llms.txt --match /docs/
 
 # Resolve a YouTube channel to recent uploads, then fetch transcripts
 python3 scripts/fetch_youtube_channel.py @zenvanriel --list

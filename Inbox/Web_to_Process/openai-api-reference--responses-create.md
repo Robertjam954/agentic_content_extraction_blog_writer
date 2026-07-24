@@ -1,0 +1,3558 @@
+---
+source_url: https://developers.openai.com/api/reference/resources/responses/methods/create
+title: "Create a model response"
+scraped: 2026-07-24
+type: doc
+source: openai-api-reference
+full_text: true
+---
+
+# Create a model response
+
+> OpenAI API endpoint method reference.
+[API Reference](/api/reference)
+
+[Responses](/api/reference/resources/responses)
+
+# Create a model response
+
+POST /responses
+
+Creates a model response. Provide [text](/docs/guides/text) or
+[image](/docs/guides/images) inputs to generate [text](/docs/guides/text)
+or [JSON](/docs/guides/structured-outputs) outputs. Have the model call
+your own [custom code](/docs/guides/function-calling) or use built-in
+[tools](/docs/guides/tools) like [web search](/docs/guides/tools-web-search)
+or [file search](/docs/guides/tools-file-search) to use your own data
+as input for the model’s response.
+
+##### Body Parameters JSON Expand Collapse
+
+background : optional boolean
+
+Whether to run the model response in the background.
+[Learn more](/docs/guides/background).
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20background%20%3E%20(schema))
+
+context_management : optional array of object { type , compact_threshold }
+
+Context management configuration for this request.
+
+type : string
+
+The context management entry type. Currently only ‘compaction’ is supported.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20context_management%20%3E%20(schema)%20%3E%20(items)%20%3E%20(property)%20type)
+
+compact_threshold : optional number
+
+Token threshold at which compaction should be triggered for this entry.
+
+minimum 1000
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20context_management%20%3E%20(schema)%20%3E%20(items)%20%3E%20(property)%20compact_threshold)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20context_management%20%3E%20(schema))
+
+conversation : optional string or [ResponseConversationParam](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_conversation_param%20%3E%20(schema)) { id }
+
+The conversation that this response belongs to. Items from this conversation are prepended to `input_items` for this response request.
+Input items and output items from this response are automatically added to this conversation after this response completes.
+
+One of the following:
+
+ConversationID = string
+
+The unique ID of the conversation.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20conversation%20%3E%20(schema)%20%3E%20(variant)%200)
+
+ResponseConversationParam object { id }
+
+The conversation that this response belongs to.
+
+id : string
+
+The unique ID of the conversation.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_conversation_param%20%3E%20(schema)%20%3E%20(property)%20id)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_conversation_param%20%3E%20(schema))
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20conversation%20%3E%20(schema))
+
+include : optional array of [ResponseIncludable](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_includable%20%3E%20(schema))
+
+Specify additional output data to include in the model response. Currently supported values are:
+
+- `web_search_call.action.sources`: Include the sources of the web search tool call.
+
+- `code_interpreter_call.outputs`: Includes the outputs of python code execution in code interpreter tool call items.
+
+- `computer_call_output.output.image_url`: Include image urls from the computer call output.
+
+- `file_search_call.results`: Include the search results of the file search tool call.
+
+- `message.input_image.image_url`: Include image urls from the input message.
+
+- `message.output_text.logprobs`: Include logprobs with assistant messages.
+
+- `reasoning.encrypted_content`: Includes an encrypted version of reasoning tokens in reasoning item outputs. This enables reasoning items to be used in multi-turn conversations when using the Responses API statelessly (like when the `store` parameter is set to `false`, or when an organization is enrolled in the zero data retention program).
+
+One of the following:
+
+"file_search_call.results"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_includable%20%3E%20(schema)%20%3E%20(member)%200)
+
+"web_search_call.results"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_includable%20%3E%20(schema)%20%3E%20(member)%201)
+
+"web_search_call.action.sources"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_includable%20%3E%20(schema)%20%3E%20(member)%202)
+
+"message.input_image.image_url"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_includable%20%3E%20(schema)%20%3E%20(member)%203)
+
+"computer_call_output.output.image_url"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_includable%20%3E%20(schema)%20%3E%20(member)%204)
+
+"code_interpreter_call.outputs"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_includable%20%3E%20(schema)%20%3E%20(member)%205)
+
+"reasoning.encrypted_content"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_includable%20%3E%20(schema)%20%3E%20(member)%206)
+
+"message.output_text.logprobs"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_includable%20%3E%20(schema)%20%3E%20(member)%207)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20include%20%3E%20(schema))
+
+input : optional string or array of [EasyInputMessage](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)) { content , role , phase , type } or object { content , role , status , type } or [ResponseOutputMessage](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)) { id , content , role , 3 more } or 29 more
+
+Text, image, or file inputs to the model, used to generate a response.
+
+Learn more:
+
+- [Text inputs and outputs](/docs/guides/text)
+
+- [Image inputs](/docs/guides/images)
+
+- [File inputs](/docs/guides/pdf-files)
+
+- [Conversation state](/docs/guides/conversation-state)
+
+- [Function calling](/docs/guides/function-calling)
+
+One of the following:
+
+TextInput = string
+
+A text input to the model, equivalent to a text input with the
+`user` role.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%200)
+
+InputItemList = array of [EasyInputMessage](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)) { content , role , phase , type } or object { content , role , status , type } or [ResponseOutputMessage](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)) { id , content , role , 3 more } or 29 more
+
+A list of one or many input items to the model, containing
+different content types.
+
+One of the following:
+
+EasyInputMessage object { content , role , phase , type }
+
+A message input to the model with a role indicating instruction following
+hierarchy. Instructions given with the `developer` or `system` role take
+precedence over instructions given with the `user` role. Messages with the
+`assistant` role are presumed to have been generated by the model in previous
+interactions.
+
+content : string or [ResponseInputMessageContentList](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_input_message_content_list%20%3E%20(schema)) { , , }
+
+Text, image, or audio input to the model, used to generate a response.
+Can also contain previous assistant responses.
+
+One of the following:
+
+TextInput = string
+
+A text input to the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20content%20%3E%20(variant)%200)
+
+ResponseInputMessageContentList = array of [ResponseInputContent](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_input_content%20%3E%20(schema))
+
+A list of one or many input items to the model, containing different content
+types.
+
+One of the following:
+
+ResponseInputText object { text , type , prompt_cache_breakpoint }
+
+A text input to the model.
+
+text : string
+
+The text input to the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_text%20%3E%20(schema)%20%3E%20(property)%20text)
+
+type : "input_text"
+
+The type of the input item. Always `input_text`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_text%20%3E%20(schema)%20%3E%20(property)%20type)
+
+prompt_cache_breakpoint : optional object { mode }
+
+Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request’s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.
+
+mode : "explicit"
+
+The breakpoint mode. Always `explicit`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_text%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint%20%3E%20(property)%20mode)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_text%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_text%20%3E%20(schema))
+
+ResponseInputImage object { detail , type , file_id , 2 more }
+
+An image input to the model. Learn about [image inputs](/docs/guides/vision).
+
+detail : "low" or "high" or "auto" or "original"
+
+The detail level of the image to be sent to the model. One of `high`, `low`, `auto`, or `original`. Defaults to `auto`.
+
+One of the following:
+
+"low"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%200)
+
+"high"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%201)
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%202)
+
+"original"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%203)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20detail)
+
+type : "input_image"
+
+The type of the input item. Always `input_image`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20type)
+
+file_id : optional string
+
+The ID of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20file_id)
+
+image_url : optional string
+
+The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20image_url)
+
+prompt_cache_breakpoint : optional object { mode }
+
+Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request’s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.
+
+mode : "explicit"
+
+The breakpoint mode. Always `explicit`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint%20%3E%20(property)%20mode)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema))
+
+ResponseInputFile object { type , detail , file_data , 4 more }
+
+A file input to the model.
+
+type : "input_file"
+
+The type of the input item. Always `input_file`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20type)
+
+detail : optional "auto" or "low" or "high"
+
+The detail level of the file to be sent to the model. Use `auto` to let the system select the detail level; for GPT-5.6 and later models, `auto` uses high-quality rendering, which may increase input token usage. Use `low` for lower-cost rendering, or `high` to render the file at higher quality. Defaults to `auto`.
+
+One of the following:
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%200)
+
+"low"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%201)
+
+"high"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20detail)
+
+file_data : optional string
+
+The content of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20file_data)
+
+file_id : optional string
+
+The ID of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20file_id)
+
+file_url : optional string
+
+The URL of the file to be sent to the model.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20file_url)
+
+filename : optional string
+
+The name of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20filename)
+
+prompt_cache_breakpoint : optional object { mode }
+
+Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request’s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.
+
+mode : "explicit"
+
+The breakpoint mode. Always `explicit`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint%20%3E%20(property)%20mode)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema))
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_message_content_list%20%3E%20(schema))
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20content)
+
+role : "user" or "assistant" or "system" or "developer"
+
+The role of the message input. One of `user`, `assistant`, `system`, or
+`developer`.
+
+One of the following:
+
+"user"
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20role%20%3E%20(member)%200)
+
+"assistant"
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20role%20%3E%20(member)%201)
+
+"system"
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20role%20%3E%20(member)%202)
+
+"developer"
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20role%20%3E%20(member)%203)
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20role)
+
+phase : optional "commentary" or "final_answer"
+
+Labels an `assistant` message as intermediate commentary (`commentary`) or the final answer (`final_answer`).
+For models like `gpt-5.3-codex` and beyond, when sending follow-up requests, preserve and resend
+phase on all assistant messages — dropping it can degrade performance. Not used for user messages.
+
+One of the following:
+
+"commentary"
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20phase%20%3E%20(member)%200)
+
+"final_answer"
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20phase%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20phase)
+
+type : optional "message"
+
+The type of the message input. Always `message`.
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema)%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(model)%20easy_input_message%20%3E%20(schema))
+
+Message object { content , role , status , type }
+
+A message input to the model with a role indicating instruction following
+hierarchy. Instructions given with the `developer` or `system` role take
+precedence over instructions given with the `user` role.
+
+content : [ResponseInputMessageContentList](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_input_message_content_list%20%3E%20(schema)) { , , }
+
+A list of one or many input items to the model, containing different content
+types.
+
+One of the following:
+
+ResponseInputText object { text , type , prompt_cache_breakpoint }
+
+A text input to the model.
+
+text : string
+
+The text input to the model.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_text%20%3E%20(schema)%20%3E%20(property)%20text)
+
+type : "input_text"
+
+The type of the input item. Always `input_text`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_text%20%3E%20(schema)%20%3E%20(property)%20type)
+
+prompt_cache_breakpoint : optional object { mode }
+
+Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request’s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.
+
+mode : "explicit"
+
+The breakpoint mode. Always `explicit`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_text%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint%20%3E%20(property)%20mode)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_text%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_text%20%3E%20(schema))
+
+ResponseInputImage object { detail , type , file_id , 2 more }
+
+An image input to the model. Learn about [image inputs](/docs/guides/vision).
+
+detail : "low" or "high" or "auto" or "original"
+
+The detail level of the image to be sent to the model. One of `high`, `low`, `auto`, or `original`. Defaults to `auto`.
+
+One of the following:
+
+"low"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%200)
+
+"high"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%201)
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%202)
+
+"original"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%203)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20detail)
+
+type : "input_image"
+
+The type of the input item. Always `input_image`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20type)
+
+file_id : optional string
+
+The ID of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20file_id)
+
+image_url : optional string
+
+The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20image_url)
+
+prompt_cache_breakpoint : optional object { mode }
+
+Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request’s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.
+
+mode : "explicit"
+
+The breakpoint mode. Always `explicit`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint%20%3E%20(property)%20mode)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_image%20%3E%20(schema))
+
+ResponseInputFile object { type , detail , file_data , 4 more }
+
+A file input to the model.
+
+type : "input_file"
+
+The type of the input item. Always `input_file`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20type)
+
+detail : optional "auto" or "low" or "high"
+
+The detail level of the file to be sent to the model. Use `auto` to let the system select the detail level; for GPT-5.6 and later models, `auto` uses high-quality rendering, which may increase input token usage. Use `low` for lower-cost rendering, or `high` to render the file at higher quality. Defaults to `auto`.
+
+One of the following:
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%200)
+
+"low"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%201)
+
+"high"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20detail)
+
+file_data : optional string
+
+The content of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20file_data)
+
+file_id : optional string
+
+The ID of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20file_id)
+
+file_url : optional string
+
+The URL of the file to be sent to the model.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20file_url)
+
+filename : optional string
+
+The name of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20filename)
+
+prompt_cache_breakpoint : optional object { mode }
+
+Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request’s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.
+
+mode : "explicit"
+
+The breakpoint mode. Always `explicit`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint%20%3E%20(property)%20mode)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content%20%2B%20(resource)%20responses%20%3E%20(model)%20response_input_file%20%3E%20(schema))
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20content)
+
+role : "user" or "system" or "developer"
+
+The role of the message input. One of `user`, `system`, or `developer`.
+
+One of the following:
+
+"user"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20role%20%3E%20(member)%200)
+
+"system"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20role%20%3E%20(member)%201)
+
+"developer"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20role%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20role)
+
+status : optional "in_progress" or "completed" or "incomplete"
+
+The status of item. One of `in_progress`, `completed`, or
+`incomplete`. Populated when items are returned via API.
+
+One of the following:
+
+"in_progress"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20status%20%3E%20(member)%200)
+
+"completed"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20status%20%3E%20(member)%201)
+
+"incomplete"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20status%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20status)
+
+type : optional "message"
+
+The type of the message input. Always set to `message`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%201)
+
+ResponseOutputMessage object { id , content , role , 3 more }
+
+An output message from the model.
+
+id : string
+
+The unique ID of the output message.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20id)
+
+content : array of [ResponseOutputText](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)) { annotations , logprobs , text , type } or [ResponseOutputRefusal](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_output_refusal%20%3E%20(schema)) { refusal , type }
+
+The content of the output message.
+
+One of the following:
+
+ResponseOutputText object { annotations , logprobs , text , type }
+
+A text output from the model.
+
+annotations : array of object { file_id , filename , index , type } or object { end_index , start_index , title , 2 more } or object { container_id , end_index , file_id , 3 more } or object { file_id , index , type }
+
+The annotations of the text output.
+
+One of the following:
+
+FileCitation object { file_id , filename , index , type }
+
+A citation to a file.
+
+file_id : string
+
+The ID of the file.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20file_id)
+
+filename : string
+
+The filename of the file cited.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20filename)
+
+index : number
+
+The index of the file in the list of files.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20index)
+
+type : "file_citation"
+
+The type of the file citation. Always `file_citation`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%200)
+
+URLCitation object { end_index , start_index , title , 2 more }
+
+A citation for a web resource used to generate a model response.
+
+end_index : number
+
+The index of the last character of the URL citation in the message.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20end_index)
+
+start_index : number
+
+The index of the first character of the URL citation in the message.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20start_index)
+
+title : string
+
+The title of the web resource.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20title)
+
+type : "url_citation"
+
+The type of the URL citation. Always `url_citation`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20type)
+
+url : string
+
+The URL of the web resource.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20url)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%201)
+
+ContainerFileCitation object { container_id , end_index , file_id , 3 more }
+
+A citation for a container file used to generate a model response.
+
+container_id : string
+
+The ID of the container file.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%202%20%3E%20(property)%20container_id)
+
+end_index : number
+
+The index of the last character of the container file citation in the message.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%202%20%3E%20(property)%20end_index)
+
+file_id : string
+
+The ID of the file.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%202%20%3E%20(property)%20file_id)
+
+filename : string
+
+The filename of the container file cited.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%202%20%3E%20(property)%20filename)
+
+start_index : number
+
+The index of the first character of the container file citation in the message.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%202%20%3E%20(property)%20start_index)
+
+type : "container_file_citation"
+
+The type of the container file citation. Always `container_file_citation`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%202%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%202)
+
+FilePath object { file_id , index , type }
+
+A path to a file.
+
+file_id : string
+
+The ID of the file.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20file_id)
+
+index : number
+
+The index of the file in the list of files.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20index)
+
+type : "file_path"
+
+The type of the file path. Always `file_path`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations%20%3E%20(items)%20%3E%20(variant)%203)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20annotations)
+
+logprobs : array of object { token , bytes , logprob , top_logprobs }
+
+token : string
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20logprobs%20%3E%20(items)%20%3E%20(property)%20token)
+
+bytes : array of number
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20logprobs%20%3E%20(items)%20%3E%20(property)%20bytes)
+
+logprob : number
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20logprobs%20%3E%20(items)%20%3E%20(property)%20logprob)
+
+top_logprobs : array of object { token , bytes , logprob }
+
+token : string
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20logprobs%20%3E%20(items)%20%3E%20(property)%20top_logprobs%20%3E%20(items)%20%3E%20(property)%20token)
+
+bytes : array of number
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20logprobs%20%3E%20(items)%20%3E%20(property)%20top_logprobs%20%3E%20(items)%20%3E%20(property)%20bytes)
+
+logprob : number
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20logprobs%20%3E%20(items)%20%3E%20(property)%20top_logprobs%20%3E%20(items)%20%3E%20(property)%20logprob)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20logprobs%20%3E%20(items)%20%3E%20(property)%20top_logprobs)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20logprobs)
+
+text : string
+
+The text output from the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20text)
+
+type : "output_text"
+
+The type of the output text. Always `output_text`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema)%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_text%20%3E%20(schema))
+
+ResponseOutputRefusal object { refusal , type }
+
+A refusal from the model.
+
+refusal : string
+
+The refusal explanation from the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_refusal%20%3E%20(schema)%20%3E%20(property)%20refusal)
+
+type : "refusal"
+
+The type of the refusal. Always `refusal`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_refusal%20%3E%20(schema)%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_refusal%20%3E%20(schema))
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20content)
+
+role : "assistant"
+
+The role of the output message. Always `assistant`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20role)
+
+status : "in_progress" or "completed" or "incomplete"
+
+The status of the message input. One of `in_progress`, `completed`, or
+`incomplete`. Populated when input items are returned via API.
+
+One of the following:
+
+"in_progress"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20status%20%3E%20(member)%200)
+
+"completed"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20status%20%3E%20(member)%201)
+
+"incomplete"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20status%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20status)
+
+type : "message"
+
+The type of the output message. Always `message`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20type)
+
+phase : optional "commentary" or "final_answer"
+
+Labels an `assistant` message as intermediate commentary (`commentary`) or the final answer (`final_answer`).
+For models like `gpt-5.3-codex` and beyond, when sending follow-up requests, preserve and resend
+phase on all assistant messages — dropping it can degrade performance. Not used for user messages.
+
+One of the following:
+
+"commentary"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20phase%20%3E%20(member)%200)
+
+"final_answer"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20phase%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema)%20%3E%20(property)%20phase)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_output_message%20%3E%20(schema))
+
+FileSearchCall object { id , queries , status , 2 more }
+
+The results of a file search tool call. See the
+[file search guide](/docs/guides/tools-file-search) for more information.
+
+id : string
+
+The unique ID of the file search tool call.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20id)
+
+queries : array of string
+
+The queries used to search for files.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20queries)
+
+status : "in_progress" or "searching" or "completed" or 2 more
+
+The status of the file search tool call. One of `in_progress`,
+`searching`, `incomplete` or `failed`,
+
+One of the following:
+
+"in_progress"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20status%20%3E%20(member)%200)
+
+"searching"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20status%20%3E%20(member)%201)
+
+"completed"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20status%20%3E%20(member)%202)
+
+"incomplete"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20status%20%3E%20(member)%203)
+
+"failed"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20status%20%3E%20(member)%204)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20status)
+
+type : "file_search_call"
+
+The type of the file search tool call. Always `file_search_call`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20type)
+
+results : optional array of object { attributes , file_id , filename , 2 more }
+
+The results of the file search tool call.
+
+attributes : optional map [ string or number or boolean ]
+
+Set of 16 key-value pairs that can be attached to an object. This can be
+useful for storing additional information about the object in a structured
+format, and querying for objects via API or the dashboard. Keys are strings
+with a maximum length of 64 characters. Values are strings with a maximum
+length of 512 characters, booleans, or numbers.
+
+One of the following:
+
+string
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20results%20%3E%20(items)%20%3E%20(property)%20attributes%20%3E%20(items)%20%3E%20(variant)%200)
+
+number
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20results%20%3E%20(items)%20%3E%20(property)%20attributes%20%3E%20(items)%20%3E%20(variant)%201)
+
+boolean
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20results%20%3E%20(items)%20%3E%20(property)%20attributes%20%3E%20(items)%20%3E%20(variant)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20results%20%3E%20(items)%20%3E%20(property)%20attributes)
+
+file_id : optional string
+
+The unique ID of the file.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20results%20%3E%20(items)%20%3E%20(property)%20file_id)
+
+filename : optional string
+
+The name of the file.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20results%20%3E%20(items)%20%3E%20(property)%20filename)
+
+score : optional number
+
+The relevance score of the file - a value between 0 and 1.
+
+format float
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20results%20%3E%20(items)%20%3E%20(property)%20score)
+
+text : optional string
+
+The text that was retrieved from the file.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20results%20%3E%20(items)%20%3E%20(property)%20text)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20results)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%203)
+
+ComputerCall object { id , call_id , pending_safety_checks , 4 more }
+
+A tool call to a computer use tool. See the
+[computer use guide](/docs/guides/tools-computer-use) for more information.
+
+id : string
+
+The unique ID of the computer call.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20id)
+
+call_id : string
+
+An identifier used when responding to the tool call with output.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20call_id)
+
+pending_safety_checks : array of object { id , code , message }
+
+The pending safety checks for the computer call.
+
+id : string
+
+The ID of the pending safety check.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20pending_safety_checks%20%3E%20(items)%20%3E%20(property)%20id)
+
+code : optional string
+
+The type of the pending safety check.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20pending_safety_checks%20%3E%20(items)%20%3E%20(property)%20code)
+
+message : optional string
+
+Details about the pending safety check.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20pending_safety_checks%20%3E%20(items)%20%3E%20(property)%20message)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20pending_safety_checks)
+
+status : "in_progress" or "completed" or "incomplete"
+
+The status of the item. One of `in_progress`, `completed`, or
+`incomplete`. Populated when items are returned via API.
+
+One of the following:
+
+"in_progress"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20status%20%3E%20(member)%200)
+
+"completed"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20status%20%3E%20(member)%201)
+
+"incomplete"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20status%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20status)
+
+type : "computer_call"
+
+The type of the computer call. Always `computer_call`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20type)
+
+action : optional [ComputerAction](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema))
+
+A click action.
+
+One of the following:
+
+Click object { button , type , x , 2 more }
+
+A click action.
+
+button : "left" or "right" or "wheel" or 2 more
+
+Indicates which mouse button was pressed during the click. One of `left`, `right`, `wheel`, `back`, or `forward`.
+
+One of the following:
+
+"left"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button%20%3E%20(member)%200)
+
+"right"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button%20%3E%20(member)%201)
+
+"wheel"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button%20%3E%20(member)%202)
+
+"back"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button%20%3E%20(member)%203)
+
+"forward"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button%20%3E%20(member)%204)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button)
+
+type : "click"
+
+Specifies the event type. For a click action, this property is always `click`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20type)
+
+x : number
+
+The x-coordinate where the click occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20x)
+
+y : number
+
+The y-coordinate where the click occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20y)
+
+keys : optional array of string
+
+The keys being held while clicking.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20keys)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200)
+
+DoubleClick object { keys , type , x , y }
+
+A double click action.
+
+keys : array of string
+
+The keys being held while double-clicking.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(property)%20keys)
+
+type : "double_click"
+
+Specifies the event type. For a double click action, this property is always set to `double_click`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(property)%20type)
+
+x : number
+
+The x-coordinate where the double click occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(property)%20x)
+
+y : number
+
+The y-coordinate where the double click occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(property)%20y)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%201)
+
+Drag object { path , type , keys }
+
+A drag action.
+
+path : array of object { x , y }
+
+An array of coordinates representing the path of the drag action. Coordinates will appear as an array of objects, eg
+
+```
+[
+{ x: 100, y: 200 },
+{ x: 200, y: 300 }
+]
+```
+
+x : number
+
+The x-coordinate.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202%20%3E%20(property)%20path%20%3E%20(items)%20%3E%20(property)%20x)
+
+y : number
+
+The y-coordinate.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202%20%3E%20(property)%20path%20%3E%20(items)%20%3E%20(property)%20y)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202%20%3E%20(property)%20path)
+
+type : "drag"
+
+Specifies the event type. For a drag action, this property is always set to `drag`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202%20%3E%20(property)%20type)
+
+keys : optional array of string
+
+The keys being held while dragging the mouse.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202%20%3E%20(property)%20keys)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202)
+
+Keypress object { keys , type }
+
+A collection of keypresses the model would like to perform.
+
+keys : array of string
+
+The combination of keys the model is requesting to be pressed. This is an array of strings, each representing a key.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%203%20%3E%20(property)%20keys)
+
+type : "keypress"
+
+Specifies the event type. For a keypress action, this property is always set to `keypress`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%203%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%203)
+
+Move object { type , x , y , keys }
+
+A mouse move action.
+
+type : "move"
+
+Specifies the event type. For a move action, this property is always set to `move`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%204%20%3E%20(property)%20type)
+
+x : number
+
+The x-coordinate to move to.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%204%20%3E%20(property)%20x)
+
+y : number
+
+The y-coordinate to move to.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%204%20%3E%20(property)%20y)
+
+keys : optional array of string
+
+The keys being held while moving the mouse.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%204%20%3E%20(property)%20keys)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%204)
+
+Screenshot object { type }
+
+A screenshot action.
+
+type : "screenshot"
+
+Specifies the event type. For a screenshot action, this property is always set to `screenshot`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%205%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%205)
+
+Scroll object { scroll_x , scroll_y , type , 3 more }
+
+A scroll action.
+
+scroll_x : number
+
+The horizontal scroll distance.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20scroll_x)
+
+scroll_y : number
+
+The vertical scroll distance.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20scroll_y)
+
+type : "scroll"
+
+Specifies the event type. For a scroll action, this property is always set to `scroll`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20type)
+
+x : number
+
+The x-coordinate where the scroll occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20x)
+
+y : number
+
+The y-coordinate where the scroll occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20y)
+
+keys : optional array of string
+
+The keys being held while scrolling.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20keys)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206)
+
+Type object { text , type }
+
+An action to type in text.
+
+text : string
+
+The text to type.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%207%20%3E%20(property)%20text)
+
+type : "type"
+
+Specifies the event type. For a type action, this property is always set to `type`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%207%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%207)
+
+Wait object { type }
+
+A wait action.
+
+type : "wait"
+
+Specifies the event type. For a wait action, this property is always set to `wait`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%208%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%208)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20action)
+
+actions : optional [ComputerActionList](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20computer_action_list%20%3E%20(schema)) { Click , DoubleClick , Drag , 6 more }
+
+Flattened batched actions for `computer_use`. Each action includes an
+`type` discriminator and action-specific fields.
+
+One of the following:
+
+Click object { button , type , x , 2 more }
+
+A click action.
+
+button : "left" or "right" or "wheel" or 2 more
+
+Indicates which mouse button was pressed during the click. One of `left`, `right`, `wheel`, `back`, or `forward`.
+
+One of the following:
+
+"left"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button%20%3E%20(member)%200)
+
+"right"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button%20%3E%20(member)%201)
+
+"wheel"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button%20%3E%20(member)%202)
+
+"back"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button%20%3E%20(member)%203)
+
+"forward"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button%20%3E%20(member)%204)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20button)
+
+type : "click"
+
+Specifies the event type. For a click action, this property is always `click`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20type)
+
+x : number
+
+The x-coordinate where the click occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20x)
+
+y : number
+
+The y-coordinate where the click occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20y)
+
+keys : optional array of string
+
+The keys being held while clicking.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200%20%3E%20(property)%20keys)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%200)
+
+DoubleClick object { keys , type , x , y }
+
+A double click action.
+
+keys : array of string
+
+The keys being held while double-clicking.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(property)%20keys)
+
+type : "double_click"
+
+Specifies the event type. For a double click action, this property is always set to `double_click`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(property)%20type)
+
+x : number
+
+The x-coordinate where the double click occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(property)%20x)
+
+y : number
+
+The y-coordinate where the double click occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(property)%20y)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%201)
+
+Drag object { path , type , keys }
+
+A drag action.
+
+path : array of object { x , y }
+
+An array of coordinates representing the path of the drag action. Coordinates will appear as an array of objects, eg
+
+```
+[
+{ x: 100, y: 200 },
+{ x: 200, y: 300 }
+]
+```
+
+x : number
+
+The x-coordinate.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202%20%3E%20(property)%20path%20%3E%20(items)%20%3E%20(property)%20x)
+
+y : number
+
+The y-coordinate.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202%20%3E%20(property)%20path%20%3E%20(items)%20%3E%20(property)%20y)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202%20%3E%20(property)%20path)
+
+type : "drag"
+
+Specifies the event type. For a drag action, this property is always set to `drag`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202%20%3E%20(property)%20type)
+
+keys : optional array of string
+
+The keys being held while dragging the mouse.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202%20%3E%20(property)%20keys)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%202)
+
+Keypress object { keys , type }
+
+A collection of keypresses the model would like to perform.
+
+keys : array of string
+
+The combination of keys the model is requesting to be pressed. This is an array of strings, each representing a key.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%203%20%3E%20(property)%20keys)
+
+type : "keypress"
+
+Specifies the event type. For a keypress action, this property is always set to `keypress`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%203%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%203)
+
+Move object { type , x , y , keys }
+
+A mouse move action.
+
+type : "move"
+
+Specifies the event type. For a move action, this property is always set to `move`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%204%20%3E%20(property)%20type)
+
+x : number
+
+The x-coordinate to move to.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%204%20%3E%20(property)%20x)
+
+y : number
+
+The y-coordinate to move to.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%204%20%3E%20(property)%20y)
+
+keys : optional array of string
+
+The keys being held while moving the mouse.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%204%20%3E%20(property)%20keys)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%204)
+
+Screenshot object { type }
+
+A screenshot action.
+
+type : "screenshot"
+
+Specifies the event type. For a screenshot action, this property is always set to `screenshot`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%205%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%205)
+
+Scroll object { scroll_x , scroll_y , type , 3 more }
+
+A scroll action.
+
+scroll_x : number
+
+The horizontal scroll distance.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20scroll_x)
+
+scroll_y : number
+
+The vertical scroll distance.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20scroll_y)
+
+type : "scroll"
+
+Specifies the event type. For a scroll action, this property is always set to `scroll`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20type)
+
+x : number
+
+The x-coordinate where the scroll occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20x)
+
+y : number
+
+The y-coordinate where the scroll occurred.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20y)
+
+keys : optional array of string
+
+The keys being held while scrolling.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206%20%3E%20(property)%20keys)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%206)
+
+Type object { text , type }
+
+An action to type in text.
+
+text : string
+
+The text to type.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%207%20%3E%20(property)%20text)
+
+type : "type"
+
+Specifies the event type. For a type action, this property is always set to `type`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%207%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%207)
+
+Wait object { type }
+
+A wait action.
+
+type : "wait"
+
+Specifies the event type. For a wait action, this property is always set to `wait`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%208%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions%20%2B%20(resource)%20responses%20%3E%20(model)%20computer_action%20%3E%20(schema)%20%3E%20(variant)%208)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20actions)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%204)
+
+ComputerCallOutput object { call_id , output , type , 3 more }
+
+The output of a computer tool call.
+
+call_id : string
+
+The ID of the computer tool call that produced the output.
+
+maxLength 64
+
+minLength 1
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20call_id)
+
+output : [ResponseComputerToolCallOutputScreenshot](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_computer_tool_call_output_screenshot%20%3E%20(schema)) { type , file_id , image_url }
+
+A computer screenshot image used with the computer use tool.
+
+type : "computer_screenshot"
+
+Specifies the event type. For a computer screenshot, this property is
+always set to `computer_screenshot`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20output%20%2B%20(resource)%20responses%20%3E%20(model)%20response_computer_tool_call_output_screenshot%20%3E%20(schema)%20%3E%20(property)%20type)
+
+file_id : optional string
+
+The identifier of an uploaded file that contains the screenshot.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20output%20%2B%20(resource)%20responses%20%3E%20(model)%20response_computer_tool_call_output_screenshot%20%3E%20(schema)%20%3E%20(property)%20file_id)
+
+image_url : optional string
+
+The URL of the screenshot image.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20output%20%2B%20(resource)%20responses%20%3E%20(model)%20response_computer_tool_call_output_screenshot%20%3E%20(schema)%20%3E%20(property)%20image_url)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20output)
+
+type : "computer_call_output"
+
+The type of the computer tool call output. Always `computer_call_output`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20type)
+
+id : optional string
+
+The ID of the computer tool call output.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20id)
+
+acknowledged_safety_checks : optional array of object { id , code , message }
+
+The safety checks reported by the API that have been acknowledged by the developer.
+
+id : string
+
+The ID of the pending safety check.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20acknowledged_safety_checks%20%3E%20(items)%20%3E%20(property)%20id)
+
+code : optional string
+
+The type of the pending safety check.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20acknowledged_safety_checks%20%3E%20(items)%20%3E%20(property)%20code)
+
+message : optional string
+
+Details about the pending safety check.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20acknowledged_safety_checks%20%3E%20(items)%20%3E%20(property)%20message)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20acknowledged_safety_checks)
+
+status : optional "in_progress" or "completed" or "incomplete"
+
+The status of the message input. One of `in_progress`, `completed`, or `incomplete`. Populated when input items are returned via API.
+
+One of the following:
+
+"in_progress"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20status%20%3E%20(member)%200)
+
+"completed"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20status%20%3E%20(member)%201)
+
+"incomplete"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20status%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20status)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%205)
+
+WebSearchCall object { id , action , status , type }
+
+The results of a web search tool call. See the
+[web search guide](/docs/guides/tools-web-search) for more information.
+
+id : string
+
+The unique ID of the web search tool call.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20id)
+
+action : object { type , queries , query , sources } or object { type , url } or object { pattern , type , url }
+
+An object describing the specific action taken in this web search call.
+Includes details on how the model used the web (search, open_page, find_in_page).
+
+One of the following:
+
+Search object { type , queries , query , sources }
+
+Action type “search” - Performs a web search query.
+
+type : "search"
+
+The action type.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%200%20%3E%20(property)%20type)
+
+queries : optional array of string
+
+The search queries.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%200%20%3E%20(property)%20queries)
+
+Deprecated query : optional string
+
+The search query.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%200%20%3E%20(property)%20query)
+
+sources : optional array of object { type , url }
+
+The sources used in the search.
+
+type : "url"
+
+The type of source. Always `url`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%200%20%3E%20(property)%20sources%20%3E%20(items)%20%3E%20(property)%20type)
+
+url : string
+
+The URL of the source.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%200%20%3E%20(property)%20sources%20%3E%20(items)%20%3E%20(property)%20url)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%200%20%3E%20(property)%20sources)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%200)
+
+OpenPage object { type , url }
+
+Action type “open_page” - Opens a specific URL from search results.
+
+type : "open_page"
+
+The action type.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%201%20%3E%20(property)%20type)
+
+url : optional string
+
+The URL opened by the model.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%201%20%3E%20(property)%20url)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%201)
+
+FindInPage object { pattern , type , url }
+
+Action type “find_in_page”: Searches for a pattern within a loaded page.
+
+pattern : string
+
+The pattern or text to search for within the page.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%202%20%3E%20(property)%20pattern)
+
+type : "find_in_page"
+
+The action type.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%202%20%3E%20(property)%20type)
+
+url : string
+
+The URL of the page searched for the pattern.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%202%20%3E%20(property)%20url)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action%20%3E%20(variant)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20action)
+
+status : "in_progress" or "searching" or "completed" or "failed"
+
+The status of the web search tool call.
+
+One of the following:
+
+"in_progress"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20status%20%3E%20(member)%200)
+
+"searching"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20status%20%3E%20(member)%201)
+
+"completed"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20status%20%3E%20(member)%202)
+
+"failed"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20status%20%3E%20(member)%203)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20status)
+
+type : "web_search_call"
+
+The type of the web search tool call. Always `web_search_call`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%206)
+
+FunctionCall object { arguments , call_id , name , 5 more }
+
+A tool call to run a function. See the
+[function calling guide](/docs/guides/function-calling) for more information.
+
+arguments : string
+
+A JSON string of the arguments to pass to the function.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20arguments)
+
+call_id : string
+
+The unique ID of the function tool call generated by the model.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20call_id)
+
+name : string
+
+The name of the function to run.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20name)
+
+type : "function_call"
+
+The type of the function tool call. Always `function_call`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20type)
+
+id : optional string
+
+The unique ID of the function tool call.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20id)
+
+caller : optional object { type } or object { caller_id , type }
+
+The execution context that produced this tool call.
+
+One of the following:
+
+Direct object { type }
+
+type : "direct"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20caller%20%3E%20(variant)%200%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20caller%20%3E%20(variant)%200)
+
+Program object { caller_id , type }
+
+caller_id : string
+
+The call ID of the program item that produced this tool call.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20caller%20%3E%20(variant)%201%20%3E%20(property)%20caller_id)
+
+type : "program"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20caller%20%3E%20(variant)%201%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20caller%20%3E%20(variant)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20caller)
+
+namespace : optional string
+
+The namespace of the function to run.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20namespace)
+
+status : optional "in_progress" or "completed" or "incomplete"
+
+The status of the item. One of `in_progress`, `completed`, or
+`incomplete`. Populated when items are returned via API.
+
+One of the following:
+
+"in_progress"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20status%20%3E%20(member)%200)
+
+"completed"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20status%20%3E%20(member)%201)
+
+"incomplete"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20status%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20status)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%207)
+
+FunctionCallOutput object { call_id , output , type , 3 more }
+
+The output of a function tool call.
+
+call_id : string
+
+The unique ID of the function tool call generated by the model.
+
+maxLength 64
+
+minLength 1
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20call_id)
+
+output : string or array of [ResponseInputTextContent](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_input_text_content%20%3E%20(schema)) { text , type , prompt_cache_breakpoint } or [ResponseInputImageContent](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)) { type , detail , file_id , 2 more } or [ResponseInputFileContent](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)) { type , detail , file_data , 4 more }
+
+Text, image, or file output of the function tool call.
+
+One of the following:
+
+string
+
+A JSON string of the output of the function tool call.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20output%20%3E%20(variant)%200)
+
+array of [ResponseInputTextContent](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_input_text_content%20%3E%20(schema)) { text , type , prompt_cache_breakpoint } or [ResponseInputImageContent](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)) { type , detail , file_id , 2 more } or [ResponseInputFileContent](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)) { type , detail , file_data , 4 more }
+
+An array of content outputs (text, image, file) for the function tool call.
+
+One of the following:
+
+ResponseInputTextContent object { text , type , prompt_cache_breakpoint }
+
+A text input to the model.
+
+text : string
+
+The text input to the model.
+
+maxLength 10485760
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_text_content%20%3E%20(schema)%20%3E%20(property)%20text)
+
+type : "input_text"
+
+The type of the input item. Always `input_text`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_text_content%20%3E%20(schema)%20%3E%20(property)%20type)
+
+prompt_cache_breakpoint : optional object { mode }
+
+Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request’s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.
+
+mode : "explicit"
+
+The breakpoint mode. Always `explicit`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_text_content%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint%20%3E%20(property)%20mode)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_text_content%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_text_content%20%3E%20(schema))
+
+ResponseInputImageContent object { type , detail , file_id , 2 more }
+
+An image input to the model. Learn about [image inputs](/docs/guides/vision)
+
+type : "input_image"
+
+The type of the input item. Always `input_image`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)%20%3E%20(property)%20type)
+
+detail : optional "low" or "high" or "auto" or "original"
+
+The detail level of the image to be sent to the model. One of `high`, `low`, `auto`, or `original`. Defaults to `auto`.
+
+One of the following:
+
+"low"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%200)
+
+"high"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%201)
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%202)
+
+"original"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%203)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)%20%3E%20(property)%20detail)
+
+file_id : optional string
+
+The ID of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)%20%3E%20(property)%20file_id)
+
+image_url : optional string
+
+The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL.
+
+maxLength 20971520
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)%20%3E%20(property)%20image_url)
+
+prompt_cache_breakpoint : optional object { mode }
+
+Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request’s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.
+
+mode : "explicit"
+
+The breakpoint mode. Always `explicit`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint%20%3E%20(property)%20mode)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_image_content%20%3E%20(schema))
+
+ResponseInputFileContent object { type , detail , file_data , 4 more }
+
+A file input to the model.
+
+type : "input_file"
+
+The type of the input item. Always `input_file`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20type)
+
+detail : optional "auto" or "low" or "high"
+
+The detail level of the file to be sent to the model. Use `auto` to let the system select the detail level; for GPT-5.6 and later models, `auto` uses high-quality rendering, which may increase input token usage. Use `low` for lower-cost rendering, or `high` to render the file at higher quality. Defaults to `auto`.
+
+One of the following:
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%200)
+
+"low"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%201)
+
+"high"
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20detail%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20detail)
+
+file_data : optional string
+
+The base64-encoded data of the file to be sent to the model.
+
+maxLength 73400320
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20file_data)
+
+file_id : optional string
+
+The ID of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20file_id)
+
+file_url : optional string
+
+The URL of the file to be sent to the model.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20file_url)
+
+filename : optional string
+
+The name of the file to be sent to the model.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20filename)
+
+prompt_cache_breakpoint : optional object { mode }
+
+Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request’s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.
+
+mode : "explicit"
+
+The breakpoint mode. Always `explicit`.
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint%20%3E%20(property)%20mode)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema)%20%3E%20(property)%20prompt_cache_breakpoint)
+
+[](#(resource)%20responses%20%3E%20(model)%20response_input_file_content%20%3E%20(schema))
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20output%20%3E%20(variant)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20output)
+
+type : "function_call_output"
+
+The type of the function tool call output. Always `function_call_output`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20type)
+
+id : optional string
+
+The unique ID of the function tool call output. Populated when this item is returned via API.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20id)
+
+caller : optional object { type } or object { caller_id , type }
+
+The execution context that produced this tool call.
+
+One of the following:
+
+Direct object { type }
+
+type : "direct"
+
+The caller type. Always `direct`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20caller%20%3E%20(variant)%200%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20caller%20%3E%20(variant)%200)
+
+Program object { caller_id , type }
+
+caller_id : string
+
+The call ID of the program item that produced this tool call.
+
+maxLength 64
+
+minLength 1
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20caller%20%3E%20(variant)%201%20%3E%20(property)%20caller_id)
+
+type : "program"
+
+The caller type. Always `program`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20caller%20%3E%20(variant)%201%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20caller%20%3E%20(variant)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20caller)
+
+status : optional "in_progress" or "completed" or "incomplete"
+
+The status of the item. One of `in_progress`, `completed`, or `incomplete`. Populated when items are returned via API.
+
+One of the following:
+
+"in_progress"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20status%20%3E%20(member)%200)
+
+"completed"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20status%20%3E%20(member)%201)
+
+"incomplete"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20status%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20status)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%208)
+
+ToolSearchCall object { arguments , type , id , 3 more }
+
+arguments : unknown
+
+The arguments supplied to the tool search call.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20arguments)
+
+type : "tool_search_call"
+
+The item type. Always `tool_search_call`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20type)
+
+id : optional string
+
+The unique ID of this tool search call.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20id)
+
+call_id : optional string
+
+The unique ID of the tool search call generated by the model.
+
+maxLength 64
+
+minLength 1
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20call_id)
+
+execution : optional "server" or "client"
+
+Whether tool search was executed by the server or by the client.
+
+One of the following:
+
+"server"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20execution%20%3E%20(member)%200)
+
+"client"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20execution%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20execution)
+
+status : optional "in_progress" or "completed" or "incomplete"
+
+The status of the tool search call.
+
+One of the following:
+
+"in_progress"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20status%20%3E%20(member)%200)
+
+"completed"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20status%20%3E%20(member)%201)
+
+"incomplete"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20status%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20status)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%209)
+
+ToolSearchOutput object { tools , type , id , 3 more }
+
+tools : array of object { name , parameters , strict , 5 more } or object { type , vector_store_ids , filters , 2 more } or object { type } or 13 more
+
+The loaded tool definitions returned by the tool search output.
+
+One of the following:
+
+Function object { name , parameters , strict , 5 more }
+
+Defines a function in your own code the model can choose to call. Learn more about [function calling](https://platform.openai.com/docs/guides/function-calling).
+
+name : string
+
+The name of the function to call.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20name)
+
+parameters : map [ unknown ]
+
+A JSON schema object describing the parameters of the function.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20parameters)
+
+strict : boolean
+
+Whether strict parameter validation is enforced for this function tool.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20strict)
+
+type : "function"
+
+The type of the function tool. Always `function`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20type)
+
+allowed_callers : optional array of "direct" or "programmatic"
+
+The tool invocation context(s).
+
+One of the following:
+
+"direct"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20allowed_callers%20%3E%20(items)%20%3E%20(member)%200)
+
+"programmatic"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20allowed_callers%20%3E%20(items)%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20allowed_callers)
+
+defer_loading : optional boolean
+
+Whether this function is deferred and loaded via tool search.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20defer_loading)
+
+description : optional string
+
+A description of the function. Used by the model to determine whether or not to call the function.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20description)
+
+output_schema : optional map [ unknown ]
+
+A JSON schema object describing the JSON value encoded in string outputs for this function.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200%20%3E%20(property)%20output_schema)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%200)
+
+FileSearch object { type , vector_store_ids , filters , 2 more }
+
+A tool that searches for relevant content from uploaded files. Learn more about the [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
+
+type : "file_search"
+
+The type of the file search tool. Always `file_search`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20type)
+
+vector_store_ids : array of string
+
+The IDs of the vector stores to search.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20vector_store_ids)
+
+filters : optional [ComparisonFilter](/api/reference/resources/$shared#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)) { key , type , value } or [CompoundFilter](/api/reference/resources/$shared#(resource)%20%24shared%20%3E%20(model)%20compound_filter%20%3E%20(schema)) { filters , type }
+
+A filter to apply.
+
+One of the following:
+
+ComparisonFilter object { key , type , value }
+
+A filter used to compare a specified attribute key to a given value using a defined comparison operation.
+
+key : string
+
+The key to compare against the value.
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20key)
+
+type : "eq" or "ne" or "gt" or 5 more
+
+Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`, `nin`.
+
+- `eq`: equals
+
+- `ne`: not equal
+
+- `gt`: greater than
+
+- `gte`: greater than or equal
+
+- `lt`: less than
+
+- `lte`: less than or equal
+
+- `in`: in
+
+- `nin`: not in
+
+One of the following:
+
+"eq"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%200)
+
+"ne"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%201)
+
+"gt"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%202)
+
+"gte"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%203)
+
+"lt"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%204)
+
+"lte"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%205)
+
+"in"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%206)
+
+"nin"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%207)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type)
+
+value : string or number or boolean or array of string or number
+
+The value to compare against the attribute key; supports string, number, or boolean types.
+
+One of the following:
+
+string
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%200)
+
+number
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%201)
+
+boolean
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%202)
+
+array of string or number
+
+One of the following:
+
+string
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%203%20%3E%20(items)%20%3E%20(variant)%200)
+
+number
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%203%20%3E%20(items)%20%3E%20(variant)%201)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%203)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema))
+
+CompoundFilter object { filters , type }
+
+Combine multiple filters using `and` or `or`.
+
+filters : array of [ComparisonFilter](/api/reference/resources/$shared#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)) { key , type , value } or unknown
+
+Array of filters to combine. Items can be `ComparisonFilter` or `CompoundFilter`.
+
+One of the following:
+
+ComparisonFilter object { key , type , value }
+
+A filter used to compare a specified attribute key to a given value using a defined comparison operation.
+
+key : string
+
+The key to compare against the value.
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20key)
+
+type : "eq" or "ne" or "gt" or 5 more
+
+Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`, `nin`.
+
+- `eq`: equals
+
+- `ne`: not equal
+
+- `gt`: greater than
+
+- `gte`: greater than or equal
+
+- `lt`: less than
+
+- `lte`: less than or equal
+
+- `in`: in
+
+- `nin`: not in
+
+One of the following:
+
+"eq"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%200)
+
+"ne"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%201)
+
+"gt"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%202)
+
+"gte"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%203)
+
+"lt"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%204)
+
+"lte"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%205)
+
+"in"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%206)
+
+"nin"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%207)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20type)
+
+value : string or number or boolean or array of string or number
+
+The value to compare against the attribute key; supports string, number, or boolean types.
+
+One of the following:
+
+string
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%200)
+
+number
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%201)
+
+boolean
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%202)
+
+array of string or number
+
+One of the following:
+
+string
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%203%20%3E%20(items)%20%3E%20(variant)%200)
+
+number
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%203%20%3E%20(items)%20%3E%20(variant)%201)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value%20%3E%20(variant)%203)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema)%20%3E%20(property)%20value)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20comparison_filter%20%3E%20(schema))
+
+unknown
+
+[](#(resource)%20%24shared%20%3E%20(model)%20compound_filter%20%3E%20(schema)%20%3E%20(property)%20filters%20%3E%20(items)%20%3E%20(variant)%201)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20compound_filter%20%3E%20(schema)%20%3E%20(property)%20filters)
+
+type : "and" or "or"
+
+Type of operation: `and` or `or`.
+
+One of the following:
+
+"and"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20compound_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%200)
+
+"or"
+
+[](#(resource)%20%24shared%20%3E%20(model)%20compound_filter%20%3E%20(schema)%20%3E%20(property)%20type%20%3E%20(member)%201)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20compound_filter%20%3E%20(schema)%20%3E%20(property)%20type)
+
+[](#(resource)%20%24shared%20%3E%20(model)%20compound_filter%20%3E%20(schema))
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20filters)
+
+max_num_results : optional number
+
+The maximum number of results to return. This number should be between 1 and 50 inclusive.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20max_num_results)
+
+ranking_options : optional object { hybrid_search , ranker , score_threshold }
+
+Ranking options for search.
+
+hybrid_search : optional object { embedding_weight , text_weight }
+
+Weights that control how reciprocal rank fusion balances semantic embedding matches versus sparse keyword matches when hybrid search is enabled.
+
+embedding_weight : number
+
+The weight of the embedding in the reciprocal ranking fusion.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20ranking_options%20%3E%20(property)%20hybrid_search%20%3E%20(property)%20embedding_weight)
+
+text_weight : number
+
+The weight of the text in the reciprocal ranking fusion.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20ranking_options%20%3E%20(property)%20hybrid_search%20%3E%20(property)%20text_weight)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20ranking_options%20%3E%20(property)%20hybrid_search)
+
+ranker : optional "auto" or "default-2024-11-15"
+
+The ranker to use for the file search.
+
+One of the following:
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20ranking_options%20%3E%20(property)%20ranker%20%3E%20(member)%200)
+
+"default-2024-11-15"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20ranking_options%20%3E%20(property)%20ranker%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20ranking_options%20%3E%20(property)%20ranker)
+
+score_threshold : optional number
+
+The score threshold for the file search, a number between 0 and 1. Numbers closer to 1 will attempt to return only the most relevant results, but may return fewer results.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20ranking_options%20%3E%20(property)%20score_threshold)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201%20%3E%20(property)%20ranking_options)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%201)
+
+Computer object { type }
+
+A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
+
+type : "computer"
+
+The type of the computer tool. Always `computer`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%202%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%202)
+
+ComputerUsePreview object { display_height , display_width , environment , type }
+
+A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
+
+display_height : number
+
+The height of the computer display.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20display_height)
+
+display_width : number
+
+The width of the computer display.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20display_width)
+
+environment : "windows" or "mac" or "linux" or 2 more
+
+The type of computer environment to control.
+
+One of the following:
+
+"windows"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20environment%20%3E%20(member)%200)
+
+"mac"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20environment%20%3E%20(member)%201)
+
+"linux"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20environment%20%3E%20(member)%202)
+
+"ubuntu"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20environment%20%3E%20(member)%203)
+
+"browser"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20environment%20%3E%20(member)%204)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20environment)
+
+type : "computer_use_preview"
+
+The type of the computer use tool. Always `computer_use_preview`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%203%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%203)
+
+WebSearch object { type , filters , search_context_size , user_location }
+
+Search the Internet for sources related to the prompt. Learn more about the
+[web search tool](/docs/guides/tools-web-search).
+
+type : "web_search" or "web_search_2025_08_26"
+
+The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
+
+One of the following:
+
+"web_search"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20type%20%3E%20(member)%200)
+
+"web_search_2025_08_26"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20type%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20type)
+
+filters : optional object { allowed_domains }
+
+Filters for the search.
+
+allowed_domains : optional array of string
+
+Allowed domains for the search. If not provided, all domains are allowed.
+Subdomains of the provided domains are allowed as well.
+
+Example: `["pubmed.ncbi.nlm.nih.gov"]`
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20filters%20%3E%20(property)%20allowed_domains)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20filters)
+
+search_context_size : optional "low" or "medium" or "high"
+
+High level guidance for the amount of context window space to use for the search. One of `low`, `medium`, or `high`. `medium` is the default.
+
+One of the following:
+
+"low"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20search_context_size%20%3E%20(member)%200)
+
+"medium"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20search_context_size%20%3E%20(member)%201)
+
+"high"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20search_context_size%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20search_context_size)
+
+user_location : optional object { city , country , region , 2 more }
+
+The approximate location of the user.
+
+city : optional string
+
+Free text input for the city of the user, e.g. `San Francisco`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20user_location%20%3E%20(property)%20city)
+
+country : optional string
+
+The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of the user, e.g. `US`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20user_location%20%3E%20(property)%20country)
+
+region : optional string
+
+Free text input for the region of the user, e.g. `California`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20user_location%20%3E%20(property)%20region)
+
+timezone : optional string
+
+The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the user, e.g. `America/Los_Angeles`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20user_location%20%3E%20(property)%20timezone)
+
+type : optional "approximate"
+
+The type of location approximation. Always `approximate`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20user_location%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204%20%3E%20(property)%20user_location)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%204)
+
+Mcp object { server_label , type , allowed_callers , 9 more }
+
+Give the model access to additional tools via remote Model Context Protocol
+(MCP) servers. [Learn more about MCP](/docs/guides/tools-remote-mcp).
+
+server_label : string
+
+A label for this MCP server, used to identify it in tool calls.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20server_label)
+
+type : "mcp"
+
+The type of the MCP tool. Always `mcp`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20type)
+
+allowed_callers : optional array of "direct" or "programmatic"
+
+The tool invocation context(s).
+
+One of the following:
+
+"direct"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20allowed_callers%20%3E%20(items)%20%3E%20(member)%200)
+
+"programmatic"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20allowed_callers%20%3E%20(items)%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20allowed_callers)
+
+allowed_tools : optional array of string or object { read_only , tool_names }
+
+List of allowed tool names or a filter object.
+
+One of the following:
+
+McpAllowedTools = array of string
+
+A string array of allowed tool names
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20allowed_tools%20%3E%20(variant)%200)
+
+McpToolFilter object { read_only , tool_names }
+
+A filter object to specify which tools are allowed.
+
+read_only : optional boolean
+
+Indicates whether or not a tool modifies data or is read-only. If an
+MCP server is [annotated with readOnlyHint](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+it will match this filter.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20allowed_tools%20%3E%20(variant)%201%20%3E%20(property)%20read_only)
+
+tool_names : optional array of string
+
+List of allowed tool names.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20allowed_tools%20%3E%20(variant)%201%20%3E%20(property)%20tool_names)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20allowed_tools%20%3E%20(variant)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20allowed_tools)
+
+authorization : optional string
+
+An OAuth access token that can be used with a remote MCP server, either
+with a custom MCP server URL or a service connector. Your application
+must handle the OAuth authorization flow and provide the token here.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20authorization)
+
+connector_id : optional "connector_dropbox" or "connector_gmail" or "connector_googlecalendar" or 5 more
+
+Identifier for service connectors, like those available in ChatGPT. One of
+`server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
+about service connectors [here](/docs/guides/tools-remote-mcp#connectors).
+
+Currently supported `connector_id` values are:
+
+- Dropbox: `connector_dropbox`
+
+- Gmail: `connector_gmail`
+
+- Google Calendar: `connector_googlecalendar`
+
+- Google Drive: `connector_googledrive`
+
+- Microsoft Teams: `connector_microsoftteams`
+
+- Outlook Calendar: `connector_outlookcalendar`
+
+- Outlook Email: `connector_outlookemail`
+
+- SharePoint: `connector_sharepoint`
+
+One of the following:
+
+"connector_dropbox"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20connector_id%20%3E%20(member)%200)
+
+"connector_gmail"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20connector_id%20%3E%20(member)%201)
+
+"connector_googlecalendar"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20connector_id%20%3E%20(member)%202)
+
+"connector_googledrive"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20connector_id%20%3E%20(member)%203)
+
+"connector_microsoftteams"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20connector_id%20%3E%20(member)%204)
+
+"connector_outlookcalendar"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20connector_id%20%3E%20(member)%205)
+
+"connector_outlookemail"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20connector_id%20%3E%20(member)%206)
+
+"connector_sharepoint"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20connector_id%20%3E%20(member)%207)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20connector_id)
+
+defer_loading : optional boolean
+
+Whether this MCP tool is deferred and discovered via tool search.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20defer_loading)
+
+headers : optional map [ string ]
+
+Optional HTTP headers to send to the MCP server. Use for authentication
+or other purposes.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20headers)
+
+require_approval : optional object { always , never } or "always" or "never"
+
+Specify which of the MCP server’s tools require approval.
+
+One of the following:
+
+McpToolApprovalFilter object { always , never }
+
+Specify which of the MCP server’s tools require approval. Can be
+`always`, `never`, or a filter object associated with tools
+that require approval.
+
+always : optional object { read_only , tool_names }
+
+A filter object to specify which tools are allowed.
+
+read_only : optional boolean
+
+Indicates whether or not a tool modifies data or is read-only. If an
+MCP server is [annotated with readOnlyHint](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+it will match this filter.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval%20%3E%20(variant)%200%20%3E%20(property)%20always%20%3E%20(property)%20read_only)
+
+tool_names : optional array of string
+
+List of allowed tool names.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval%20%3E%20(variant)%200%20%3E%20(property)%20always%20%3E%20(property)%20tool_names)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval%20%3E%20(variant)%200%20%3E%20(property)%20always)
+
+never : optional object { read_only , tool_names }
+
+A filter object to specify which tools are allowed.
+
+read_only : optional boolean
+
+Indicates whether or not a tool modifies data or is read-only. If an
+MCP server is [annotated with readOnlyHint](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+it will match this filter.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval%20%3E%20(variant)%200%20%3E%20(property)%20never%20%3E%20(property)%20read_only)
+
+tool_names : optional array of string
+
+List of allowed tool names.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval%20%3E%20(variant)%200%20%3E%20(property)%20never%20%3E%20(property)%20tool_names)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval%20%3E%20(variant)%200%20%3E%20(property)%20never)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval%20%3E%20(variant)%200)
+
+McpToolApprovalSetting = "always" or "never"
+
+Specify a single approval policy for all tools. One of `always` or
+`never`. When set to `always`, all tools will require approval. When
+set to `never`, all tools will not require approval.
+
+One of the following:
+
+"always"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval%20%3E%20(variant)%201%20%3E%20(member)%200)
+
+"never"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval%20%3E%20(variant)%201%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval%20%3E%20(variant)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20require_approval)
+
+server_description : optional string
+
+Optional description of the MCP server, used to provide more context.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20server_description)
+
+server_url : optional string
+
+The URL for the MCP server. One of `server_url`, `connector_id`, or
+`tunnel_id` must be provided.
+
+format uri
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20server_url)
+
+tunnel_id : optional string
+
+The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+`server_url`, `connector_id`, or `tunnel_id` must be provided.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205%20%3E%20(property)%20tunnel_id)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%205)
+
+CodeInterpreter object { container , type , allowed_callers }
+
+A tool that runs Python code to help generate a response to a prompt.
+
+container : string or object { type , file_ids , memory_limit , network_policy }
+
+The code interpreter container. Can be a container ID or an object that
+specifies uploaded file IDs to make available to your code, along with an
+optional `memory_limit` setting.
+
+One of the following:
+
+string
+
+The container ID.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container%20%3E%20(variant)%200)
+
+CodeInterpreterToolAuto object { type , file_ids , memory_limit , network_policy }
+
+Configuration for a code interpreter container. Optionally specify the IDs of the files to run the code on.
+
+type : "auto"
+
+Always `auto`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container%20%3E%20(variant)%201%20%3E%20(property)%20type)
+
+file_ids : optional array of string
+
+An optional list of uploaded files to make available to your code.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container%20%3E%20(variant)%201%20%3E%20(property)%20file_ids)
+
+memory_limit : optional "1g" or "4g" or "16g" or "64g"
+
+The memory limit for the code interpreter container.
+
+One of the following:
+
+"1g"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container%20%3E%20(variant)%201%20%3E%20(property)%20memory_limit%20%3E%20(member)%200)
+
+"4g"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container%20%3E%20(variant)%201%20%3E%20(property)%20memory_limit%20%3E%20(member)%201)
+
+"16g"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container%20%3E%20(variant)%201%20%3E%20(property)%20memory_limit%20%3E%20(member)%202)
+
+"64g"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container%20%3E%20(variant)%201%20%3E%20(property)%20memory_limit%20%3E%20(member)%203)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container%20%3E%20(variant)%201%20%3E%20(property)%20memory_limit)
+
+network_policy : optional [ContainerNetworkPolicyDisabled](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20container_network_policy_disabled%20%3E%20(schema)) { type } or [ContainerNetworkPolicyAllowlist](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20container_network_policy_allowlist%20%3E%20(schema)) { allowed_domains , type , domain_secrets }
+
+Network access policy for the container.
+
+One of the following:
+
+ContainerNetworkPolicyDisabled object { type }
+
+type : "disabled"
+
+Disable outbound network access. Always `disabled`.
+
+[](#(resource)%20responses%20%3E%20(model)%20container_network_policy_disabled%20%3E%20(schema)%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(model)%20container_network_policy_disabled%20%3E%20(schema))
+
+ContainerNetworkPolicyAllowlist object { allowed_domains , type , domain_secrets }
+
+allowed_domains : array of string
+
+A list of allowed domains when type is `allowlist`.
+
+[](#(resource)%20responses%20%3E%20(model)%20container_network_policy_allowlist%20%3E%20(schema)%20%3E%20(property)%20allowed_domains)
+
+type : "allowlist"
+
+Allow outbound network access only to specified domains. Always `allowlist`.
+
+[](#(resource)%20responses%20%3E%20(model)%20container_network_policy_allowlist%20%3E%20(schema)%20%3E%20(property)%20type)
+
+domain_secrets : optional array of [ContainerNetworkPolicyDomainSecret](/api/reference/resources/responses#(resource)%20responses%20%3E%20(model)%20container_network_policy_domain_secret%20%3E%20(schema)) { domain , name , value }
+
+Optional domain-scoped secrets for allowlisted domains.
+
+domain : string
+
+The domain associated with the secret.
+
+minLength 1
+
+[](#(resource)%20responses%20%3E%20(model)%20container_network_policy_domain_secret%20%3E%20(schema)%20%3E%20(property)%20domain)
+
+name : string
+
+The name of the secret to inject for the domain.
+
+minLength 1
+
+[](#(resource)%20responses%20%3E%20(model)%20container_network_policy_domain_secret%20%3E%20(schema)%20%3E%20(property)%20name)
+
+value : string
+
+The secret value to inject for the domain.
+
+maxLength 10485760
+
+minLength 1
+
+[](#(resource)%20responses%20%3E%20(model)%20container_network_policy_domain_secret%20%3E%20(schema)%20%3E%20(property)%20value)
+
+[](#(resource)%20responses%20%3E%20(model)%20container_network_policy_allowlist%20%3E%20(schema)%20%3E%20(property)%20domain_secrets)
+
+[](#(resource)%20responses%20%3E%20(model)%20container_network_policy_allowlist%20%3E%20(schema))
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container%20%3E%20(variant)%201%20%3E%20(property)%20network_policy)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container%20%3E%20(variant)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20container)
+
+type : "code_interpreter"
+
+The type of the code interpreter tool. Always `code_interpreter`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20type)
+
+allowed_callers : optional array of "direct" or "programmatic"
+
+The tool invocation context(s).
+
+One of the following:
+
+"direct"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20allowed_callers%20%3E%20(items)%20%3E%20(member)%200)
+
+"programmatic"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20allowed_callers%20%3E%20(items)%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206%20%3E%20(property)%20allowed_callers)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%206)
+
+ProgrammaticToolCalling object { type }
+
+type : "programmatic_tool_calling"
+
+The type of the tool. Always `programmatic_tool_calling`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%207%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%207)
+
+ImageGeneration object { type , action , background , 9 more }
+
+A tool that generates images using the GPT image models.
+
+type : "image_generation"
+
+The type of the image generation tool. Always `image_generation`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20type)
+
+action : optional "generate" or "edit" or "auto"
+
+Whether to generate a new image or edit an existing image. Default: `auto`.
+
+One of the following:
+
+"generate"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20action%20%3E%20(member)%200)
+
+"edit"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20action%20%3E%20(member)%201)
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20action%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20action)
+
+background : optional "transparent" or "opaque" or "auto"
+
+Background type for the generated image. One of `transparent`,
+`opaque`, or `auto`. Default: `auto`.
+
+One of the following:
+
+"transparent"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20background%20%3E%20(member)%200)
+
+"opaque"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20background%20%3E%20(member)%201)
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20background%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20background)
+
+input_fidelity : optional "high" or "low"
+
+Control how much effort the model will exert to match the style and features, especially facial features, of input images. This parameter is only supported for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+
+One of the following:
+
+"high"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20input_fidelity%20%3E%20(member)%200)
+
+"low"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20input_fidelity%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20input_fidelity)
+
+input_image_mask : optional object { file_id , image_url }
+
+Optional mask for inpainting. Contains `image_url`
+(string, optional) and `file_id` (string, optional).
+
+file_id : optional string
+
+File ID for the mask image.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20input_image_mask%20%3E%20(property)%20file_id)
+
+image_url : optional string
+
+Base64-encoded mask image.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20input_image_mask%20%3E%20(property)%20image_url)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20input_image_mask)
+
+model : optional string or "gpt-image-1" or "gpt-image-1-mini" or "gpt-image-1.5"
+
+The image generation model to use. Default: `gpt-image-1`.
+
+One of the following:
+
+string
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20model%20%3E%20(variant)%200)
+
+"gpt-image-1" or "gpt-image-1-mini" or "gpt-image-1.5"
+
+The image generation model to use. Default: `gpt-image-1`.
+
+One of the following:
+
+"gpt-image-1"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20model%20%3E%20(variant)%201%20%3E%20(member)%200)
+
+"gpt-image-1-mini"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20model%20%3E%20(variant)%201%20%3E%20(member)%201)
+
+"gpt-image-1.5"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20model%20%3E%20(variant)%201%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20model%20%3E%20(variant)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20model)
+
+moderation : optional "auto" or "low"
+
+Moderation level for the generated image. Default: `auto`.
+
+One of the following:
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20moderation%20%3E%20(member)%200)
+
+"low"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20moderation%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20moderation)
+
+output_compression : optional number
+
+Compression level for the output image. Default: 100.
+
+minimum 0
+
+maximum 100
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20output_compression)
+
+output_format : optional "png" or "webp" or "jpeg"
+
+The output format of the generated image. One of `png`, `webp`, or
+`jpeg`. Default: `png`.
+
+One of the following:
+
+"png"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20output_format%20%3E%20(member)%200)
+
+"webp"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20output_format%20%3E%20(member)%201)
+
+"jpeg"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20output_format%20%3E%20(member)%202)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20output_format)
+
+partial_images : optional number
+
+Number of partial images to generate in streaming mode, from 0 (default value) to 3.
+
+minimum 0
+
+maximum 3
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20partial_images)
+
+quality : optional "low" or "medium" or "high" or "auto"
+
+The quality of the generated image. One of `low`, `medium`, `high`,
+or `auto`. Default: `auto`.
+
+One of the following:
+
+"low"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20quality%20%3E%20(member)%200)
+
+"medium"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20quality%20%3E%20(member)%201)
+
+"high"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20quality%20%3E%20(member)%202)
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20quality%20%3E%20(member)%203)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20quality)
+
+size : optional string or "1024x1024" or "1024x1536" or "1536x1024" or "auto"
+
+The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both be divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and the maximum supported resolution is `3840x2160`. The requested size must also satisfy the model’s current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models; `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or `1024x1792`.
+
+One of the following:
+
+string
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20size%20%3E%20(variant)%200)
+
+"1024x1024" or "1024x1536" or "1536x1024" or "auto"
+
+The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both be divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and the maximum supported resolution is `3840x2160`. The requested size must also satisfy the model’s current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models; `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or `1024x1792`.
+
+One of the following:
+
+"1024x1024"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20size%20%3E%20(variant)%201%20%3E%20(member)%200)
+
+"1024x1536"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20size%20%3E%20(variant)%201%20%3E%20(member)%201)
+
+"1536x1024"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20size%20%3E%20(variant)%201%20%3E%20(member)%202)
+
+"auto"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20size%20%3E%20(variant)%201%20%3E%20(member)%203)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20size%20%3E%20(variant)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208%20%3E%20(property)%20size)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%208)
+
+LocalShell object { type }
+
+A tool that allows the model to execute shell commands in a local environment.
+
+type : "local_shell"
+
+The type of the local shell tool. Always `local_shell`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%209%20%3E%20(property)%20type)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%209)
+
+Shell object { type , allowed_callers , environment }
+
+A tool that allows the model to execute shell commands.
+
+type : "shell"
+
+The type of the shell tool. Always `shell`.
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20type)
+
+allowed_callers : optional array of "direct" or "programmatic"
+
+The tool invocation context(s).
+
+One of the following:
+
+"direct"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20allowed_callers%20%3E%20(items)%20%3E%20(member)%200)
+
+"programmatic"
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20allowed_callers%20%3E%20(items)%20%3E%20(member)%201)
+
+[](#(resource)%20responses%20%3E%20(method)%20create%20%3E%20(params)%200.non_streaming%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201%20%3E%20(items)%20%3E%20(variant)%2010%20%3E%20(property)%20tools%20%3E%20(items)%20%3E%20(variant)%2010%20
+
+_Content truncated at 200000 characters; read the full page at the source link._
+
+---
+Source: https://developers.openai.com/api/reference/resources/responses/methods/create
