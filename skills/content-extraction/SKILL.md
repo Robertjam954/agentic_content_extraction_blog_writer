@@ -1,7 +1,7 @@
 ---
 name: content-extraction
 description: Extract blog posts, articles, YouTube transcripts, and Google Docs into the Obsidian vault inbox (Inbox/) as provenance-stamped Markdown notes. Use when the user asks to ingest, scrape, or pull content from a blog, news feed, docs site, YouTube channel, or Google Doc into the knowledge graph, or to run the extraction agent. For processing already-ingested inbox notes into vault Resources, use the transcript-processing / vault-connectivity agent briefs instead.
-compatibility: Python 3 standard library plus curl for all extractors (no API key). fetch_transcripts.py additionally needs youtube-transcript-api and an IP YouTube does not block (cloud IPs are often blocked). The optional natural-language agent defaults to LangChain (langchain + langgraph + langchain-openai); Microsoft Agent Framework (agent-framework-core + agent-framework-openai) is an alternative via --framework maf. Local-first default backend is LM Studio (http://localhost:1234/v1), with OpenAI cloud (OPENAI_API_KEY) and Azure OpenAI (AZURE_OPENAI_ENDPOINT) as options.
+compatibility: Python 3 standard library plus curl for all web extractors (no API key). fetch_transcripts.py additionally needs youtube-transcript-api and an IP YouTube does not block (cloud IPs are often blocked). ingest_files.py needs pypdf for PDF text (other file types are stdlib-only). The optional natural-language agent defaults to LangChain (langchain + langgraph + langchain-openai); Microsoft Agent Framework (agent-framework-core + agent-framework-openai) is an alternative via --framework maf. Local-first default backend is LM Studio (http://localhost:1234/v1), with OpenAI cloud (OPENAI_API_KEY) and Azure OpenAI (AZURE_OPENAI_ENDPOINT) as options.
 ---
 
 # Content Extraction
@@ -83,6 +83,28 @@ Extracts a public or published Google Doc to Markdown in `Inbox/Web_to_Process/`
 python3 scripts/fetch_gdoc.py https://docs.google.com/document/d/<id>/edit
 ```
 
+### ingest_files.py - local files
+
+Ingests local files into `Inbox/Files_to_Process/` as provenance-stamped notes
+(`source_file`, `title`, `ingested`, `type`, `sha256` frontmatter). Use this for
+material that arrives as files rather than URLs. Dispatch by extension:
+
+- **PDF** (`.pdf`): text extracted with `pypdf`. A scanned/no-text PDF gets a
+  reference note (`has_content: false`) instead of empty content.
+- **Text** (`.md`, `.markdown`, `.txt`, `.rst`): content passed through.
+- **HTML** (`.html`, `.htm`): a Netscape/Mozilla bookmarks export becomes one note
+  listing its links; any other HTML is converted to Markdown.
+- **Code** (`.py`, `.js`, `.ts`, `.sql`, `.r`, `.java`, `.go`, ...): a fenced block.
+- **Images / other binaries** (`.png`, `.jpg`, `.vsdx`, ...): copied into
+  `Inbox/Files_to_Process/assets/` with an embedding (images) or reference note.
+
+Accepts files or directories (recursive). Idempotent by output filename.
+
+```
+python3 scripts/ingest_files.py paper.pdf notes.md bookmarks.html diagram.png
+python3 scripts/ingest_files.py ~/Downloads --source attachment
+```
+
 ## Natural-language agent (extractor_agent/)
 
 `extractor_agent` wraps the extractors as agent tools so extraction can be driven in
@@ -97,6 +119,7 @@ python -m extractor_agent --dry-run                        # list tools/sources,
 python -m extractor_agent --dry-run --source anthropic-engineering --limit 3
 python -m extractor_agent "extract the 5 latest anthropic engineering posts"   # live (LangChain)
 python -m extractor_agent --framework maf "extract latest 3 openai research posts"
+python -m extractor_agent "ingest ~/Downloads/paper.pdf into the vault"
 ```
 
 Live mode is local-first: it uses a local **LM Studio** server by default

@@ -52,9 +52,15 @@ module at a time. Current state:
   - `scripts/fetch_gdoc.py` - extracts a public or "published to web" Google Doc to a
     Markdown note in `Inbox/Web_to_Process/` (no auth; private docs are reported
     inaccessible rather than saving a sign-in page).
+  - `scripts/ingest_files.py` - ingests local files into `Inbox/Files_to_Process/`:
+    PDFs (text via `pypdf`), Markdown/text, HTML (a bookmarks export becomes a link
+    list; other HTML is converted to Markdown), source code (fenced block), and
+    images/other binaries (copied into `assets/` with a reference note). Each note
+    carries provenance frontmatter (`source_file`, `sha256`, `type`).
 
   All are idempotent: inputs already in the inbox are skipped. Stdlib + curl only,
-  except `fetch_transcripts.py` (needs `youtube-transcript-api`).
+  except `fetch_transcripts.py` (needs `youtube-transcript-api`) and
+  `ingest_files.py` (needs `pypdf` for PDF text; other file types are stdlib-only).
 - **Content extraction agent (`extractor_agent/`):** wraps the extractors as agent
   tools so extraction runs from a natural-language prompt. Default framework is
   **LangChain** (LangChain + LangGraph); **Microsoft Agent Framework** is an option
@@ -148,6 +154,9 @@ python3 scripts/fetch_youtube_channel.py https://www.youtube.com/GitHub --limit 
 
 # Extract a public / published Google Doc
 python3 scripts/fetch_gdoc.py https://docs.google.com/document/d/DOC_ID/edit
+
+# Ingest local files (PDFs, Markdown, HTML/bookmarks, code, images) into the inbox
+python3 scripts/ingest_files.py paper.pdf notes.md bookmarks.html ~/Downloads/diagram.png
 
 # Drive extraction in natural language (LangChain by default; --framework maf for MAF)
 python3 -m extractor_agent --dry-run                 # offline: list tools + sources

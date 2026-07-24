@@ -21,6 +21,7 @@ sys.path.insert(0, str(SCRIPTS))
 import scrape_articles  # noqa: E402
 import fetch_gdoc  # noqa: E402
 import fetch_youtube_channel as ytc  # noqa: E402
+import ingest_files  # noqa: E402
 
 SOURCES = sorted(scrape_articles.PRESETS)
 
@@ -103,6 +104,21 @@ def extract_google_doc(
     return _summarize("google-doc", [fetch_gdoc.process(doc, outdir)])
 
 
+def ingest_local_files(
+    paths: Annotated[list[str], "local file or directory paths to ingest"],
+    source_tag: Annotated[str, "value for the note's source: frontmatter field"] = "local-file",
+) -> str:
+    """Ingest local files (PDF, Markdown, HTML, code, images, other binaries) into the vault inbox.
+
+    Converts each file to a provenance-stamped Obsidian note in
+    Inbox/Files_to_Process/: PDFs and text/HTML become Markdown, a bookmarks
+    export becomes a link list, code becomes a fenced block, and images/other
+    binaries are copied into assets/ with a reference note. Idempotent.
+    """
+    results = ingest_files.ingest_files(list(paths), source=source_tag)
+    return _summarize(f"{len(paths)} path(s)", results)
+
+
 def _summarize(label: str, results: list[str]) -> str:
     ok = sum(1 for r in results if r.startswith("OK"))
     skip = sum(1 for r in results if r.startswith("SKIP"))
@@ -119,4 +135,5 @@ ACTIONS = [
     extract_youtube_channel,
     list_youtube_channel,
     extract_google_doc,
+    ingest_local_files,
 ]

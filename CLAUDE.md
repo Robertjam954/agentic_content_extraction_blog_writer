@@ -146,6 +146,17 @@ Each exits 1 if any item failed, 0 otherwise.
   rather than saving the login page. Private docs would need a Google API
   credential (target).
 
+### scripts/ingest_files.py (local files)
+
+- **What:** ingests local files into `Inbox/Files_to_Process/` as provenance-stamped
+  notes (`source_file`, `sha256`, `type` frontmatter). Dispatch by extension: PDFs
+  (text via `pypdf`; scanned/no-text PDFs get a reference note), Markdown/text, HTML
+  (a Netscape/Mozilla bookmarks export becomes a link list, other HTML is converted
+  to Markdown), source code (fenced block), and images/other binaries (copied into
+  `Inbox/Files_to_Process/assets/` with an embedding/reference note). Idempotent
+  (keyed by output filename). Accepts files or directories (recursive).
+- **Requires:** `pypdf` for PDF text only; every other file type is stdlib-only.
+
 ### extractor_agent/ (natural-language orchestration)
 
 - **What:** wraps the extractors above as agent tools so extraction runs from a
@@ -170,9 +181,11 @@ material lands here and waits for the processing agents:
   processing agent consumes these into `Resources/Processed_Transcripts/` and
   archives the raw file - neither destination folder exists in this repo yet
   (target).
-- `Inbox/Web_to_Process/` - 15 scraped course-overview notes from
-  `scrape_courses.py`.
+- `Inbox/Web_to_Process/` - scraped course-overview notes from `scrape_courses.py`
+  plus blog/article/docs notes from `scrape_articles.py` and `fetch_gdoc.py`.
 - `Inbox/Skills_to_Process/` - 28 Azure skill notes from `extract_skills.py`.
+- `Inbox/Files_to_Process/` - notes from local files ingested by `ingest_files.py`
+  (with an `assets/` subfolder holding copied images/binaries).
 
 Everything currently in `Inbox/` is unprocessed. Do not hand-edit inbox content;
 it is raw input for the agents.

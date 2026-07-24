@@ -17,6 +17,9 @@
 # (fetch_youtube_channel.py) use only the standard library plus curl.
 # fetch_transcripts.py (invoked by fetch_youtube_channel.py) needs this:
 youtube-transcript-api>=1.0
+# ingest_files.py extracts text from PDFs with pypdf; without it, PDFs fall back to
+# a reference note. All its other file types use only the standard library.
+pypdf>=4.0
 
 # --- Content extraction agent (extractor_agent/) ---
 # Natural-language orchestration over the extractors. Only needed for the live agent
