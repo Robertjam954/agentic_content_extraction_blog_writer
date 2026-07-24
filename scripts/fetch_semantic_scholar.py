@@ -29,7 +29,10 @@ import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUTDIR_DEFAULT = REPO_ROOT / "Inbox" / "Papers_to_Process"
+# Vault root: $OBSIDIAN_VAULT if set, else the repo root.
+_VAULT = os.environ.get("OBSIDIAN_VAULT")
+VAULT_ROOT = Path(_VAULT).expanduser() if _VAULT else REPO_ROOT
+OUTDIR_DEFAULT = VAULT_ROOT / "Inbox" / "Papers_to_Process"
 
 API = "https://api.semanticscholar.org/graph/v1"
 FIELDS = (

@@ -1,0 +1,333 @@
+---
+source_url: https://developers.openai.com/api/reference/resources/projects/subresources/users/subresources/roles/methods/create
+title: "Assign project role to user"
+scraped: 2026-07-24
+type: doc
+source: openai-api-reference
+full_text: true
+---
+
+# Assign project role to user
+
+> OpenAI API endpoint method reference.
+[API Reference](/api/reference)
+
+[Admin](/api/reference/resources/admin)
+
+[Organization](/api/reference/resources/admin/subresources/organization)
+
+[Projects](/api/reference/resources/admin/subresources/organization/subresources/projects)
+
+[Users](/api/reference/resources/admin/subresources/organization/subresources/projects/subresources/users)
+
+[Roles](/api/reference/resources/admin/subresources/organization/subresources/projects/subresources/users/subresources/roles)
+
+# Assign project role to user
+
+POST /projects/{project_id}/users/{user_id}/roles
+
+Assigns a project role to a user within a project.
+
+##### P ath Parameters Expand Collapse
+
+project_id : string
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(method)%20create%20%3E%20(params)%20default%20%3E%20(param)%20project_id%20%3E%20(schema))
+
+user_id : string
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(method)%20create%20%3E%20(params)%20default%20%3E%20(param)%20user_id%20%3E%20(schema))
+
+##### Body Parameters JSON Expand Collapse
+
+role_id : string
+
+Identifier of the role to assign.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20role_id%20%3E%20(schema))
+
+##### Returns Expand Collapse
+
+object : "user.role"
+
+Always `user.role`.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20object)
+
+role : [Role](/api/reference/resources/admin#(resource)%20admin.organization.roles%20%3E%20(model)%20role%20%3E%20(schema)) { id , description , name , 4 more }
+
+Details about a role that can be assigned through the public Roles API.
+
+id : string
+
+Identifier for the role.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20role%20%2B%20(resource)%20admin.organization.roles%20%3E%20(model)%20role%20%3E%20(schema)%20%3E%20(property)%20id)
+
+description : string
+
+Optional description of the role.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20role%20%2B%20(resource)%20admin.organization.roles%20%3E%20(model)%20role%20%3E%20(schema)%20%3E%20(property)%20description)
+
+name : string
+
+Unique name for the role.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20role%20%2B%20(resource)%20admin.organization.roles%20%3E%20(model)%20role%20%3E%20(schema)%20%3E%20(property)%20name)
+
+object : "role"
+
+Always `role`.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20role%20%2B%20(resource)%20admin.organization.roles%20%3E%20(model)%20role%20%3E%20(schema)%20%3E%20(property)%20object)
+
+permissions : array of string
+
+Permissions granted by the role.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20role%20%2B%20(resource)%20admin.organization.roles%20%3E%20(model)%20role%20%3E%20(schema)%20%3E%20(property)%20permissions)
+
+predefined_role : boolean
+
+Whether the role is predefined and managed by OpenAI.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20role%20%2B%20(resource)%20admin.organization.roles%20%3E%20(model)%20role%20%3E%20(schema)%20%3E%20(property)%20predefined_role)
+
+resource_type : string
+
+Resource type the role is bound to (for example `api.organization` or `api.project`).
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20role%20%2B%20(resource)%20admin.organization.roles%20%3E%20(model)%20role%20%3E%20(schema)%20%3E%20(property)%20resource_type)
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20role)
+
+user : [OrganizationUser](/api/reference/resources/admin#(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)) { id , added_at , object , 13 more }
+
+Represents an individual `user` within an organization.
+
+id : string
+
+The identifier, which can be referenced in API endpoints
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20id)
+
+added_at : number
+
+The Unix timestamp (in seconds) of when the user was added.
+
+format unixtime
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20added_at)
+
+object : "organization.user"
+
+The object type, which is always `organization.user`
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20object)
+
+api_key_last_used_at : optional number
+
+The Unix timestamp (in seconds) of the user’s last API key usage.
+
+format unixtime
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20api_key_last_used_at)
+
+created : optional number
+
+The Unix timestamp (in seconds) of when the user was created.
+
+format unixtime
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20created)
+
+developer_persona : optional string
+
+The developer persona metadata for the user.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20developer_persona)
+
+email : optional string
+
+The email address of the user
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20email)
+
+is_default : optional boolean
+
+Whether this is the organization’s default user.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20is_default)
+
+is_scale_tier_authorized_purchaser : optional boolean
+
+Whether the user is an authorized purchaser for Scale Tier.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20is_scale_tier_authorized_purchaser)
+
+is_scim_managed : optional boolean
+
+Whether the user is managed through SCIM.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20is_scim_managed)
+
+is_service_account : optional boolean
+
+Whether the user is a service account.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20is_service_account)
+
+name : optional string
+
+The name of the user
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20name)
+
+projects : optional object { data , object }
+
+Projects associated with the user, if included.
+
+data : array of object { id , name , role }
+
+id : optional string
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20projects%20%3E%20(property)%20data%20%3E%20(items)%20%3E%20(property)%20id)
+
+name : optional string
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20projects%20%3E%20(property)%20data%20%3E%20(items)%20%3E%20(property)%20name)
+
+role : optional string
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20projects%20%3E%20(property)%20data%20%3E%20(items)%20%3E%20(property)%20role)
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20projects%20%3E%20(property)%20data)
+
+object : "list"
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20projects%20%3E%20(property)%20object)
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20projects)
+
+role : optional string
+
+`owner` or `reader`
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20role)
+
+technical_level : optional string
+
+The technical level metadata for the user.
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20technical_level)
+
+user : optional object { id , object , banned , 5 more }
+
+Nested user details.
+
+id : string
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20user%20%3E%20(property)%20id)
+
+object : "user"
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20user%20%3E%20(property)%20object)
+
+banned : optional boolean
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20user%20%3E%20(property)%20banned)
+
+banned_at : optional number
+
+format unixtime
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20user%20%3E%20(property)%20banned_at)
+
+email : optional string
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20user%20%3E%20(property)%20email)
+
+enabled : optional boolean
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20user%20%3E%20(property)%20enabled)
+
+name : optional string
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20user%20%3E%20(property)%20name)
+
+picture : optional string
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20user%20%3E%20(property)%20picture)
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user%20%2B%20(resource)%20admin.organization.users%20%3E%20(model)%20organization_user%20%3E%20(schema)%20%3E%20(property)%20user)
+
+[](#(resource)%20admin.organization.projects.users.roles%20%3E%20(model)%20role_create_response%20%3E%20(schema)%20%3E%20(property)%20user)
+
+### Assign project role to user
+
+```
+curl -X POST https://api.openai.com/v1/projects/proj_abc123/users/user_abc123/roles \
+-H "Authorization: Bearer $OPENAI_ADMIN_KEY" \
+-H "Content-Type: application/json" \
+-d '{
+"role_id": "role_01J1F8PROJ"
+}'
+```
+
+```
+{
+"object": "user.role",
+"user": {
+"object": "organization.user",
+"id": "user_abc123",
+"name": "Ada Lovelace",
+"email": "ada@example.com",
+"role": "owner",
+"added_at": 1711470000
+},
+"role": {
+"object": "role",
+"id": "role_01J1F8PROJ",
+"name": "API Project Key Manager",
+"description": "Allows managing API keys for the project",
+"permissions": [
+"api.organization.projects.api_keys.read",
+"api.organization.projects.api_keys.write"
+],
+"resource_type": "api.project",
+"predefined_role": false
+}
+}
+```
+
+##### Returns Examples
+
+```
+{
+"object": "user.role",
+"user": {
+"object": "organization.user",
+"id": "user_abc123",
+"name": "Ada Lovelace",
+"email": "ada@example.com",
+"role": "owner",
+"added_at": 1711470000
+},
+"role": {
+"object": "role",
+"id": "role_01J1F8PROJ",
+"name": "API Project Key Manager",
+"description": "Allows managing API keys for the project",
+"permissions": [
+"api.organization.projects.api_keys.read",
+"api.organization.projects.api_keys.write"
+],
+"resource_type": "api.project",
+"predefined_role": false
+}
+}
+```
+
+---
+Source: https://developers.openai.com/api/reference/resources/projects/subresources/users/subresources/roles/methods/create

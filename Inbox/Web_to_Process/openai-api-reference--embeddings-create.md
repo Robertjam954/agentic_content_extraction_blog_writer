@@ -1,0 +1,239 @@
+---
+source_url: https://developers.openai.com/api/reference/resources/embeddings/methods/create
+title: "Create embeddings"
+scraped: 2026-07-24
+type: doc
+source: openai-api-reference
+full_text: true
+---
+
+# Create embeddings
+
+> OpenAI API endpoint method reference.
+[API Reference](/api/reference)
+
+[Embeddings](/api/reference/resources/embeddings)
+
+# Create embeddings
+
+POST /embeddings
+
+Creates an embedding vector representing the input text.
+
+##### Body Parameters JSON Expand Collapse
+
+input : string or array of string or array of number or array of array of number
+
+Input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays. The input must not exceed the max input tokens for the model (8192 tokens for all embedding models), cannot be an empty string, and any array must be 2048 dimensions or less. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens. In addition to the per-input token limit, all embedding models enforce a maximum of 300,000 tokens summed across all inputs in a single request.
+
+One of the following:
+
+String = string
+
+The string that will be turned into an embedding.
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%200)
+
+Array = array of string
+
+The array of strings that will be turned into an embedding.
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%201)
+
+Array = array of number
+
+The array of integers that will be turned into an embedding.
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%202)
+
+Array = array of array of number
+
+The array of arrays containing integers that will be turned into an embedding.
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20input%20%3E%20(schema)%20%3E%20(variant)%203)
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20input%20%3E%20(schema))
+
+model : string or [EmbeddingModel](/api/reference/resources/embeddings#(resource)%20embeddings%20%3E%20(model)%20embedding_model%20%3E%20(schema))
+
+ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
+
+One of the following:
+
+string
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20model%20%3E%20(schema)%20%3E%20(variant)%200)
+
+EmbeddingModel = "text-embedding-ada-002" or "text-embedding-3-small" or "text-embedding-3-large"
+
+One of the following:
+
+"text-embedding-ada-002"
+
+[](#(resource)%20embeddings%20%3E%20(model)%20embedding_model%20%3E%20(schema)%20%3E%20(member)%200)
+
+"text-embedding-3-small"
+
+[](#(resource)%20embeddings%20%3E%20(model)%20embedding_model%20%3E%20(schema)%20%3E%20(member)%201)
+
+"text-embedding-3-large"
+
+[](#(resource)%20embeddings%20%3E%20(model)%20embedding_model%20%3E%20(schema)%20%3E%20(member)%202)
+
+[](#(resource)%20embeddings%20%3E%20(model)%20embedding_model%20%3E%20(schema))
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20model%20%3E%20(schema))
+
+dimensions : optional number
+
+The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and later models.
+
+minimum 1
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20dimensions%20%3E%20(schema))
+
+encoding_format : optional "float" or "base64"
+
+The format to return the embeddings in. Can be either `float` or [base64](https://pypi.org/project/pybase64/).
+
+One of the following:
+
+"float"
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20encoding_format%20%3E%20(schema)%20%3E%20(member)%200)
+
+"base64"
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20encoding_format%20%3E%20(schema)%20%3E%20(member)%201)
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20encoding_format%20%3E%20(schema))
+
+user : optional string
+
+A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
+
+[](#(resource)%20embeddings%20%3E%20(method)%20create%20%3E%20(params)%200%20%3E%20(param)%20user%20%3E%20(schema))
+
+##### Returns Expand Collapse
+
+CreateEmbeddingResponse object { data , model , object , usage }
+
+data : array of [Embedding](/api/reference/resources/embeddings#(resource)%20embeddings%20%3E%20(model)%20embedding%20%3E%20(schema)) { embedding , index , object }
+
+The list of embeddings generated by the model.
+
+embedding : array of number
+
+The embedding vector, which is a list of floats. The length of vector depends on the model as listed in the [embedding guide](/docs/guides/embeddings).
+
+[](#(resource)%20embeddings%20%3E%20(model)%20embedding%20%3E%20(schema)%20%3E%20(property)%20embedding)
+
+index : number
+
+The index of the embedding in the list of embeddings.
+
+[](#(resource)%20embeddings%20%3E%20(model)%20embedding%20%3E%20(schema)%20%3E%20(property)%20index)
+
+object : "embedding"
+
+The object type, which is always “embedding”.
+
+[](#(resource)%20embeddings%20%3E%20(model)%20embedding%20%3E%20(schema)%20%3E%20(property)%20object)
+
+[](#(resource)%20embeddings%20%3E%20(model)%20create_embedding_response%20%3E%20(schema)%20%3E%20(property)%20data)
+
+model : string
+
+The name of the model used to generate the embedding.
+
+[](#(resource)%20embeddings%20%3E%20(model)%20create_embedding_response%20%3E%20(schema)%20%3E%20(property)%20model)
+
+object : "list"
+
+The object type, which is always “list”.
+
+[](#(resource)%20embeddings%20%3E%20(model)%20create_embedding_response%20%3E%20(schema)%20%3E%20(property)%20object)
+
+usage : object { prompt_tokens , total_tokens }
+
+The usage information for the request.
+
+prompt_tokens : number
+
+The number of tokens used by the prompt.
+
+[](#(resource)%20embeddings%20%3E%20(model)%20create_embedding_response%20%3E%20(schema)%20%3E%20(property)%20usage%20%3E%20(property)%20prompt_tokens)
+
+total_tokens : number
+
+The total number of tokens used by the request.
+
+[](#(resource)%20embeddings%20%3E%20(model)%20create_embedding_response%20%3E%20(schema)%20%3E%20(property)%20usage%20%3E%20(property)%20total_tokens)
+
+[](#(resource)%20embeddings%20%3E%20(model)%20create_embedding_response%20%3E%20(schema)%20%3E%20(property)%20usage)
+
+[](#(resource)%20embeddings%20%3E%20(model)%20create_embedding_response%20%3E%20(schema))
+
+### Create embeddings
+
+```
+curl https://api.openai.com/v1/embeddings \
+-H "Authorization: Bearer $OPENAI_API_KEY" \
+-H "Content-Type: application/json" \
+-d '{
+"input": "The food was delicious and the waiter...",
+"model": "text-embedding-ada-002",
+"encoding_format": "float"
+}'
+```
+
+```
+{
+"object": "list",
+"data": [
+{
+"object": "embedding",
+"embedding": [
+0.0023064255,
+-0.009327292,
+.... (1536 floats total for ada-002)
+-0.0028842222,
+],
+"index": 0
+}
+],
+"model": "text-embedding-ada-002",
+"usage": {
+"prompt_tokens": 8,
+"total_tokens": 8
+}
+}
+```
+
+##### Returns Examples
+
+```
+{
+"object": "list",
+"data": [
+{
+"object": "embedding",
+"embedding": [
+0.0023064255,
+-0.009327292,
+.... (1536 floats total for ada-002)
+-0.0028842222,
+],
+"index": 0
+}
+],
+"model": "text-embedding-ada-002",
+"usage": {
+"prompt_tokens": 8,
+"total_tokens": 8
+}
+}
+```
+
+---
+Source: https://developers.openai.com/api/reference/resources/embeddings/methods/create

@@ -1,0 +1,83 @@
+---
+source_url: https://developers.openai.com/api/reference/resources/organization/subresources/projects/subresources/users/methods/delete
+title: "Delete project user"
+scraped: 2026-07-24
+type: doc
+source: openai-api-reference
+full_text: true
+---
+
+# Delete project user
+
+> OpenAI API endpoint method reference.
+[API Reference](/api/reference)
+
+[Admin](/api/reference/resources/admin)
+
+[Organization](/api/reference/resources/admin/subresources/organization)
+
+[Projects](/api/reference/resources/admin/subresources/organization/subresources/projects)
+
+[Users](/api/reference/resources/admin/subresources/organization/subresources/projects/subresources/users)
+
+# Delete project user
+
+DELETE /organization/projects/{project_id}/users/{user_id}
+
+Deletes a user from the project.
+
+Returns confirmation of project user deletion, or an error if the project is
+archived (archived projects have no users).
+
+##### P ath Parameters Expand Collapse
+
+project_id : string
+
+[](#(resource)%20admin.organization.projects.users%20%3E%20(method)%20delete%20%3E%20(params)%20default%20%3E%20(param)%20project_id%20%3E%20(schema))
+
+user_id : string
+
+[](#(resource)%20admin.organization.projects.users%20%3E%20(method)%20delete%20%3E%20(params)%20default%20%3E%20(param)%20user_id%20%3E%20(schema))
+
+##### Returns Expand Collapse
+
+id : string
+
+[](#(resource)%20admin.organization.projects.users%20%3E%20(model)%20user_delete_response%20%3E%20(schema)%20%3E%20(property)%20id)
+
+deleted : boolean
+
+[](#(resource)%20admin.organization.projects.users%20%3E%20(model)%20user_delete_response%20%3E%20(schema)%20%3E%20(property)%20deleted)
+
+object : "organization.project.user.deleted"
+
+[](#(resource)%20admin.organization.projects.users%20%3E%20(model)%20user_delete_response%20%3E%20(schema)%20%3E%20(property)%20object)
+
+### Delete project user
+
+```
+curl -X DELETE https://api.openai.com/v1/organization/projects/proj_abc/users/user_abc \
+-H "Authorization: Bearer $OPENAI_ADMIN_KEY" \
+-H "Content-Type: application/json"
+```
+
+```
+{
+"object": "organization.project.user.deleted",
+"id": "user_abc",
+"deleted": true
+}
+```
+
+##### Returns Examples
+
+```
+{
+"object": "organization.project.user.deleted",
+"id": "user_abc",
+"deleted": true
+}
+```
+
+---
+Source: https://developers.openai.com/api/reference/resources/organization/subresources/projects/subresources/users/methods/delete
