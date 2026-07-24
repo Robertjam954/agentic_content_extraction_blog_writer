@@ -119,6 +119,60 @@ Each exits 1 if any item failed, 0 otherwise.
 - **Gotcha:** fails per-skill with `FAIL ... (no local SKILL.md ...)` if the
   `.claude/skills/` cache is not populated on this machine.
 
+### scripts/scrape_articles.py (blogs, news, docs, courses)
+
+- **What:** one source-agnostic article extractor. Discovers posts via RSS/Atom
+  `--feed`, path-filtered XML `--sitemap ... --match` (handles sitemap-index
+  nesting), listing-page `--listing ... --match`, `llms.txt`-index
+  `--llms-txt ... --match` (collects a site's Markdown "twin" pages), or explicit
+  URLs/`--file`, then writes readable Markdown (from `<article>`/`<main>`) to
+  `Inbox/Web_to_Process/<source>--<slug>.md`. Blocked pages (e.g. openai.com 403)
+  fall back to feed summary, stamped `full_text: false`; a stub Markdown twin
+  falls back to the rendered HTML page.
+- **Presets** (`--source`): `anthropic-engineering`, `anthropic-news`,
+  `openai-research`, `openai-news`, `ms-learn-secure-research`, `hbc-intro-to-r`,
+  `openai-api-reference` (developers.openai.com API reference via its `llms.txt`).
+  `--list` discovers without fetching; also `--limit`, `--type`, `--outdir`.
+
+### scripts/fetch_youtube_channel.py (channels -> transcripts)
+
+- **What:** resolves a channel `@handle`/URL/legacy `/Name`/`UC...` ID to its
+  channel ID, reads the public uploads RSS feed, and hands video IDs to
+  `fetch_transcripts.py`. `--list` prints resolved URLs with no dependency.
+- **Gotcha:** transcript fetching inherits YouTube's cloud-IP blocking
+  (`RequestBlocked`); run from an unblocked IP/proxy. Listing works regardless.
+
+### scripts/fetch_gdoc.py (Google Docs)
+
+- **What:** extracts a public ("anyone with the link") or "published to web" Google
+  Doc to Markdown in `Inbox/Web_to_Process/`. Reports FAIL for private/sign-in docs
+  rather than saving the login page. Private docs would need a Google API
+  credential (target).
+
+### scripts/ingest_files.py (local files)
+
+- **What:** ingests local files into `Inbox/Files_to_Process/` as provenance-stamped
+  notes (`source_file`, `sha256`, `type` frontmatter). Dispatch by extension: PDFs
+  (text via `pypdf`; scanned/no-text PDFs get a reference note), Markdown/text, HTML
+  (a Netscape/Mozilla bookmarks export becomes a link list, other HTML is converted
+  to Markdown), source code (fenced block), and images/other binaries (copied into
+  `Inbox/Files_to_Process/assets/` with an embedding/reference note). Idempotent
+  (keyed by output filename). Accepts files or directories (recursive).
+- **Requires:** `pypdf` for PDF text only; every other file type is stdlib-only.
+
+### extractor_agent/ (natural-language orchestration)
+
+- **What:** wraps the extractors above as agent tools so extraction runs from a
+  prompt. Default framework is **LangChain** (`langchain_agent.py`, via
+  `langchain.agents.create_agent`); **Microsoft Agent Framework** is an option
+  (`agent.py`, `--framework maf`). `python3 -m extractor_agent --dry-run` lists
+  tools/sources offline (no model). Local-first: the live agent defaults to a local
+  **LM Studio** server (`http://localhost:1234/v1`); `OPENAI_API_KEY` or
+  `AZURE_OPENAI_ENDPOINT` switch to a cloud backend. The deterministic scripts never
+  need a model.
+- **Skill:** `skills/content-extraction/SKILL.md` documents this toolset for coding
+  agents (agentskills.io convention, from inspecting `cartesia-ai/skills`).
+
 ## 4. The Inbox pipeline
 
 `Inbox/` is the vault's capture zone (see `vault_structure_overview.md`). Raw
@@ -130,9 +184,11 @@ material lands here and waits for the processing agents:
   processing agent consumes these into `Resources/Processed_Transcripts/` and
   archives the raw file - neither destination folder exists in this repo yet
   (target).
-- `Inbox/Web_to_Process/` - 15 scraped course-overview notes from
-  `scrape_courses.py`.
+- `Inbox/Web_to_Process/` - scraped course-overview notes from `scrape_courses.py`
+  plus blog/article/docs notes from `scrape_articles.py` and `fetch_gdoc.py`.
 - `Inbox/Skills_to_Process/` - 28 Azure skill notes from `extract_skills.py`.
+- `Inbox/Files_to_Process/` - notes from local files ingested by `ingest_files.py`
+  (with an `assets/` subfolder holding copied images/binaries).
 
 Everything currently in `Inbox/` is unprocessed. Do not hand-edit inbox content;
 it is raw input for the agents.
@@ -151,6 +207,11 @@ it is raw input for the agents.
   `anthropics/claude-code-action@v1` with `ANTHROPIC_API_KEY`. Note it sits at the
   repo root, so GitHub does not execute it; move it to `.github/workflows/` to
   activate it (target).
+- **`.github/workflows/extract-content.yml`** - runs the deterministic content
+  extractors (`scrape_articles.py`) weekly and via `workflow_dispatch` (choose a
+  source preset and limit), committing any new `Inbox/` notes on a branch and
+  opening a PR. Deterministic only: it never runs the LLM agent, so it needs no
+  model key.
 - **`claude-md-memory-workflow/`** - the teaching example the installed workflow
   is modeled on (from the Module 4 video). Illustration only; leave untouched.
 - **`custom-automations.md`** - reference examples for prompt-driven
@@ -163,8 +224,9 @@ it is raw input for the agents.
 - No emojis in code or docs unless explicitly requested. (The reference prompt
   `notion-db-to-technical-blog.md` contains emojis; it is upstream source material,
   leave it as-is.)
-- Markdown-first repo: the deliverables are Markdown specs, notes, and docs; the
-  only code is the three Python scripts.
+- Markdown-first repo: the deliverables are Markdown specs, notes, and docs. Code
+  lives in `scripts/` (ingestion) and the `extractor_agent/`, `rag/`, `writer/`,
+  and `notion_review/` packages.
 - Plan before implementing: each module gets a `*-plan.md` recording its stack
   decisions (see CONTRIBUTING.md). No stack is locked project-wide.
 - Vault naming: underscore-separated, TitleCased filenames, acronyms uppercase
