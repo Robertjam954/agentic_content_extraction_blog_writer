@@ -42,6 +42,7 @@ from __future__ import annotations
 import argparse
 import datetime as _dt
 import html
+import os
 import re
 import subprocess
 import sys
@@ -49,7 +50,24 @@ import urllib.parse
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUTDIR_DEFAULT = REPO_ROOT / "Inbox" / "Web_to_Process"
+
+
+def vault_root() -> Path:
+    """Vault root: $OBSIDIAN_VAULT if set, else the repo root.
+
+    Set OBSIDIAN_VAULT to your Obsidian vault path to make every extractor write
+    into that vault's Inbox/ instead of this repo's Inbox/.
+    """
+    v = os.environ.get("OBSIDIAN_VAULT")
+    return Path(v).expanduser() if v else REPO_ROOT
+
+
+def inbox_dir(subfolder: str) -> Path:
+    """Return <vault>/Inbox/<subfolder> (vault = OBSIDIAN_VAULT or repo root)."""
+    return vault_root() / "Inbox" / subfolder
+
+
+OUTDIR_DEFAULT = inbox_dir("Web_to_Process")
 
 # Cap a single note's body so an outlier page (e.g. an aggregated event-schema
 # reference) cannot bloat the vault/git with multi-MB notes.

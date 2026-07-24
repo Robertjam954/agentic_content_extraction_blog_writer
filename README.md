@@ -143,6 +143,10 @@ python3 scripts/extract_skills.py
 python3 scripts/fetch_semantic_scholar.py --query "retrieval augmented generation" --limit 10
 python3 scripts/fetch_semantic_scholar.py ARXIV:2005.11401 DOI:10.18653/v1/2020.acl-main.1
 
+# Write into your own Obsidian vault instead of this repo's Inbox/:
+# set OBSIDIAN_VAULT once and every extractor writes to <vault>/Inbox/...
+export OBSIDIAN_VAULT=/path/to/your/ObsidianVault
+
 # Extract blog posts / articles / docs (stdlib + curl only)
 python3 scripts/scrape_articles.py --source anthropic-engineering --limit 15
 python3 scripts/scrape_articles.py --source openai-research --limit 25

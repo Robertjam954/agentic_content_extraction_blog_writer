@@ -14,13 +14,17 @@ Usage:
 from __future__ import annotations
 
 import datetime as _dt
+import os
 import re
 import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-SKILLS_DIR = REPO_ROOT / ".claude" / "skills"
-OUTDIR = REPO_ROOT / "Inbox" / "Skills_to_Process"
+SKILLS_DIR = REPO_ROOT / ".claude" / "skills"  # local input cache (stays in repo)
+# Vault root: $OBSIDIAN_VAULT if set, else the repo root.
+_VAULT = os.environ.get("OBSIDIAN_VAULT")
+VAULT_ROOT = Path(_VAULT).expanduser() if _VAULT else REPO_ROOT
+OUTDIR = VAULT_ROOT / "Inbox" / "Skills_to_Process"
 
 SOURCE = "microsoft/azure-skills"
 SOURCE_URL = "https://github.com/microsoft/azure-skills"

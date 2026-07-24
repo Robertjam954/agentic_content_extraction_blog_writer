@@ -15,7 +15,9 @@ vault-connectivity agents, and are picked up by the `rag/` index.
 ## Core directives
 
 - **Run from anywhere.** The scripts resolve the repo root from their own path and
-  write into `Inbox/`. Point `--outdir` elsewhere to target a live vault.
+  write into `Inbox/`. Set `OBSIDIAN_VAULT=/path/to/your/vault` to make every
+  extractor write into `<vault>/Inbox/...` instead (your live Obsidian database);
+  `--outdir` overrides per run.
 - **Idempotent by design.** Re-running only fetches new items; do not delete notes
   to force a re-fetch unless the source changed.
 - **Discovery beats hardcoding.** Prefer a source's RSS/Atom feed or XML sitemap

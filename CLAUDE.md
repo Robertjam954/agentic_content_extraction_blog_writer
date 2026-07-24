@@ -76,9 +76,11 @@ agentic_content_extraction_blog_writer/
 
 ## 3. Scripts (Module 2 ingestion)
 
-All three are stdlib-first Python 3 CLIs run from anywhere (they resolve the repo
-root from their own path). Each is idempotent: existing output files are skipped.
-Each exits 1 if any item failed, 0 otherwise.
+All are stdlib-first Python 3 CLIs run from anywhere (they resolve the repo root
+from their own path). Each is idempotent: existing output files are skipped. Each
+exits 1 if any item failed, 0 otherwise. Set `OBSIDIAN_VAULT=/path/to/vault` to
+make every extractor write into `<vault>/Inbox/...` (your live Obsidian database)
+instead of this repo's `Inbox/`; `--outdir` still overrides per run.
 
 ### scripts/fetch_transcripts.py
 

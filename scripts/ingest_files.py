@@ -44,10 +44,10 @@ import urllib.parse
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from scrape_articles import html_to_markdown, slug_of  # noqa: E402
+from scrape_articles import html_to_markdown, inbox_dir, slug_of  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUTDIR_DEFAULT = REPO_ROOT / "Inbox" / "Files_to_Process"
+OUTDIR_DEFAULT = inbox_dir("Files_to_Process")
 
 TEXT_EXTS = {".md", ".markdown", ".txt", ".rst"}
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".bmp"}

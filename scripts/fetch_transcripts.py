@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -27,7 +28,10 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import CouldNotRetrieveTranscript
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-INBOX = REPO_ROOT / "Inbox" / "Transcripts_to_Process"
+# Vault root: $OBSIDIAN_VAULT if set, else the repo root.
+_VAULT = os.environ.get("OBSIDIAN_VAULT")
+VAULT_ROOT = Path(_VAULT).expanduser() if _VAULT else REPO_ROOT
+INBOX = VAULT_ROOT / "Inbox" / "Transcripts_to_Process"
 
 # 11-char YouTube IDs use [A-Za-z0-9_-]
 _ID_RE = re.compile(r"^[A-Za-z0-9_-]{11}$")

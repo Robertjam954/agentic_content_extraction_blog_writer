@@ -37,10 +37,10 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from scrape_articles import html_to_markdown, parse_meta  # noqa: E402
+from scrape_articles import html_to_markdown, inbox_dir, parse_meta  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUTDIR_DEFAULT = REPO_ROOT / "Inbox" / "Web_to_Process"
+OUTDIR_DEFAULT = inbox_dir("Web_to_Process")
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/125.0 Safari/537.36"
 
 _SIGNIN_MARKERS = ("accounts.google.com/ServiceLogin", "Sign in - Google Accounts",
