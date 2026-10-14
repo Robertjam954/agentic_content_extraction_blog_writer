@@ -79,7 +79,18 @@ module at a time. Current state:
   local (offline) embeddings. `python -m rag index` embeds the Inbox material, agent
   briefs, and project docs (66 files today); `python -m rag search "..."` returns the
   most relevant chunks by meaning, optionally filtered by source type. This is the
-  retrieval surface for the writing agent.
+  retrieval surface for the writing agent. Generated content beneath the exact
+  repository-relative directory `Inbox/Drafts/` is excluded. Every index run
+  removes previously stored chunks with a `source_path` beneath that directory,
+  including deleted draft files, while retaining other indexed documents.
+  Run `python -m rag index` against each existing persistent database to apply
+  this cleanup before searching or drafting.
+
+  Regression checks: `python -m unittest discover -s tests -v`. The persistent
+  Chroma test uses deterministic offline embeddings and runs when `chromadb`
+  is installed. Cleanup depends on the indexer's relative `source_path` metadata;
+  records without it cannot be identified as drafts. General pruning of deleted
+  source files is not performed. Avoid concurrent index writers during cleanup.
 - **Content writing / summary agent (`writer/`):** turns a topic into a draft. It
   retrieves from the `rag/` index, assembles the content object the writing brief
   expects, and sends it to Claude (`claude-sonnet-5`). `python -m writer "topic"
@@ -217,3 +228,4 @@ _Demo video coming soon - see the comment above for how to drop one in._
 ## Community
 
 For more, [join the AI Engineering community](https://skool.com/ai-engineer).
+
