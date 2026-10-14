@@ -14,6 +14,11 @@ COLLECTION = "notes_and_docs"
 INCLUDE_EXTS = {".md", ".txt", ".srt"}
 EXCLUDE_PARTS = {".git", ".claude", ".rag", ".github", "node_modules", ".venv"}
 
+# Repository-relative directory prefixes, matched by whole path components.
+# Generated writing artifacts are not independent retrieval evidence.
+EXCLUDE_DIRS = {("Inbox", "Drafts")}
+
 # Chunking (character-based, paragraph-aware).
 CHUNK_CHARS = 1200
 CHUNK_OVERLAP = 200
+
